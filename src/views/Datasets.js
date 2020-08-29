@@ -13,8 +13,8 @@ import {
   Badge,
   Space,
   Tag,
-  Footer,
 } from '../ant';
+import Footer from '../components/Footer';
 
 function Datasets() {
   return (
@@ -102,9 +102,7 @@ function Datasets() {
           </Content>
         </Layout>
       </Layout>
-      <Footer style={{ textAlign: 'center', backgroundColor: '#fff' }}>
-        Footer and Copyright AI Global
-      </Footer>
+      <Footer />
     </Layout>
   );
 }

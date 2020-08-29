@@ -1,11 +1,12 @@
 import React from 'react';
-import { Layout, Content, Footer, Search, Row, Col, Card } from '../ant';
+import { Layout, Content, Search, Row, Col, Card } from '../ant';
+import Footer from '../components/Footer';
 import { useHistory } from 'react-router';
 
 let TEMP_FRONTEND_ITEMS = [
-  { name: 'AI Design Assistant' },
-  { name: 'Fawkes' },
-  { name: 'The A-Z of AI' },
+  { name: 'AI Design Assistant', logoURL: '/demo/aiglobal.png' },
+  { name: 'Fawkes', logoURL: '/demo/fawkes.png' },
+  { name: 'The A-Z of AI', logoURL: '/demo/theazlogo.png' },
 ];
 
 function Landing() {
@@ -35,9 +36,7 @@ function Landing() {
           ))}
         </Row>
       </Content>
-      <Footer style={{ textAlign: 'center', backgroundColor: '#fff' }}>
-        Footer and Copyright AI Global
-      </Footer>
+      <Footer />
     </Layout>
   );
 }
@@ -48,12 +47,7 @@ function FeatureCard({ feature }) {
       onClick={() => (window.location = 'https://google.com')}
       hoverable
       style={{ width: '100%' }}
-      cover={
-        <img
-          alt="alt"
-          src="https://specials-images.forbesimg.com/imageserve/1138781799/960x0.jpg?fit=scale"
-        />
-      }
+      cover={<img height={'200px'} alt="alt" src={feature.logoURL} />}
     >
       <Card.Meta
         title={feature.name}
