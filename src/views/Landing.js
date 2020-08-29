@@ -1,5 +1,7 @@
 import React from 'react';
 import { Layout, Content, Search, Row, Col, Card } from '../ant';
+import LoginButton from '../components/LoginButton';
+import Logo from '../components/Logo';
 import Footer from '../components/Footer';
 import { useHistory } from 'react-router';
 
@@ -14,7 +16,10 @@ function Landing() {
   let [query, setQuery] = React.useState('');
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
-      <img src="/logo.png" width={'160px'} />
+      <Logo />
+      <div style={{ position: 'absolute', top: '10px', right: '20px' }}>
+        <LoginButton />
+      </div>
       <Content style={{ padding: '0 50px' }}>
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col span={12} style={{ textAlign: 'center' }}>

@@ -15,17 +15,15 @@ import {
   Tag,
 } from '../ant';
 import Footer from '../components/Footer';
+import LoginButton from '../components/LoginButton';
+import Logo from '../components/Logo';
 
 function Datasets() {
   return (
     <Layout>
       <Affix offsetTop={0}>
         <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
-          <img
-            style={{ float: 'left', marginRight: '40px' }}
-            src="/logo.png"
-            width={'160px'}
-          />
+          <Logo style={{ float: 'left', marginRight: '40px' }} />
           <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
             <Menu.Item key="s" disabled>
               <Search
@@ -41,6 +39,9 @@ function Datasets() {
             <Menu.Item key="3">520 Articles</Menu.Item>
             <Menu.Item key="4">&#43; Suggest Resource</Menu.Item>
           </Menu>
+          <div style={{ position: 'absolute', top: '0px', right: '20px' }}>
+            <LoginButton />
+          </div>
         </Header>
       </Affix>
       <Layout>
