@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const FileSchema = new Schema({
   type: { type: String, default: '', required: true },
@@ -16,15 +16,14 @@ const FileSchema = new Schema({
   modelInputs: { type: String, default: '' },
   modelOutputs: { type: String, default: '' },
   datasetFieldRelationships: { type: String, default: '' },
-})
+});
 
 mongoose.model('File', FileSchema);
 
 const defaultFile = {
   type: '',
   URL: '',
-}
-
+};
 
 FileSchema.statics = {
   createFile: function (fileAttributes) {
@@ -33,18 +32,23 @@ FileSchema.statics = {
       if (err) {
         console.error('Cannot create File - Invalid', err);
       } else {
-        console.log("Successfully created new file with url " + newFileParams.URL);
+        console.log(
+          'Successfully created new file with url ' + newFileParams.URL
+        );
       }
     });
     return newFile;
   },
 
   editFile: function (filter, updateParams) {
-    let updated = File.updateOne(filter, updateParams, function (err, updateParams) {
+    let updated = File.updateOne(filter, updateParams, function (
+      err,
+      updateParams
+    ) {
       if (err) {
         console.error('Invalid update query', err);
       } else {
-        console.log("Successfully updated file");
+        console.log('Successfully updated file');
       }
     });
     return updated.ok;
@@ -55,11 +59,11 @@ FileSchema.statics = {
       if (err) {
         console.error('Invalid delete query', err);
       } else {
-        console.log("Successfully deleted file with param " + deleteQuery);
+        console.log('Successfully deleted file with param ' + deleteQuery);
       }
     });
     return deleted.ok;
   },
-}
+};
 
 module.exports = FileSchema;

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const org = require('./organization.model');
 
-
 const Schema = mongoose.Schema;
 
 const USER_TYPES = [];
@@ -16,7 +15,9 @@ const UserSchema = new Schema({
   hashed_password: { type: String, default: '' },
   salt: { type: String, default: '' },
   authToken: { type: String, default: '' },
-  orgs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: [] }],
+  orgs: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: [] },
+  ],
   twitter: { type: String },
   github: { type: String },
   google: { type: String },
@@ -30,7 +31,7 @@ const defaultUser = {
   email: '',
   username: '',
   type: '',
-}
+};
 
 UserSchema.virtual('password')
   .set(function (password) {
@@ -69,13 +70,14 @@ UserSchema.methods = {
       if (err) {
         console.error('Cannot create User - Invalid', err);
       } else {
-        console.log("Successfully created new user with name " + newUserParams.name);
+        console.log(
+          'Successfully created new user with name ' + newUserParams.name
+        );
       }
     });
     return newUser;
   },
 };
-
 
 UserSchema.statics = {
   load: function (options, cb) {
@@ -89,18 +91,23 @@ UserSchema.statics = {
       if (err) {
         console.error('Cannot create User - Invalid', err);
       } else {
-        console.log("Successfully created new user with name " + newUserParams.name);
+        console.log(
+          'Successfully created new user with name ' + newUserParams.name
+        );
       }
     });
     return newUser;
   },
 
   editUser: function (filter, updateParams) {
-    let updated = User.updateOne(filter, updateParams, function (err, updateParams) {
+    let updated = User.updateOne(filter, updateParams, function (
+      err,
+      updateParams
+    ) {
       if (err) {
         console.error('Invalid update query', err);
       } else {
-        console.log("Successfully updated user");
+        console.log('Successfully updated user');
       }
     });
     return updated.ok;
@@ -111,13 +118,11 @@ UserSchema.statics = {
       if (err) {
         console.error('Invalid delete query', err);
       } else {
-        console.log("Successfully deleted user with param " + deleteQuery);
+        console.log('Successfully deleted user with param ' + deleteQuery);
       }
     });
     return deleted.ok;
   },
-
 };
-
 
 module.exports = UserSchema;

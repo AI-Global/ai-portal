@@ -9,12 +9,26 @@ const RESOURCE_PATHS = [];
 
 const ResourceSchema = new Schema({
   description: { type: String, default: '', required: true },
-  topics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic', default: [], required: true }],
+  topics: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Topic',
+      default: [],
+      required: true,
+    },
+  ],
   path: { type: String, enum: RESOURCE_PATHS },
   uploadDate: { type: Date, required: true },
   modified: { type: Date, default: uploadDate },
   license: { type: String, default: '' },
-  files: [{ type: mongoose.Schema.Types.ObjectId, ref: 'File', default: [], required: true }],
+  files: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'File',
+      default: [],
+      required: true,
+    },
+  ],
   creationDate: { type: Date, default: uploadDate },
   type: { type: String, enum: RESOURCE_TYPES, required: true },
   name: { type: String, default: '', required: true },
@@ -39,7 +53,7 @@ const ResourceSchema = new Schema({
   individualsIdentified: { type: Boolean, default: false },
   noiseDescription: { type: String, default: '' },
   externalRestrictions: { type: String, default: '' },
-})
+});
 
 mongoose.model('Resource', ResourceSchema);
 
@@ -50,7 +64,7 @@ const defaultRes = {
   topics: [],
   uploadDate: Date.now,
   isConfidential: false,
-}
+};
 
 ResourceSchema.statics = {
   createRes: function (resAttributes) {
@@ -59,18 +73,23 @@ ResourceSchema.statics = {
       if (err) {
         console.error('Cannot create Resource - invalid', err);
       } else {
-        console.log("Successfully created new resource with name " + newResParams.name);
+        console.log(
+          'Successfully created new resource with name ' + newResParams.name
+        );
       }
     });
     return newRes;
   },
 
   editRes: function (filter, updateParams) {
-    let updated = Resource.updateOne(filter, updateParams, function (err, updateParams) {
+    let updated = Resource.updateOne(filter, updateParams, function (
+      err,
+      updateParams
+    ) {
       if (err) {
         console.error('Invalid update query', err);
       } else {
-        console.log("Successfully updated resource");
+        console.log('Successfully updated resource');
       }
     });
     return updated.ok;
@@ -81,12 +100,11 @@ ResourceSchema.statics = {
       if (err) {
         console.error('Invalid delete query', err);
       } else {
-        console.log("Successfully deleted resource with param " + deleteQuery);
+        console.log('Successfully deleted resource with param ' + deleteQuery);
       }
     });
     return deleted.ok;
   },
-}
-
+};
 
 module.exports = ResourceSchema;
