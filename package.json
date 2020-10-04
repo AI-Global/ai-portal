@@ -21,7 +21,8 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "dev": "craco start",
+    "watch:react": "craco start",
+    "watch:api": "nodemon server.js",
     "start": "node server.js",
     "build": "craco build"
   },

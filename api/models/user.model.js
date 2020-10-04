@@ -89,11 +89,7 @@ UserSchema.statics = {
     let newUserParams = Object.assign({}, defaultUser, userAttributes);
     let newUser = User.create(newUserParams, function (err, newUserParams) {
       if (err) {
-        console.error('Cannot create User - Invalid', err);
-      } else {
-        console.log(
-          'Successfully created new user with name ' + newUserParams.name
-        );
+        console.error('deleteUser', err);
       }
     });
     return newUser;
@@ -105,9 +101,7 @@ UserSchema.statics = {
       updateParams
     ) {
       if (err) {
-        console.error('Invalid update query', err);
-      } else {
-        console.log('Successfully updated user');
+        console.error('deleteUser', err);
       }
     });
     return updated.ok;
@@ -116,9 +110,7 @@ UserSchema.statics = {
   deleteUser: function (deleteQuery) {
     let deleted = User.deleteOne(deleteQuery, function (err, deleteQuery) {
       if (err) {
-        console.error('Invalid delete query', err);
-      } else {
-        console.log('Successfully deleted user with param ' + deleteQuery);
+        console.error('deleteUser', err);
       }
     });
     return deleted.ok;

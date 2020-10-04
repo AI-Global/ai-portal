@@ -15,18 +15,13 @@ import {
   Tag,
 } from '../ant';
 import Footer from '../components/Footer';
-<<<<<<< HEAD
-=======
-import LoginButton from '../components/LoginButton';
-import Logo from '../components/Logo';
->>>>>>> 58c0b66f19803461ac670f047b0b6a0f7011b87c
+import LoginButton from './../components/LoginButton';
 
 function Datasets() {
   return (
     <Layout>
       <Affix offsetTop={0}>
         <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
-<<<<<<< HEAD
           <a href="/">
             <img
               style={{ float: 'left', marginRight: '40px' }}
@@ -34,9 +29,6 @@ function Datasets() {
               width={'160px'}
             />
           </a>
-=======
-          <Logo style={{ float: 'left', marginRight: '40px' }} />
->>>>>>> 58c0b66f19803461ac670f047b0b6a0f7011b87c
           <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
             <Menu.Item key="s" disabled>
               <Search

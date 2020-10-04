@@ -9,13 +9,17 @@ import {
   Input,
   Checkbox,
 } from '../ant';
-import Logo from '../components/Logo';
 import Footer from '../components/Footer';
+import API from '../api';
 
 export default function Login() {
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
-      <Logo />
+      <img
+        style={{ float: 'left', marginRight: '40px' }}
+        src="/logo.png"
+        width={'160px'}
+      />
       <Content style={{ padding: '0 50px' }}>
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col

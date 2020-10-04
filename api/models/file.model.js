@@ -30,11 +30,7 @@ FileSchema.statics = {
     let newFileParams = Object.assign({}, defaultFile, fileAttributes);
     let newFile = File.create(newFileParams, function (err, newFileParams) {
       if (err) {
-        console.error('Cannot create File - Invalid', err);
-      } else {
-        console.log(
-          'Successfully created new file with url ' + newFileParams.URL
-        );
+        console.error('createFile', err);
       }
     });
     return newFile;
@@ -46,9 +42,7 @@ FileSchema.statics = {
       updateParams
     ) {
       if (err) {
-        console.error('Invalid update query', err);
-      } else {
-        console.log('Successfully updated file');
+        console.error('editFile', err);
       }
     });
     return updated.ok;
@@ -57,9 +51,7 @@ FileSchema.statics = {
   deleteFile: function (deleteQuery) {
     let deleted = File.deleteOne(deleteQuery, function (err, deleteQuery) {
       if (err) {
-        console.error('Invalid delete query', err);
-      } else {
-        console.log('Successfully deleted file with param ' + deleteQuery);
+        console.error('deleteFile', err);
       }
     });
     return deleted.ok;

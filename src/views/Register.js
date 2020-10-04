@@ -1,12 +1,24 @@
 import React from 'react';
 import { Layout, Content, Form, Row, Col, Button, Input } from '../ant';
-import Logo from '../components/Logo';
 import Footer from '../components/Footer';
+import API from '../api';
 
 export default function Register() {
+  let submitForm = async (formVal) => {
+    console.log(formVal);
+    let user = await API.post('/api/users', formVal);
+    console.log(user);
+  };
+  let onFail = (values) => {
+    // handle fail
+  };
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
-      <Logo />
+      <img
+        style={{ float: 'left', marginRight: '40px' }}
+        src="/logo.png"
+        width={'160px'}
+      />
       <Content style={{ padding: '0 50px' }}>
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col
@@ -21,8 +33,8 @@ export default function Register() {
               labelCol={{ span: 8 }}
               name="basic"
               initialValues={{ remember: true }}
-              onFinish={console.log}
-              onFinishFailed={console.log}
+              onFinish={submitForm}
+              onFinishFailed={onFail}
             >
               <Form.Item
                 label="Email"
