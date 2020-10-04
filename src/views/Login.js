@@ -33,11 +33,13 @@ export default function Login() {
   };
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
-      <img
-        style={{ float: 'left', marginRight: '40px' }}
-        src="/logo.png"
-        width={'160px'}
-      />
+      <a href="/">
+        <img
+          style={{ float: 'left', marginRight: '40px' }}
+          src="/logo.png"
+          width={'160px'}
+        />
+      </a>
       <Content style={{ padding: '0 50px' }}>
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col
