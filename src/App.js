@@ -4,9 +4,9 @@ import './App.css';
 import { AppEnv } from './env';
 
 import Landing from './views/Landing';
-import Datasets from './views/Datasets';
 import Login from './views/Login';
 import Register from './views/Register';
+import Resources from './views/Resources';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route path="/datasets" component={Datasets} />
+            <Route path="/resources" component={Resources} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
           </Switch>

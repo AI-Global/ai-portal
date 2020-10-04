@@ -15,7 +15,7 @@ import {
   Tag,
 } from '../ant';
 import Footer from '../components/Footer';
-import LoginButton from './../components/LoginButton';
+import LoginButton from '../components/LoginButton';
 import API from '../api';
 
 let queryParamsFromProps = (props) => {
@@ -32,7 +32,7 @@ let queryParamsFromProps = (props) => {
   return query;
 };
 
-function Datasets(props) {
+function Resources(props) {
   let { q } = queryParamsFromProps(props);
   let fetchDatasets = async () => {
     let resources = await API.get('/api/resources', { query: q });
@@ -151,4 +151,4 @@ function DatasetCard() {
   );
 }
 
-export default Datasets;
+export default Resources;

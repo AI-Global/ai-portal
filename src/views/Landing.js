@@ -26,7 +26,7 @@ function Landing() {
               enterButton
               size="large"
               onChange={(e) => setQuery(e.target.value)}
-              onSearch={() => history.push('/datasets?q=' + query)}
+              onSearch={() => history.push('/resources?q=' + query)}
             />
           </Col>
         </Row>
