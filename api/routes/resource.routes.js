@@ -4,8 +4,8 @@ const resourceUtil = require('../models/resource.util');
 
 module.exports = (app) => {
   app.get('/api/resources', async (req, res) => {
-    let { query } = req.query;
-    let resources = await resourceUtil.search(query);
+    let { query, featured } = req.query;
+    let resources = await resourceUtil.search(query, { featured });
     await searchUtil.create(query);
     res.json(resources);
   });

@@ -6,6 +6,9 @@ const port = process.env.PORT || 5000;
 const secret = process.env.SECRET || 'secret.';
 const app = express();
 
+require('./api/models/index');
+const userUtil = require('./api/models/user.util');
+
 app.use(
   require('express-jwt')({
     secret: secret,
@@ -31,6 +34,12 @@ app.use((req, res, next) => {
       algorithm: 'HS256',
     });
   };
+  req.getUser = async () => {
+    if (req.user) {
+      return await userUtil.get({ _id: req.user._id });
+    }
+    return null;
+  };
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header(
     'Access-Control-Allow-Headers',
@@ -40,7 +49,6 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-require('./api/models/index');
 require('./api/routes/index')(app);
 
 let listenHTTP = () => {

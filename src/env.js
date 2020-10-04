@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import API from './api';
 
 export const AppContext = createContext();
 
@@ -21,8 +22,14 @@ export function AppEnv({ children }) {
     setUser(null);
     setKey('token', '');
   };
-  let history = useHistory();
-  console.log(history);
+  if (!window.userUpdated) {
+    API.get('/api/auth/self').then((user) => {
+      window.userUpdated = true;
+      if (user) {
+        setUser(user);
+      }
+    });
+  }
   return (
     <AppContext.Provider
       value={{
@@ -31,7 +38,6 @@ export function AppEnv({ children }) {
         setKey: setKey,
         getKey: getKey,
         logout: logout,
-        goTo: (path) => history.push(path),
       }}
     >
       {children}

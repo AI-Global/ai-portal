@@ -1,3 +1,4 @@
+const { response } = require('express');
 const userUtil = require('../models/user.util');
 
 module.exports = (app) => {
@@ -12,6 +13,11 @@ module.exports = (app) => {
       user: user.toPrivateJSON(),
       token: token,
     });
+  });
+
+  app.get('/api/auth/self', async (req, res) => {
+    let user = await req.getUser();
+    return res.json(user.toPrivateJSON());
   });
 
   app.post('/api/users', async (req, res) => {
