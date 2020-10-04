@@ -13,6 +13,10 @@ exports.get = async (where) => {
   return User.findOne(where);
 };
 
+exports.update = async (user, params) => {
+  return await Model.update({ _id: user._id }, { $set: params }).exec();
+};
+
 exports.getByUsernameOrEmail = async (userOrEmail) => {
   let user = await User.findOne({ username: userOrEmail });
   if (user) {
