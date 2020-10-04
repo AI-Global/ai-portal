@@ -7,7 +7,11 @@ module.exports = (app) => {
     if (!user || !user.authenticate(password)) {
       return res.json({ errors: [{ msg: 'Failed to login' }] });
     }
-    return res.json(user.toPrivateJSON());
+    let token = req.jwtSign(user.toTokenJSON());
+    return res.json({
+      user: user.toPrivateJSON(),
+      token: token,
+    });
   });
 
   app.post('/api/users', async (req, res) => {

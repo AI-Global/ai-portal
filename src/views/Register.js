@@ -1,8 +1,9 @@
 import React from 'react';
 import { Layout, Content, Form, Row, Col, Button, Input } from '../ant';
 import Footer from '../components/Footer';
-import { useHistory } from 'react-router';
 import API from '../api';
+import { useAppEnv } from './../env';
+import { useHistory } from 'react-router';
 
 export default function Register() {
   let history = useHistory();

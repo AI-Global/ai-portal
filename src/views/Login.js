@@ -11,12 +11,22 @@ import {
 } from '../ant';
 import Footer from '../components/Footer';
 import API from '../api';
+import { useAppEnv } from './../env';
+import { useHistory } from 'react-router';
 
 export default function Login() {
+  let { setUser, setKey, goTo } = useAppEnv();
+  let history = useHistory();
   let onSubmit = async (values) => {
     // TODO: handle failure
-    let user = await API.post('/api/auth/login', values);
-    console.log(user);
+    let result = await API.post('/api/auth/login', values);
+    if (result.errors) {
+      alert(JSON.stringify(result.errors));
+      return;
+    }
+    setUser(result.user);
+    setKey('token', result.token);
+    history.push('/');
   };
   let onFail = (values) => {
     // TODO: handle failure
