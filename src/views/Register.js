@@ -1,16 +1,22 @@
 import React from 'react';
 import { Layout, Content, Form, Row, Col, Button, Input } from '../ant';
 import Footer from '../components/Footer';
+import { useHistory } from 'react-router';
 import API from '../api';
 
 export default function Register() {
-  let submitForm = async (formVal) => {
-    console.log(formVal);
+  let history = useHistory();
+  let onSubmit = async (formVal) => {
     let user = await API.post('/api/users', formVal);
-    console.log(user);
+    if (user.errors) {
+      // TODO: Handle server side failure
+      alert(JSON.stringify(user.errors));
+      return;
+    }
+    history.push('/login?username=' + user.username);
   };
   let onFail = (values) => {
-    // handle fail
+    // TODO: Handle client side failure
   };
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
@@ -33,9 +39,16 @@ export default function Register() {
               labelCol={{ span: 8 }}
               name="basic"
               initialValues={{ remember: true }}
-              onFinish={submitForm}
+              onFinish={onSubmit}
               onFinishFailed={onFail}
             >
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: 'Please input your name!' }]}
+              >
+                <Input />
+              </Form.Item>
               <Form.Item
                 label="Email"
                 name="email"

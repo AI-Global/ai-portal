@@ -1,12 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport');
 
 const port = process.env.PORT || 5000;
 const app = express();
-require('./api/models/index');
-require('./api/passport')(passport);
-require('./api/routes/index')(app, passport);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -16,6 +12,10 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use(express.json());
+require('./api/models/index');
+require('./api/routes/index')(app);
 
 let listenHTTP = () => {
   app.listen(port);

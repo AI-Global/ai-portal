@@ -13,6 +13,14 @@ import Footer from '../components/Footer';
 import API from '../api';
 
 export default function Login() {
+  let onSubmit = async (values) => {
+    // TODO: handle failure
+    let user = await API.post('/api/auth/login', values);
+    console.log(user);
+  };
+  let onFail = (values) => {
+    // TODO: handle failure
+  };
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <img
@@ -33,8 +41,8 @@ export default function Login() {
             <Form
               name="basic"
               initialValues={{ remember: true }}
-              onFinish={console.log}
-              onFinishFailed={console.log}
+              onFinish={onSubmit}
+              onFinishFailed={onFail}
             >
               <Form.Item
                 label="Username"
