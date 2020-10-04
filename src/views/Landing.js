@@ -1,6 +1,7 @@
 import React from 'react';
-import { Layout, Content, Footer, Search, Row, Col, Card } from '../ant';
+import { Layout, Content, Search, Row, Col, Card } from '../ant';
 import { useHistory } from 'react-router';
+import Footer from '../components/Footer';
 
 let TEMP_FRONTEND_ITEMS = [
   { name: 'AI Design Assistant' },
@@ -13,7 +14,9 @@ function Landing() {
   let [query, setQuery] = React.useState('');
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
-      <img src="/logo.png" width={'160px'} />
+      <a href="/">
+        <img src="/logo.png" width={'160px'} />
+      </a>
       <Content style={{ padding: '0 50px' }}>
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col span={12} style={{ textAlign: 'center' }}>
@@ -35,9 +38,7 @@ function Landing() {
           ))}
         </Row>
       </Content>
-      <Footer style={{ textAlign: 'center', backgroundColor: '#fff' }}>
-        Footer and Copyright AI Global
-      </Footer>
+      <Footer />
     </Layout>
   );
 }

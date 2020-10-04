@@ -13,19 +13,21 @@ import {
   Badge,
   Space,
   Tag,
-  Footer,
 } from '../ant';
+import Footer from '../components/Footer';
 
 function Datasets() {
   return (
     <Layout>
       <Affix offsetTop={0}>
         <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
-          <img
-            style={{ float: 'left', marginRight: '40px' }}
-            src="/logo.png"
-            width={'160px'}
-          />
+          <a href="/">
+            <img
+              style={{ float: 'left', marginRight: '40px' }}
+              src="/logo.png"
+              width={'160px'}
+            />
+          </a>
           <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
             <Menu.Item key="s" disabled>
               <Search
@@ -102,9 +104,7 @@ function Datasets() {
           </Content>
         </Layout>
       </Layout>
-      <Footer style={{ textAlign: 'center', backgroundColor: '#fff' }}>
-        Footer and Copyright AI Global
-      </Footer>
+      <Footer />
     </Layout>
   );
 }
