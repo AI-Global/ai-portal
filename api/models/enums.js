@@ -6,3 +6,4 @@ module.exports.USER_ROLES = [
 
 module.exports.RESOURCE_TYPES = [];
 module.exports.RESOURCE_PATHS = [];
+module.exports.ORG_TYPES = [];

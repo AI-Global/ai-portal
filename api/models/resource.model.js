@@ -10,25 +10,10 @@ const ResourceSchema = new Schema({
   desc: { type: String, required: true },
   type: { type: String, enum: RESOURCE_TYPES, required: true },
   path: { type: String, enum: RESOURCE_PATHS },
-  topics: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Topic',
-      default: [],
-      required: true,
-    },
-  ],
   uploadDate: { type: Date, default: Date.now },
   creationDate: { type: Date, default: Date.now },
   modifiedDate: { type: Date, default: Date.now },
   licenseName: { type: String, default: 'Unknown' },
-  files: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'File',
-      default: [],
-    },
-  ],
   technical: { type: Boolean, default: false },
   featured: { type: Boolean, default: false },
   trustIndexCategories: { type: Array, default: [] },
@@ -51,6 +36,27 @@ const ResourceSchema = new Schema({
   individualsIdentified: { type: Boolean, default: false },
   noiseDescription: { type: String, default: '' },
   externalRestrictions: { type: String, default: '' },
+  files: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'File',
+      default: [],
+    },
+  ],
+  topics: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Topic',
+      default: [],
+    },
+  ],
+  organizations: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organization',
+      default: [],
+    },
+  ],
 });
 
 ResourceSchema.methods = {
