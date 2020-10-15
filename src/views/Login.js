@@ -9,29 +9,30 @@ import {
   Input,
   Checkbox,
 } from '../ant';
-import {notification} from 'antd'
+import {notification, Typography} from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Footer from '../components/Footer';
 import API from '../api';
 import { useAppEnv } from './../env';
 import { useHistory } from 'react-router';
-import Background from './nn.jpg'
+
+const { Title, Paragraph, Text } = Typography;
 
 export default function Login() {
   let { setUser, setKey, goTo } = useAppEnv();
   let history = useHistory();
   let onSubmit = async (values) => {
     // TODO: handle failure
-    //in cases: values is an array -> throw error for each item in values.errors
 
     let result = await API.post('/api/auth/login', values);
     if (result.errors) {
-     alert(JSON.stringify(result.errors));
-      notification['error']({
-        message: 'Login Failure',
-        description:
-          'Invalid Username or Password.',
-      });
+      var i;
+      // alert(JSON.stringify(result.errors[0]));
+      for (i in result.errors) {
+          notification['error']({
+            message: result.errors[i]['msg'],
+          });
+      }
       return;
     }
     setUser(result.user);
@@ -40,10 +41,12 @@ export default function Login() {
   };
   let onFail = (values) => {
     // TODO: handle failure
-    //background: gradient images or scale image
-    //in cases: values is an array -> throw error for each item in values.errors
-    //dont have account --> create account
-    notification['error']({  message: 'Something is wrong',});
+    var i;
+    for (i in values) {
+      notification['error']({
+        message: JSON.stringify(values[i]),
+      });
+    }
   };
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden', }}>
@@ -54,8 +57,7 @@ export default function Login() {
           width={'160px'}
         />
       </a>
-      {/* backgroundColor: '#00ADEE',  */}
-      <Content style={{ padding: '0 50px',backgroundImage: `url(${Background})`}}>
+      <Content style={{ padding: '0 50px',backgroundImage: 'radial-gradient(circle, rgba(0,166,156,1) 0%, rgba(0,173,238,1) 100%)'}}>
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col
             span={8}
@@ -65,9 +67,9 @@ export default function Login() {
               padding: '26px',
             }}
           >
-            <div>
-              <h1  style={{fontSize:'26px', fontWeight:'bold', fontFamily:'courier'}} >Login</h1>
-            </div>
+            <Typography>            
+              <Title>Login</Title>
+            </Typography>
             <Form
               name="basic"
               initialValues={{ remember: true }}
