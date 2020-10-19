@@ -14,11 +14,10 @@ export default function Register() {
   let onSubmit = async (formVal) => {
     let user = await API.post('/api/users', formVal);
     if (user.errors) {
-      // TODO: Handle server side failure
       var i;
       for (i in user.errors) {
           notification['error']({
-            message: JSON.stringify(user.errors[i]),
+            message: user.errors[i]['msg'],
           });
       }
       return;
@@ -26,11 +25,10 @@ export default function Register() {
     history.push('/login?username=' + user.username);
   };
   let onFail = (values) => {
-    // TODO: Handle client side failure
     var i;
     for (i in values) {
       notification['error']({
-        message: JSON.stringify(values[i]),
+        message: values[i].msg,
       });
     }
   };
@@ -50,7 +48,8 @@ export default function Register() {
             style={{
               textAlign: 'center',
               backgroundColor: '#fff',
-              padding: '26px',     
+              padding: '26px',   
+              minWidth:'700px'  
             }}
           >
             <Form
@@ -60,10 +59,11 @@ export default function Register() {
               onFinish={onSubmit}
               onFinishFailed={onFail}
               wrapperCol={{ span: 14 }}
+              style={{minWidth:'600px'}}
               
             >
             <Typography>
-              <Title>User Registration</Title>
+              <Title style={{minWidth:'500px'}}>User Registration</Title>
               <Paragraph>
                 You can create an account for the AI Global Portal! Members can upload resources to the portal.
                 <Text strong> After creating your account, an email verfication will be sent to you.</Text>

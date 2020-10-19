@@ -22,12 +22,9 @@ export default function Login() {
   let { setUser, setKey, goTo } = useAppEnv();
   let history = useHistory();
   let onSubmit = async (values) => {
-    // TODO: handle failure
-
     let result = await API.post('/api/auth/login', values);
     if (result.errors) {
       var i;
-      // alert(JSON.stringify(result.errors[0]));
       for (i in result.errors) {
           notification['error']({
             message: result.errors[i]['msg'],
@@ -40,11 +37,10 @@ export default function Login() {
     history.push('/');
   };
   let onFail = (values) => {
-    // TODO: handle failure
     var i;
     for (i in values) {
       notification['error']({
-        message: JSON.stringify(values[i]),
+        message: values[i].msg,
       });
     }
   };
@@ -65,16 +61,18 @@ export default function Login() {
               textAlign: 'center',
               backgroundColor: '#fff',
               padding: '26px',
+              minWidth:'700px'
             }}
           >
             <Typography>            
-              <Title>Login</Title>
+              <Title style={{minWidth:'500px'}}>Login</Title>
             </Typography>
             <Form
               name="basic"
               initialValues={{ remember: true }}
               onFinish={onSubmit}
               onFinishFailed={onFail}
+              style={{minWidth:'600px'}}
             >
               <Form.Item
                 name="username"
