@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Layout,
   Content,
@@ -18,6 +18,8 @@ import {
   Table,
   Statistic,
   Button,
+  Radio,
+  Divider,
 } from '../ant';
 
 import {
@@ -113,7 +115,23 @@ const data = [
   },
 ];
 
+// rowSelection object indicates the need for row selection
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      'selectedRows: ',
+      selectedRows
+    );
+  },
+  getCheckboxProps: (record) => ({
+    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    name: record.name,
+  }),
+};
+
 function Admin() {
+  const [selectionType, setSelectionType] = useState('checkbox');
   let history = useHistory();
   let [query, setQuery] = React.useState('');
   return (
@@ -238,8 +256,24 @@ function Admin() {
               enterButton
               onSearch={console.log}
             />
-
-            <Table columns={columns} dataSource={data} />
+            <Radio.Group
+              onChange={({ target: { value } }) => {
+                setSelectionType(value);
+              }}
+              value={selectionType}
+            >
+              <Radio value="checkbox">Checkbox</Radio>
+              <Radio value="radio">radio</Radio>
+            </Radio.Group>
+            <Divider />
+            <Table
+              rowSelection={{
+                type: selectionType,
+                ...rowSelection,
+              }}
+              columns={columns}
+              dataSource={data}
+            />
           </Card>
 
           <Card id="users">

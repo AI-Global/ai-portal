@@ -16,6 +16,8 @@ import {
   Checkbox,
   Table,
   Statistic,
+  Divider,
+  Radio,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -46,4 +48,6 @@ export {
   Checkbox,
   Table,
   Statistic,
+  Divider,
+  Radio,
 };
