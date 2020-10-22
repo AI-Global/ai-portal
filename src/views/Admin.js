@@ -51,11 +51,15 @@ const resourcesColumns = [
     // specify the condition of filtering result
     // here is that finding the name started with `value`
     // -> will now order alphabetically
-    sorter: (a, b) => a.name.localeCompare(b.name),
+    sorter: (a, b) => a.resourceName.localeCompare(b.resourceName),
     sortDirections: ['descend', 'ascend'],
   },
   {
-    title: 'Date Uploaded',
+    title: 'Description',
+    dataIndex: 'description',
+  },
+  {
+    title: 'Upload Date',
     dataIndex: 'date',
     sorter: (a, b) => {
       let aDate = new Date(a.date);
@@ -73,7 +77,10 @@ const resourcesColumns = [
       let color = stringToColor(topic);
       return (
         <Tag
-          style={{ color: 'black', fontWeight: 'bold' }}
+          style={{
+            color: 'black',
+            fontWeight: 'bold',
+          }}
           color={color}
           key={topic}
         >
@@ -92,7 +99,10 @@ const resourcesColumns = [
           let color = stringToColor(tag);
           return (
             <Tag
-              style={{ color: 'black', fontWeight: 'bold' }}
+              style={{
+                color: 'black',
+                fontWeight: 'bold',
+              }}
               color={color}
               key={tag}
             >
@@ -107,7 +117,9 @@ const resourcesColumns = [
     title: 'Link',
     key: 'link',
     dataIndex: 'link',
-    render: (link) => (
+    render: (
+      link // create clickable link to new tab
+    ) => (
       <a href={link} target="_blank">
         {link}
       </a>
@@ -129,6 +141,8 @@ const resourcesData = [
   {
     key: '1',
     resourceName: 'IBM AI Fairness 360',
+    description:
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
     date: '2015-03-25',
     topic: 'Finance',
     link: 'https://aif360.mybluemix.net/',
@@ -136,7 +150,9 @@ const resourcesData = [
   },
   {
     key: '2',
-    resourceName: 'IBM AI Fairness 360',
+    resourceName: 'IBM',
+    description:
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
     date: '2015-03-25',
     topic: 'Banking',
     link: 'https://aif360.mybluemix.net/',
@@ -145,10 +161,121 @@ const resourcesData = [
   {
     key: '3',
     resourceName: 'IBM AI Fairness 360',
+    description:
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
     date: '2015-03-28',
     topic: 'Retail',
     link: 'https://aif360.mybluemix.net/',
     tags: ['framework', 'toolkit'],
+  },
+];
+
+// resource columns
+const userColumns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    // specify the condition of filtering result
+    // here is that finding the name started with `value`
+    // -> will now order alphabetically
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    sortDirections: ['descend', 'ascend'],
+  },
+  {
+    title: 'Date Joined',
+    dataIndex: 'date',
+    sorter: (a, b) => {
+      let aDate = new Date(a.date);
+      let bDate = new Date(b.date);
+      return aDate.getTime() - bDate.getTime();
+    },
+  },
+  {
+    title: 'User Type',
+    key: 'type',
+    dataIndex: 'type',
+    sorter: (a, b) => a.type.localeCompare(b.type),
+    sortDirections: ['descend', 'ascend'],
+    render: (type) => {
+      let color = stringToColor(type);
+      return (
+        <Tag
+          style={{ color: 'white', fontWeight: 'bold' }}
+          color={color}
+          key={type}
+        >
+          {type.toUpperCase()}
+        </Tag>
+      );
+    },
+  },
+  {
+    title: 'Organizations',
+    key: 'organizations',
+    dataIndex: 'organizations',
+    render: (organizations) => (
+      <>
+        {organizations.map((org) => {
+          let color = stringToColor(org);
+          return (
+            <Tag
+              style={{ color: 'white', fontWeight: 'bold' }}
+              color={color}
+              key={org}
+            >
+              {org}
+            </Tag>
+          );
+        })}
+      </>
+    ),
+  },
+  {
+    title: 'No. Uploaded Resources',
+    dataIndex: 'uploaded',
+    key: 'uploaded',
+    // specify the condition of filtering result
+    // here is that finding the name started with `value`
+    // -> will now order alphabetically
+    sorter: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    sortDirections: ['descend', 'ascend'],
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => (
+      <Space size="middle">
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+
+const userData = [
+  {
+    key: '1',
+    name: 'John Smith',
+    date: '2015-03-25',
+    type: 'Industry',
+    organizations: ['IBM', 'University of Texas'],
+    uploaded: '15',
+  },
+  {
+    key: '2',
+    name: 'Anakin Skywalker',
+    date: '2019-03-25',
+    type: 'Academia',
+    organizations: ['University of Alberta'],
+    uploaded: '3',
+  },
+  {
+    key: '3',
+    name: 'Ben Kenobi',
+    date: '2012-03-25',
+    type: 'Civil Society',
+    organizations: ['Galactic Republic', 'Jedi Council', 'Star Wars'],
+    uploaded: '0',
   },
 ];
 
@@ -169,6 +296,118 @@ const rowSelection = {
 
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
+}
+
+function Dashboard() {
+  return (
+    <Card id="overview" style={{ marginBottom: '20px' }}>
+      <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
+        Administration Overview
+      </h1>
+      <Row gutter={16}>
+        <Col span={4}>
+          <Statistic title="Active Accounts" value={userData.length} />
+        </Col>
+        <Col span={4}>
+          <Statistic title="Pending Resources" value={resourcesData.length} />
+        </Col>
+      </Row>
+    </Card>
+  );
+}
+
+function Resources() {
+  return (
+    <Card id="resources" style={{ marginBottom: '20px' }}>
+      <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>Pending Resources</h1>
+
+      <p>Existing requests to add resources to Portal.</p>
+      <Search
+        style={{ width: '50%', marginBottom: '20px' }}
+        placeholder="Resource Search"
+        enterButton
+        onSearch={console.log}
+      />
+
+      <Table
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        columns={resourcesColumns}
+        dataSource={resourcesData}
+        onChange={onChange}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 240 }}
+      />
+    </Card>
+  );
+}
+
+function Users() {
+  return (
+    <Card id="users">
+      <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>Manage Users</h1>
+
+      <p>
+        Edit user privileges and accounts. View individual user information by
+        selecting the relevant person.
+      </p>
+      <Search
+        style={{ width: '50%', marginBottom: '20px' }}
+        placeholder="User Search"
+        enterButton
+        onSearch={console.log}
+      />
+
+      <Table
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        columns={userColumns}
+        dataSource={userData}
+        onChange={onChange}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 240 }}
+      />
+    </Card>
+  );
+}
+
+function Sidebar() {
+  return (
+    <Affix offsetTop={60}>
+      <Sider width={250}>
+        <Menu
+          mode="inline"
+          theme="light"
+          defaultOpenKeys={['users', 'resources']}
+          style={{ height: '100%', borderRight: 0 }}
+        >
+          <Menu.Item
+            key="dashboard"
+            icon={<AreaChartOutlined />}
+            style={{ marginTop: '30px' }}
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+          >
+            Overview
+          </Menu.Item>
+          <Menu.Item key="pending" icon={<FileProtectOutlined />}>
+            Pending Resources
+          </Menu.Item>
+          <Menu.Item key="users" icon={<TeamOutlined />}>
+            Users
+          </Menu.Item>
+        </Menu>
+      </Sider>
+    </Affix>
+  );
 }
 
 function Admin() {
@@ -201,37 +440,7 @@ function Admin() {
       </Row>
 
       <Layout>
-        <Affix offsetTop={60}>
-          <Sider width={250}>
-            <Menu
-              mode="inline"
-              theme="light"
-              defaultOpenKeys={['users', 'resources']}
-              style={{ height: '100%', borderRight: 0 }}
-            >
-              <Menu.Item
-                key="dashboard"
-                icon={<AreaChartOutlined />}
-                style={{ marginTop: '30px' }}
-              >
-                Dashboard
-              </Menu.Item>
-              <SubMenu key="users" title="Users" icon={<TeamOutlined />}>
-                <Menu.Item key="11">User Type</Menu.Item>
-                <Menu.Item key="12">Organizations</Menu.Item>
-                <Menu.Item key="13">Administrators</Menu.Item>
-              </SubMenu>
-              <SubMenu
-                key="resources"
-                title="Resources"
-                icon={<FileProtectOutlined />}
-              >
-                <Menu.Item key="21">Resource Type</Menu.Item>
-                <Menu.Item key="22">Pending Approval</Menu.Item>
-              </SubMenu>
-            </Menu>
-          </Sider>
-        </Affix>
+        <Sidebar />
         <Content
           style={{
             padding: '24px 24px 24px',
@@ -239,103 +448,9 @@ function Admin() {
           }}
           offsetTop={100}
         >
-          <Card id="overview" style={{ marginBottom: '20px' }}>
-            <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
-              Administration Overview
-            </h1>
-            <Row gutter={16}>
-              <Col span={4}>
-                <Statistic title="Active Accounts" value={112893} />
-              </Col>
-              <Col span={4}>
-                <Statistic title="Active Resources" value={112893} />
-              </Col>
-              <Col span={4}>
-                <Statistic title="Pending Resources" value={112893} />
-              </Col>
-            </Row>
-            <Row gutter={16} style={{ marginTop: '20px' }}>
-              <Col span={6}>
-                <Card>
-                  <Statistic
-                    title="Weekly Active Users (WAU)"
-                    value={11.28}
-                    precision={2}
-                    valueStyle={{ color: '#3f8600' }}
-                    prefix={<ArrowUpOutlined />}
-                    suffix="%"
-                  />
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card>
-                  <Statistic
-                    title="Resource Requests"
-                    value={9.3}
-                    precision={2}
-                    valueStyle={{ color: '#cf1322' }}
-                    prefix={<ArrowDownOutlined />}
-                    suffix="%"
-                  />
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-
-          <Card id="resources" style={{ marginBottom: '20px' }}>
-            <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
-              Pending Resources
-            </h1>
-
-            <p>Existing requests to add resources to Portal.</p>
-            <Search
-              style={{ width: '50%', marginBottom: '20px' }}
-              placeholder="Resource Search"
-              enterButton
-              onSearch={console.log}
-            />
-
-            <Table
-              rowSelection={{
-                type: 'checkbox',
-                ...rowSelection,
-              }}
-              columns={resourcesColumns}
-              dataSource={resourcesData}
-              onChange={onChange}
-              pagination={{ pageSize: 10 }}
-              scroll={{ y: 240 }}
-            />
-          </Card>
-
-          <Card id="users">
-            <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
-              Manage Users
-            </h1>
-
-            <p>
-              Edit user privileges and accounts. View individual user
-              information by selecting the relevant person.
-            </p>
-            <Search
-              style={{ width: '50%', marginBottom: '20px' }}
-              placeholder="User Search"
-              enterButton
-              onSearch={console.log}
-            />
-
-            <Table
-              rowSelection={{
-                type: 'checkbox',
-                ...rowSelection,
-              }}
-              columns={resourcesColumns}
-              dataSource={resourcesData}
-              onChange={onChange}
-              pagination={{ pageSize: 10 }}
-              scroll={{ y: 240 }}
-            />
-          </Card>
+          <Dashboard />
+          <Resources />
+          <Users />
         </Content>
       </Layout>
       <Footer />
