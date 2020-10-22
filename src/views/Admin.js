@@ -8,7 +8,6 @@ import {
   Card,
   Breadcrumb,
   Menu,
-  SubMenu,
   Affix,
   Sider,
   Space,
@@ -21,8 +20,6 @@ import {
   AreaChartOutlined,
   TeamOutlined,
   FileProtectOutlined,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
 } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
@@ -48,9 +45,6 @@ const resourcesColumns = [
     title: 'Resource Name',
     dataIndex: 'resourceName',
     key: 'resourceName',
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    // -> will now order alphabetically
     sorter: (a, b) => a.resourceName.localeCompare(b.resourceName),
     sortDirections: ['descend', 'ascend'],
   },
@@ -235,9 +229,6 @@ const userColumns = [
     title: 'No. Uploaded Resources',
     dataIndex: 'uploaded',
     key: 'uploaded',
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    // -> will now order alphabetically
     sorter: (a, b) => parseInt(a, 10) - parseInt(b, 10),
     sortDirections: ['descend', 'ascend'],
   },
@@ -398,10 +389,28 @@ function Sidebar() {
           >
             Overview
           </Menu.Item>
-          <Menu.Item key="pending" icon={<FileProtectOutlined />}>
+          <Menu.Item
+            key="pending"
+            icon={<FileProtectOutlined />}
+            onClick={() => {
+              window.scrollTo({
+                top: 250,
+                behavior: 'smooth',
+              });
+            }}
+          >
             Pending Resources
           </Menu.Item>
-          <Menu.Item key="users" icon={<TeamOutlined />}>
+          <Menu.Item
+            key="users"
+            icon={<TeamOutlined />}
+            onClick={() => {
+              window.scrollTo({
+                top: 900,
+                behavior: 'smooth',
+              });
+            }}
+          >
             Users
           </Menu.Item>
         </Menu>
