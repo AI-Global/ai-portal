@@ -7,9 +7,7 @@ import {
   Col,
   Card,
   Breadcrumb,
-  Header,
   Menu,
-  Select,
   SubMenu,
   Affix,
   Sider,
@@ -17,13 +15,6 @@ import {
   Tag,
   Table,
   Statistic,
-  Button,
-  Radio,
-  Divider,
-  Input,
-  InputNumber,
-  Popconfirm,
-  Form,
 } from '../ant';
 
 import {
@@ -33,77 +24,63 @@ import {
   ArrowUpOutlined,
   ArrowDownOutlined,
 } from '@ant-design/icons';
-
-// import antd - changed dependencies
-// import { Collapse } from 'antd';
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
-let TEMP_FRONTEND_ITEMS = [
-  { name: 'AI Design Assistant', logoURL: '/demo/aiglobal.png' },
-  { name: 'Fawkes', logoURL: '/demo/fawkes.png' },
-  { name: 'The A-Z of AI', logoURL: '/demo/theazlogo.png' },
-];
 
-// mock data
-const columns = [
+// convert string to color
+var stringToColor = (str) => {
+  var hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  var color = '#';
+  for (let i = 0; i < 3; i++) {
+    var value = (hash >> (i * 8)) & 0xff;
+    color += ('00' + value.toString(16)).substr(-2);
+  }
+  return color;
+};
+
+// resource columns
+const resourcesColumns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    filters: [
-      {
-        text: 'Joe',
-        value: 'Joe',
-      },
-      {
-        text: 'Jim',
-        value: 'Jim',
-      },
-      {
-        text: 'Submenu',
-        value: 'Submenu',
-        children: [
-          {
-            text: 'Green',
-            value: 'Green',
-          },
-          {
-            text: 'Black',
-            value: 'Black',
-          },
-        ],
-      },
-    ],
+    title: 'Resource Name',
+    dataIndex: 'resourceName',
+    key: 'resourceName',
     // specify the condition of filtering result
     // here is that finding the name started with `value`
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ['descend'],
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    defaultSortOrder: 'descend',
-    sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    filters: [
-      {
-        text: 'London',
-        value: 'London',
-      },
-      {
-        text: 'New York',
-        value: 'New York',
-      },
-    ],
-    filterMultiple: false,
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-    sorter: (a, b) => a.address.length - b.address.length,
+    // -> will now order alphabetically
+    sorter: (a, b) => a.name.localeCompare(b.name),
     sortDirections: ['descend', 'ascend'],
+  },
+  {
+    title: 'Date Uploaded',
+    dataIndex: 'date',
+    sorter: (a, b) => {
+      let aDate = new Date(a.date);
+      let bDate = new Date(b.date);
+      return aDate.getTime() - bDate.getTime();
+    },
+  },
+  {
+    title: 'Topic',
+    key: 'topic',
+    dataIndex: 'topic',
+    sorter: (a, b) => a.topic.localeCompare(b.topic),
+    sortDirections: ['descend', 'ascend'],
+    render: (topic) => {
+      let color = stringToColor(topic);
+      return (
+        <Tag
+          style={{ color: 'black', fontWeight: 'bold' }}
+          color={color}
+          key={topic}
+        >
+          {topic.toUpperCase()}
+        </Tag>
+      );
+    },
   },
   {
     title: 'Tags',
@@ -112,12 +89,13 @@ const columns = [
     render: (tags) => (
       <>
         {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
+          let color = stringToColor(tag);
           return (
-            <Tag color={color} key={tag}>
+            <Tag
+              style={{ color: 'black', fontWeight: 'bold' }}
+              color={color}
+              key={tag}
+            >
               {tag.toUpperCase()}
             </Tag>
           );
@@ -126,59 +104,51 @@ const columns = [
     ),
   },
   {
+    title: 'Link',
+    key: 'link',
+    dataIndex: 'link',
+    render: (link) => (
+      <a href={link} target="_blank">
+        {link}
+      </a>
+    ),
+  },
+  {
     title: 'Action',
     key: 'action',
     render: (text, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <a>Accept</a>
+        <a>Reject</a>
       </Space>
     ),
   },
 ];
 
-const data = [
+const resourcesData = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    resourceName: 'IBM AI Fairness 360',
+    date: '2015-03-25',
+    topic: 'Finance',
+    link: 'https://aif360.mybluemix.net/',
+    tags: ['framework', 'toolkit'],
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    resourceName: 'IBM AI Fairness 360',
+    date: '2015-03-25',
+    topic: 'Banking',
+    link: 'https://aif360.mybluemix.net/',
+    tags: ['framework', 'toolkit'],
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    resourceName: 'IBM AI Fairness 360',
+    date: '2015-03-28',
+    topic: 'Retail',
+    link: 'https://aif360.mybluemix.net/',
+    tags: ['framework', 'toolkit'],
   },
 ];
 
@@ -239,9 +209,6 @@ function Admin() {
               defaultOpenKeys={['users', 'resources']}
               style={{ height: '100%', borderRight: 0 }}
             >
-              {/* <Menu.Item>
-                <h1 style={{ fontSize: '1.5em' }}>Actions</h1>
-              </Menu.Item> */}
               <Menu.Item
                 key="dashboard"
                 icon={<AreaChartOutlined />}
@@ -333,10 +300,10 @@ function Admin() {
                 type: 'checkbox',
                 ...rowSelection,
               }}
-              columns={columns}
-              dataSource={data}
+              columns={resourcesColumns}
+              dataSource={resourcesData}
               onChange={onChange}
-              pagination={{ pageSize: 3 }}
+              pagination={{ pageSize: 10 }}
               scroll={{ y: 240 }}
             />
           </Card>
@@ -362,16 +329,15 @@ function Admin() {
                 type: 'checkbox',
                 ...rowSelection,
               }}
-              columns={columns}
-              dataSource={data}
+              columns={resourcesColumns}
+              dataSource={resourcesData}
               onChange={onChange}
-              pagination={{ pageSize: 3 }}
+              pagination={{ pageSize: 10 }}
               scroll={{ y: 240 }}
             />
           </Card>
         </Content>
       </Layout>
-
       <Footer />
     </Layout>
   );
