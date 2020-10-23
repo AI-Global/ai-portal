@@ -14,6 +14,7 @@ function ResourceField(props) {
     <Form.Item  
       label= {props.field}
       name=  {props.field} 
+      rules={[{ required: true, message: 'Please add the '+ props.field}]}
     >
       <Select
         mode="multiple"

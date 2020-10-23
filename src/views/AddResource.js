@@ -73,7 +73,7 @@ function addResources() {
                   <Form.Item
                     label="Name of Resource"
                     name= "Name"
-                    rules={[{ required: true, message: 'Please the name of the resource!' }]}
+                    rules={[{ required: true, message: 'Please add the name of the resource!' }]}
                   >
                     <Input/>
                   </Form.Item>
@@ -96,7 +96,7 @@ function addResources() {
                 <Form.Item label="Creation Date" >
                   <DatePicker/>
                 </Form.Item>
-                <Form.Item label="Date Modified" >
+                <Form.Item label="Date Modified">
                   <DatePicker/>
                 </Form.Item>
                 <Form.Item label ="Description">
