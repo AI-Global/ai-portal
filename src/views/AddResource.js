@@ -3,51 +3,31 @@ import {
   Layout,
   Content,
   Menu,
-  SubMenu,
-  Sider,
   Header,
   Button,
   Input,
   Select,
   Search,
   Form,
-  Card,
   Affix,
-  Badge,
+  Col,
   Space,
-  Tag,
 } from '../ant';
-import {notification, Typography,  DatePicker} from 'antd'
+import {Typography,  DatePicker} from 'antd'
 import Footer from '../components/Footer';
-import LoginButton from '../components/LoginButton';
-import API from '../api';
 import ResourceField from '../components/ResourceField'
 
 
 const {TextArea} = Input;
 const { Title, Paragraph, Text } = Typography;
 const {Option} = Select;
-const children = [];
-const topics = ["Banking", "Health", "Labor", "Retail", "Education", "Law Enforcement", "Media", "Other"];
-for (let i = 0; i < topics.length; i++) {
-children.push(<Option key={topics[i]} >{topics[i]}</Option>);
-}
-
-const format_children = []
-const formats = ['Algorithm', 'API', 'Assessment', 'Benchmark', 'Datasets', 'Design Tool', 'Education Tool', 'Framework', 'Inspection', 'Library', 'Machine Learning Tool', 'Podcast', 'Principles', 'Research', 'Software', 'Strategy & Implementation', 'Toolkit', 'Vision Tool', 'Working Groups', 'Workshops'];
-for (let i = 0; i < formats.length; i++) {
-  format_children.push(<Option key={formats[i]} >{formats[i]}</Option>);
-  }
-
-const trust_children = []
-const trust = ['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness']
-for (let i = 0; i < trust.length;i++) {
-  trust_children.push(<Option key={trust[i]} >{trust[i]}</Option>);
-}
-
 
 function addResources() {
+  let onSubmit = async (values) => {
 
+  };
+  let onFail = (values) => {
+  };
   return (
     <Layout>
       <Affix offsetTop={0}>
@@ -69,68 +49,69 @@ function addResources() {
                 onSearch={console.log}
               />
             </Menu.Item>
-            <Menu.Item key="1">20 Datasets</Menu.Item>
-            <Menu.Item key="2">5 Tools</Menu.Item>
-            <Menu.Item key="3">520 Articles</Menu.Item>
-            <Menu.Item key="4">&#43; Suggest Resource</Menu.Item>
           </Menu>
-          <div style={{ position: 'absolute', top: '0px', right: '20px' }}>
-            <LoginButton />
-          </div>
         </Header>
       </Affix>
       <Layout>
         <Layout style={{ padding: '24px 24px 24px' }}>
           <Content>
-            <Space direction="vertical" style={{ width: '100%' }}>
-              <Form
-                labelCol= {{xs: { span: 24 }, sm: { span: 8 },}}
-                wrapperCol= {{xs: { span: 24 },sm: { span: 16 },}}
-                name="basic"
-                initialValues={{ remember: true }}
-                style={{minWidth:'600px', overflow: 'auto'}}
-              >
-                <Form.Item style={{justifyContent:"center",width:'900px'}}
-                  label="Name of Resource"
-                  name= "Name"
-                  rules={[{ required: true, message: 'Please the name of the resource!' }]}
+            <Space direction="vertical" style={{ width: '100%',textAlign: 'center'}}>
+              <Col span={16}
+                style={{ textAlign: 'center', backgroundColor: '#fff', padding: '26px', minWidth:'700px'}}>
+                <Form
+                  labelCol={{ span: 4}}
+                  wrapperCol={{ span: 10 }}
+                  name="basic"
+                  initialValues={{ remember: true }}
+                  onFinish={onSubmit}
+                  onFinishFailed={onFail}
+                  style={{minWidth:'1000px', overflow: 'auto', justifyContent:'center'}}
                 >
-                  <Input/>
-                </Form.Item>
-                <ResourceField field={'Organization Type'} options={['Industry','Academia', 'Government','Civil Society']}/>
-                <ResourceField field={'Topics'} options={["Banking", "Health", "Labor", "Retail", "Education", "Law Enforcement", "Media", "Other"]}/>
-                <ResourceField field={'Formats'} options = {['Algorithm', 'API', 'Assessment', 'Benchmark', 'Datasets', 'Design Tool', 'Education Tool', 'Framework', 'Inspection', 'Library', 'Machine Learning Tool', 'Podcast', 'Principles', 'Research', 'Software', 'Strategy & Implementation', 'Toolkit', 'Vision Tool', 'Working Groups', 'Workshops']}/>
-                <ResourceField field={'Path'} options={['Designer Path','Developer Path', 'Policymaker Path', 'Riskmanager Path']}/>
+                  <Typography>            
+                  <Title>Add a Resource</Title>
+                  </Typography>
+                  <Form.Item
+                    label="Name of Resource"
+                    name= "Name"
+                    rules={[{ required: true, message: 'Please the name of the resource!' }]}
+                  >
+                    <Input/>
+                  </Form.Item>
+                  <ResourceField field={'Organization Type'} options={['Industry','Academia', 'Government','Civil Society']}/>
+                  <ResourceField field={'Topics'} options={["Banking", "Health", "Labor", "Retail", "Education", "Law Enforcement", "Media", "Other"]}/>
+                  <ResourceField field={'Formats'} options = {['Algorithm', 'API', 'Assessment', 'Benchmark', 'Datasets', 'Design Tool', 'Education Tool', 'Framework', 'Inspection', 'Library', 'Machine Learning Tool', 'Podcast', 'Principles', 'Research', 'Software', 'Strategy & Implementation', 'Toolkit', 'Vision Tool', 'Working Groups', 'Workshops']}/>
+                  <ResourceField field={'Path'} options={['Designer Path','Developer Path', 'Policymaker Path', 'Riskmanager Path', 'Explorer']}/>
 
-                <ResourceField field={'Trust Index Categories'} options={['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness']}/>
-                <Form.Item label= "Tech/Non-Tech" style={{justifyContent:"center", width:'900px'}}>
-                  <Select
-                      labelInValue   >
-                      <Option value="Technical">Technical</Option>
-                      <Option value="Non-Technical">Non-Technical</Option>
-                  </Select>
-              </Form.Item>
-              <Form.Item label="Creation Date" style={{justifyContent:"center", width:'900px'}} >
-                <DatePicker/>
-              </Form.Item>
-              <Form.Item label="Modified Date" style={{justifyContent:"center", width:'900px'}} >
-                <DatePicker/>
-              </Form.Item>
-              <Form.Item label="Upload Date" style={{justifyContent:"center", width:'900px'}} >
-                <DatePicker/>
-              </Form.Item>
-              <Form.Item label ="Description" style={{justifyContent:"center", width:'900px'}} >
-                <TextArea rows= {4}></TextArea>
-              </Form.Item>
-              <Form.Item style={{justifyContent:"center", width:'900px'}}
-                label="URL Source"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item style={{justifyContent:"center", width:'900px'}} >
-                <Button type="primary" htmlType="submit" shape="round" block>Create Account</Button>
-              </Form.Item>
-              </Form>
+                  <ResourceField field={'Trust Index Categories'} options={['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness']}/>
+                  <Form.Item label= "Tech/Non-Tech">
+                    <Select
+                        labelInValue   >
+                        <Option value="Technical">Technical</Option>
+                        <Option value="Non-Technical">Non-Technical</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Upload Date">
+                  <DatePicker/>
+                </Form.Item>
+                <Form.Item label="Creation Date" >
+                  <DatePicker/>
+                </Form.Item>
+                <Form.Item label="Date Modified" >
+                  <DatePicker/>
+                </Form.Item>
+                <Form.Item label ="Description">
+                  <TextArea rows= {4}></TextArea>
+                </Form.Item>
+                <Form.Item 
+                  label="URL Source"
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item  >
+                  <Button type="primary" htmlType="submit" size="large" shape="round">Submit</Button>
+                </Form.Item>
+                </Form>
+              </Col>
             </Space>
           </Content>
         </Layout>

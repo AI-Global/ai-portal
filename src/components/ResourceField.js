@@ -3,7 +3,6 @@ import {
   Form,
 } from '../ant';
 import {Select} from 'antd'
-import { OmitProps } from 'antd/lib/transfer/ListBody';
 const {Option} = Select;
 
 function ResourceField(props) {
@@ -15,7 +14,7 @@ function ResourceField(props) {
     <Form.Item  
       label= {props.field}
       name=  {props.field} 
-      style={{justifyContent:"center", width:'900px'}}>
+    >
       <Select
         mode="multiple"
         allowClear
