@@ -47,6 +47,11 @@ module.exports = (app) => {
     }
   });
 
+  app.get('/api/users', async (req, res) => {
+    let users = await userUtil.getAll();
+    return res.json(users);
+  });
+
   app.put('/api/users/:_id', async (req, res) => {
     return await userUtil.update(req.params, req.body);
   });
