@@ -16,7 +16,10 @@ module.exports = (app) => {
 
   app.get('/api/auth/self', async (req, res) => {
     let user = await req.getUser();
-    return res.json(user.toPrivateJSON());
+    if (user) {
+      return res.json(user.toPrivateJSON());
+    }
+    return res.json({});
   });
 
   app.post('/api/users', async (req, res) => {
