@@ -8,8 +8,9 @@ import {
   Button,
   Input,
   Checkbox,
+  notification,
+  Typography,
 } from '../ant';
-import {notification, Typography} from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Footer from '../components/Footer';
 import API from '../api';
@@ -24,17 +25,16 @@ export default function Login() {
   let onSubmit = async (values) => {
     let result = await API.post('/api/auth/login', values);
     if (result.errors) {
-      var i;
-      for (i in result.errors) {
-          notification['error']({
-            message: result.errors[i]['msg'],
-          });
+      for (let error of result.errors) {
+        notification['error']({
+          message: error.msg,
+        });
       }
       return;
     }
     setUser(result.user);
     setKey('token', result.token);
-    history.push('/');
+    history.push('/resources');
   };
   let onFail = (values) => {
     var i;
@@ -45,7 +45,7 @@ export default function Login() {
     }
   };
   return (
-    <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden', }}>
+    <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <a href="/">
         <img
           style={{ float: 'left', marginRight: '40px' }}
@@ -53,7 +53,13 @@ export default function Login() {
           width={'160px'}
         />
       </a>
-      <Content style={{ padding: '0 50px',backgroundImage: 'radial-gradient(circle, rgba(0,166,156,1) 0%, rgba(0,173,238,1) 100%)'}}>
+      <Content
+        style={{
+          padding: '0 50px',
+          backgroundImage:
+            'radial-gradient(circle, rgba(0,166,156,1) 0%, rgba(0,173,238,1) 100%)',
+        }}
+      >
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col
             span={8}
@@ -61,18 +67,18 @@ export default function Login() {
               textAlign: 'center',
               backgroundColor: '#fff',
               padding: '26px',
-              minWidth:'700px'
+              minWidth: '700px',
             }}
           >
-            <Typography>            
-              <Title style={{minWidth:'500px'}}>Login</Title>
+            <Typography>
+              <Title style={{ minWidth: '500px' }}>Login</Title>
             </Typography>
             <Form
               name="basic"
               initialValues={{ remember: true }}
               onFinish={onSubmit}
               onFinishFailed={onFail}
-              style={{minWidth:'600px'}}
+              style={{ minWidth: '600px' }}
             >
               <Form.Item
                 name="username"
@@ -80,7 +86,10 @@ export default function Login() {
                   { required: true, message: 'Please input your username!' },
                 ]}
               >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                />
               </Form.Item>
               <Form.Item
                 name="password"
@@ -88,7 +97,11 @@ export default function Login() {
                   { required: true, message: 'Please input your password!' },
                 ]}
               >
-                <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="Password"/>
+                <Input.Password
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
               </Form.Item>
               <Form.Item name="remember" valuePropName="checked">
                 <Checkbox>Remember me</Checkbox>
