@@ -20,6 +20,8 @@ import {
   Radio,
   InputNumber,
   Popconfirm,
+  Tooltip,
+  Typography,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -54,4 +56,6 @@ export {
   Radio,
   InputNumber,
   Popconfirm,
+  Tooltip,
+  Typography,
 };
