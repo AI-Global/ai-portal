@@ -12,21 +12,24 @@ function ResourceField(props) {
     children.push(<Option key={props.options[i]} >{props.options[i]}</Option>);
   }
   return (
+    <Tooltip title={props.text}>
     <Form.Item  
       label= {props.field}
       name=  {props.field} 
       rules={[{ required: true, message: 'Please add the '+ props.field}]}
     >
-      <Tooltip placement="rightBottom" title={props.text}>
         <Select
+          showSearch
           mode="multiple"
           allowClear
           style={{ width: '100%' }}
         >
+
         {children}
         </Select>
-      </Tooltip>
+
     </Form.Item>
+    </Tooltip>
   );
 }
 

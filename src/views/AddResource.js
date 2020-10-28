@@ -71,15 +71,15 @@ function AddResources() {
                 <Form.Item>
                   <Typography><Title>Add a Resource</Title></Typography>
                 </Form.Item>
-                <Form.Item
-                  label="Name of Resource"
-                  name= "Name"
-                  rules={[{ required: true, message: 'Please add the name of the resource!' }]}
-                >
-                  <Tooltip title="This is what your resource will be displayed as. Make sure capitalization and spelling is correct" placement="rightBottom" >
-                    <Input/>
-                  </Tooltip>
-                </Form.Item>
+                <Tooltip title="This is what your resource will be displayed as. Make sure capitalization and spelling is correct">
+                  <Form.Item
+                    label="Name of Resource"
+                    name= "Name"
+                    rules={[{ required: true, message: 'Please add the name of the resource!' }]}
+                  >
+                      <Input/>
+                  </Form.Item>
+                </Tooltip>
                 <ResourceField field={'Organization Type'} 
                   options={['Industry','Academia', 'Government','Civil Society','Other']} 
                   text ="This is the type of organization that created this resource"/>
@@ -97,35 +97,39 @@ function AddResources() {
                   options={['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness', 'Other']}
                   text="These are issues/metrics mentioned and used in this resource"
                   />
-                <Form.Item label= "Tech/Non-Tech">
-                  <Tooltip placement="rightBottom" title="This is whether the resource has technical or non-technical content.">
-                    <Select
-                        labelInValue   >
-                        <Option value="Technical">Technical</Option>
-                        <Option value="Non-Technical">Non-Technical</Option>
-                    </Select>
-                  </Tooltip>
-              </Form.Item>
-              <Form.Item label="Upload Date">
-                <Tooltip  placement="rightBottom" title="This is today's date">
-                <DatePicker/>
-                </Tooltip>
-              </Form.Item>
-              <Form.Item label="Creation Date" >
-                <Tooltip placement="rightBottom" title="This is the date the resource was created. It can be left empty if the date is not available.">
-                <DatePicker/>
-                </Tooltip>
-              </Form.Item>
-              <Form.Item label="Date Modified">
-                <Tooltip  placement="rightBottom" title="This is the date the resource was last modified. It can be left empty if the date is not available.">
-                <DatePicker/>
-                </Tooltip>
-              </Form.Item>
-              <Form.Item label ="Description">
-                <Tooltip placement="rightBottom" title="A brief description about the resource">
-                <TextArea rows= {4}></TextArea>
-                </Tooltip>
-              </Form.Item>
+                <Tooltip title="This is whether the resource has technical or non-technical content.">
+                  <Form.Item label= "Tech/Non-Tech">
+                      <Select
+                          labelInValue   >
+                          <Option value="Technical">Technical</Option>
+                          <Option value="Non-Technical">Non-Technical</Option>
+                      </Select>
+                </Form.Item>
+              </Tooltip>
+              <Tooltip   title="This is today's date">
+                <Form.Item label="Upload Date">
+                  <DatePicker/>
+                </Form.Item>
+              </Tooltip>
+
+              <Tooltip title="This is the date the resource was created. It can be left empty if the date is not available.">
+                <Form.Item label="Creation Date" >
+                  <DatePicker/>
+                </Form.Item>
+              </Tooltip>
+
+              <Tooltip title="This is the date the resource was last modified. It can be left empty if the date is not available.">
+                <Form.Item label="Date Modified">
+                  <DatePicker/>
+                </Form.Item>
+              </Tooltip>
+
+              <Tooltip title="A brief description about the resource">
+                <Form.Item label ="Description">
+                  <TextArea rows= {4}></TextArea>
+                </Form.Item>
+              </Tooltip>
+
               <Form.Item 
                 label="URL Source"
               >
