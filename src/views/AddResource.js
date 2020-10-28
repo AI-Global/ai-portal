@@ -12,8 +12,10 @@ import {
   Affix,
   Col,
   Space,
+  Typography,
+  DatePicker,
+  Tooltip,
 } from '../ant';
-import {Typography,  DatePicker} from 'antd'
 import Footer from '../components/Footer';
 import ResourceField from '../components/ResourceField'
 
@@ -22,7 +24,7 @@ const {TextArea} = Input;
 const { Title, Paragraph, Text } = Typography;
 const {Option} = Select;
 
-function addResources() {
+function AddResources() {
   let onSubmit = async (values) => {
 
   };
@@ -52,69 +54,90 @@ function addResources() {
           </Menu>
         </Header>
       </Affix>
-      <Layout>
-        <Layout style={{ padding: '24px 24px 24px' }}>
-          <Content>
-            <Space direction="vertical" style={{ width: '100%',textAlign: 'center'}}>
-              <Col span={16}
-                style={{ textAlign: 'center', backgroundColor: '#fff', padding: '26px', minWidth:'700px'}}>
-                <Form
-                  labelCol={{ span: 4}}
-                  wrapperCol={{ span: 10 }}
-                  name="basic"
-                  initialValues={{ remember: true }}
-                  onFinish={onSubmit}
-                  onFinishFailed={onFail}
-                  style={{minWidth:'1000px', overflow: 'auto', justifyContent:'center'}}
+      <Layout  style={{ display: 'flex', alignItems: 'center',justifyContent:'center'}}>
+        <Content justify="center">
+          <Space direction="vertical" style={{ width: '100%',textAlign: 'center', alignContent:'center'}}>
+            <Col span={18}
+              style={{ backgroundColor: '#fff', minWidth:'700px'}}>
+              <Form
+                labelCol={{ span: 4}}
+                wrapperCol={{ span: 10 }}
+                name="basic"
+                initialValues={{ remember: true }}
+                onFinish={onSubmit}
+                onFinishFailed={onFail}
+                style={{minWidth:'1000px', overflow: 'auto'}}
+              >
+                <Form.Item>
+                  <Typography><Title>Add a Resource</Title></Typography>
+                </Form.Item>
+                <Form.Item
+                  label="Name of Resource"
+                  name= "Name"
+                  rules={[{ required: true, message: 'Please add the name of the resource!' }]}
                 >
-                  <Typography>            
-                  <Title>Add a Resource</Title>
-                  </Typography>
-                  <Form.Item
-                    label="Name of Resource"
-                    name= "Name"
-                    rules={[{ required: true, message: 'Please add the name of the resource!' }]}
-                  >
+                  <Tooltip title="This is what your resource will be displayed as. Make sure capitalization and spelling is correct" placement="rightBottom" >
                     <Input/>
-                  </Form.Item>
-                  <ResourceField field={'Organization Type'} options={['Industry','Academia', 'Government','Civil Society']}/>
-                  <ResourceField field={'Topics'} options={["Banking", "Health", "Labor", "Retail", "Education", "Law Enforcement", "Media", "Other"]}/>
-                  <ResourceField field={'Formats'} options = {['Algorithm', 'API', 'Assessment', 'Benchmark', 'Datasets', 'Design Tool', 'Education Tool', 'Framework', 'Inspection', 'Library', 'Machine Learning Tool', 'Podcast', 'Principles', 'Research', 'Software', 'Strategy & Implementation', 'Toolkit', 'Vision Tool', 'Working Groups', 'Workshops']}/>
-                  <ResourceField field={'Path'} options={['Designer Path','Developer Path', 'Policymaker Path', 'Riskmanager Path', 'Explorer']}/>
+                  </Tooltip>
+                </Form.Item>
+                <ResourceField field={'Organization Type'} 
+                  options={['Industry','Academia', 'Government','Civil Society','Other']} 
+                  text ="This is the type of organization that created this resource"/>
+                <ResourceField field={'Topics'} 
+                  options={["Banking", "Health", "Labor", "Retail", "Education", "Law Enforcement", "Media", "Other"]} 
+                  text="These are the relevant topics for this resource"/>
+                <ResourceField field={'Formats'} 
+                  options = {['Algorithm', 'API', 'Assessment', 'Benchmark', 'Datasets', 'Design Tool', 'Education Tool', 'Framework', 'Inspection', 'Library', 'Machine Learning Tool', 'Podcast', 'Principles', 'Research', 'Software', 'Strategy & Implementation', 'Toolkit', 'Vision Tool', 'Working Groups', 'Workshops', 'Other']}
+                  text="These are the purposes of the resource"/>
+                <ResourceField field={'Path'} 
+                  options={['Designer Path','Developer Path', 'Policymaker Path', 'Riskmanager Path', 'Explorer','Other']}
+                  text={"These are the people who might find this resource relevant."}/>
 
-                  <ResourceField field={'Trust Index Categories'} options={['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness']}/>
-                  <Form.Item label= "Tech/Non-Tech">
+                <ResourceField field={'Trust Index Categories'} 
+                  options={['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness', 'Other']}
+                  text="These are issues/metrics mentioned and used in this resource"
+                  />
+                <Form.Item label= "Tech/Non-Tech">
+                  <Tooltip placement="rightBottom" title="This is whether the resource has technical or non-technical content.">
                     <Select
                         labelInValue   >
                         <Option value="Technical">Technical</Option>
                         <Option value="Non-Technical">Non-Technical</Option>
                     </Select>
-                </Form.Item>
-                <Form.Item label="Upload Date">
-                  <DatePicker/>
-                </Form.Item>
-                <Form.Item label="Creation Date" >
-                  <DatePicker/>
-                </Form.Item>
-                <Form.Item label="Date Modified">
-                  <DatePicker/>
-                </Form.Item>
-                <Form.Item label ="Description">
-                  <TextArea rows= {4}></TextArea>
-                </Form.Item>
-                <Form.Item 
-                  label="URL Source"
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item  >
-                  <Button type="primary" htmlType="submit" size="large" shape="round">Submit</Button>
-                </Form.Item>
-                </Form>
-              </Col>
-            </Space>
-          </Content>
-        </Layout>
+                  </Tooltip>
+              </Form.Item>
+              <Form.Item label="Upload Date">
+                <Tooltip  placement="rightBottom" title="This is today's date">
+                <DatePicker/>
+                </Tooltip>
+              </Form.Item>
+              <Form.Item label="Creation Date" >
+                <Tooltip placement="rightBottom" title="This is the date the resource was created. It can be left empty if the date is not available.">
+                <DatePicker/>
+                </Tooltip>
+              </Form.Item>
+              <Form.Item label="Date Modified">
+                <Tooltip  placement="rightBottom" title="This is the date the resource was last modified. It can be left empty if the date is not available.">
+                <DatePicker/>
+                </Tooltip>
+              </Form.Item>
+              <Form.Item label ="Description">
+                <Tooltip placement="rightBottom" title="A brief description about the resource">
+                <TextArea rows= {4}></TextArea>
+                </Tooltip>
+              </Form.Item>
+              <Form.Item 
+                label="URL Source"
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item  >
+                <Button type="primary" htmlType="submit" size="large" shape="round">Submit</Button>
+              </Form.Item>
+              </Form>
+            </Col>
+          </Space>
+        </Content>
       </Layout>
       <Footer />
     </Layout>
@@ -123,4 +146,4 @@ function addResources() {
 
 
 
-export default addResources;
+export default AddResources;

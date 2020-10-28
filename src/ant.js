@@ -14,6 +14,9 @@ import {
   Button,
   Form,
   Checkbox,
+  DatePicker,
+  Typography,
+  Tooltip
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -42,4 +45,7 @@ export {
   Form,
   Input,
   Checkbox,
+  DatePicker,
+  Typography,
+  Tooltip
 };

@@ -1,8 +1,9 @@
 import React from 'react';
 import {
   Form,
+  Select,
+  Tooltip
 } from '../ant';
-import {Select} from 'antd'
 const {Option} = Select;
 
 function ResourceField(props) {
@@ -16,13 +17,15 @@ function ResourceField(props) {
       name=  {props.field} 
       rules={[{ required: true, message: 'Please add the '+ props.field}]}
     >
-      <Select
-        mode="multiple"
-        allowClear
-        style={{ width: '100%' }}
-      >
-      {children}
-      </Select>
+      <Tooltip placement="rightBottom" title={props.text}>
+        <Select
+          mode="multiple"
+          allowClear
+          style={{ width: '100%' }}
+        >
+        {children}
+        </Select>
+      </Tooltip>
     </Form.Item>
   );
 }
