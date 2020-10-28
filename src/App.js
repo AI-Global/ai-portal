@@ -8,6 +8,7 @@ import Login from './views/Login';
 import Register from './views/Register';
 import Resources from './views/Resources';
 import AddResources from './views/AddResource'
+import Admin from './views/Admin';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path="/resources/create" component={AddResources} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/admin" component={Admin} />
           </Switch>
         </BrowserRouter>
       </AppEnv>
