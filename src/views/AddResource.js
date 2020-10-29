@@ -71,7 +71,7 @@ function AddResources() {
                 <Form.Item>
                   <Typography><Title>Add a Resource</Title></Typography>
                 </Form.Item>
-                <Tooltip title="This is what your resource will be displayed as. Make sure capitalization and spelling is correct" >
+                <Tooltip title="This is what your resource will be displayed as. Make sure capitalization and spelling is correct">
                   <Form.Item
                     label="Name of Resource"
                     name= "Name"
@@ -108,8 +108,7 @@ function AddResources() {
                       </Select>
                 </Form.Item>
               </Tooltip>
-
-              <Tooltip title="This is today's date">
+              <Tooltip   title="This is today's date">
                 <Form.Item label="Upload Date">
                   <DatePicker/>
                 </Form.Item>

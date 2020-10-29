@@ -12,7 +12,7 @@ function ResourceField(props) {
     children.push(<Option key={props.options[i]} >{props.options[i]}</Option>);
   }
   return (
-    <Tooltip placement="rightBottom" title={props.text}>
+    <Tooltip title={props.text}>
       <Form.Item  
         label= {props.label}
         name=  {props.name} 
@@ -27,7 +27,6 @@ function ResourceField(props) {
           </Select>
       </Form.Item>
     </Tooltip>
-
   );
 }
 
