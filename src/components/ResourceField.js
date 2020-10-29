@@ -12,21 +12,22 @@ function ResourceField(props) {
     children.push(<Option key={props.options[i]} >{props.options[i]}</Option>);
   }
   return (
-    <Form.Item  
-      label= {props.field}
-      name=  {props.field} 
-      rules={[{ required: true, message: 'Please add the '+ props.field}]}
-    >
-      <Tooltip placement="rightBottom" title={props.text}>
-        <Select
-          mode="multiple"
-          allowClear
-          style={{ width: '100%' }}
-        >
-        {children}
-        </Select>
-      </Tooltip>
-    </Form.Item>
+    <Tooltip placement="rightBottom" title={props.text}>
+      <Form.Item  
+        label= {props.label}
+        name=  {props.name} 
+        rules={[{ required: true, message: 'Please add the '+ props.label}]}
+      >
+          <Select
+            mode={props.mode}
+            allowClear
+            style={{ width: '100%' }}
+          >
+          {children}
+          </Select>
+      </Form.Item>
+    </Tooltip>
+
   );
 }
 
