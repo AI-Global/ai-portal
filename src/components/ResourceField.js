@@ -1,30 +1,29 @@
 import React from 'react';
-import {
-  Form,
-  Select,
-  Tooltip
-} from '../ant';
-const {Option} = Select;
+import { Form, Select, Tooltip, Input } from '../ant';
+const { Option } = Select;
 
 function ResourceField(props) {
-  let children = []
+  let children = [];
   for (let i = 0; i < props.options.length; i++) {
-    children.push(<Option key={props.options[i]} >{props.options[i]}</Option>);
+    children.push(
+      <Option value={props.options[i].toLowerCase()}>{props.options[i]}</Option>
+    );
   }
   return (
     <Tooltip title={props.text}>
-      <Form.Item  
-        label= {props.label}
-        name=  {props.name} 
-        rules={[{ required: true, message: 'Please add the '+ props.label}]}
+      <Form.Item
+        label={props.field}
+        name={props.field}
+        rules={[{ required: true, message: 'Please add the ' + props.field }]}
       >
-          <Select
-            mode={props.mode}
-            allowClear
-            style={{ width: '100%' }}
-          >
+        <Select
+          showSearch
+          mode={props.mode}
+          allowClear
+          style={{ width: '100%' }}
+        >
           {children}
-          </Select>
+        </Select>
       </Form.Item>
     </Tooltip>
   );
