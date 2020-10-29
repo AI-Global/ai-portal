@@ -8,6 +8,7 @@ import Login from './views/Login';
 import Register from './views/Register';
 import Resources from './views/Resources';
 import Admin from './views/Admin';
+import ResourceInfo from './views/ResourceInfo';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route path="/resources" component={Resources} />
+            <Route exact path="/resources" component={Resources} />
+            <Route exact path="/resources/example" component={ResourceInfo}/>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/admin" component={Admin} />
