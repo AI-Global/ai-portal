@@ -9,7 +9,7 @@ import {
   Row
 } from '../ant';
 import Footer from '../components/Footer';
-import ResourceField from '../components/ResourceField'
+import MultiSelectField from '../components/FormMultiSelectField'
 import FormField from '../components/FormField'
 import FormHeader from '../components/FormHeader'
 
@@ -53,11 +53,11 @@ function AddOrganizations() {
               <FormField field="Organization Name" text="The full name of the organization that you are adding" req="true"/>
               <FormField field="Short Name" text="Any acronyms or abbreviations for this organization" req="true"/>
               <FormField field="City" text="The city where this organization is located"  req="true"/>
-              <ResourceField field="Country" options={['A','B','C']} text="Location of this organization" req="true"/> 
+              <MultiSelectField field="Country" options={['A','B','C']} text="Location of this organization" req="true"/> 
               <FormField field="URL of Logo" text="A URL that stores an image of the organizaiton's logo" req="true"/>
               <FormField field="Website URL" text="A URL for the organization's website" req="true"/>
-              <ResourceField field="Users" mode="multiple" options={["Alice", "Bob","Charlie"]} text="...." req="true"/>
-              <ResourceField field="Type" mode="multiple" options={["Industry", "Academia", "Government", "Civil Society", "Other"]} 
+              <MultiSelectField field="Users" mode="multiple" options={["Alice", "Bob","Charlie"]} text="...." req="true"/>
+              <MultiSelectField field="Type" mode="multiple" options={["Industry", "Academia", "Government", "Civil Society", "Other"]} 
                 text="The type of the organization" req="true"/>        
               
               <Form.Item justify="center">

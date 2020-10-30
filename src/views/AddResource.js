@@ -13,7 +13,7 @@ import {
   Row,
 } from '../ant';
 import Footer from '../components/Footer';
-import ResourceField from '../components/ResourceField'
+import MultiSelectField from '../components/FormMultiSelectField'
 import FormField from '../components/FormField'
 import FormHeader from '../components/FormHeader'
 
@@ -52,32 +52,32 @@ function AddResources() {
               >
 
                 <FormField field="Name of Resource" text="This is what your resource will be displayed as. Make sure capitalization and spelling is correct" req="true"/>
-                <ResourceField field='Organization Type' mode="multiple"
+                <MultiSelectField field='Organization Type' mode="multiple"
                   options={['Industry','Academia', 'Government','Civil Society','Other']} 
                   text ="This is the type of organization that created this resource"
                   req="true"
                 />
-                <ResourceField field='Topics' mode="multiple" 
+                <MultiSelectField field='Topics' mode="multiple" 
                   options={["Banking", "Health", "Labor", "Retail", "Education", "Law Enforcement", "Media", "Other"]} 
                   text="These are the relevant topics for this resource"
                   req="true"
                  />
-                <ResourceField field="Formats" mode="multiple"
+                <MultiSelectField field="Formats" mode="multiple"
                   options = {['Algorithm', 'API', 'Assessment', 'Benchmark', 'Datasets', 'Design Tool', 'Education Tool', 'Framework', 'Inspection', 'Library', 'Machine Learning Tool', 'Podcast', 'Principles', 'Research', 'Software', 'Strategy & Implementation', 'Toolkit', 'Vision Tool', 'Working Groups', 'Workshops', 'Other']}
                   text="These are the purposes of the resource"
                   req="true"
                 />
-                <ResourceField field="Paths" mode="multiple" 
+                <MultiSelectField field="Paths" mode="multiple" 
                   options={['Designer Path','Developer Path', 'Policymaker Path', 'Riskmanager Path', 'Explorer','Other']}
                   text={"These are the people who might find this resource relevant."}
                   req="true"
                 />
-                <ResourceField field='Trust Index Categories' mode="multiple"
+                <MultiSelectField field='Trust Index Categories' mode="multiple"
                   options={['Explainability & Interpretability', 'Data Quality', 'Bias & Fairness', 'Accountability', 'Robustness', 'Other']}
                   text="These are issues/metrics mentioned and used in this resource"
                   req="true"
                 />
-                <ResourceField field="Tech/Non-Tech" mode="tag"
+                <MultiSelectField field="Tech/Non-Tech" mode="tag"
                   options={["Technical", 'Non-Technical']} 
                   text="This is whether the resource has technical or non-technical content."
                   req="true"

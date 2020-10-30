@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Select, Tooltip, Input } from '../ant';
 const { Option } = Select;
 
-function ResourceField(props) {
+function MultiSelectField(props) {
   let children = [];
   for (let i = 0; i < props.options.length; i++) {
     children.push(
@@ -29,4 +29,4 @@ function ResourceField(props) {
   );
 }
 
-export default ResourceField;
+export default MultiSelectField;
