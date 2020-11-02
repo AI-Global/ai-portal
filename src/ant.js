@@ -14,14 +14,16 @@ import {
   Button,
   Form,
   Checkbox,
+  Typography,
+  Tooltip,
   Table,
   Statistic,
   Divider,
   Radio,
   InputNumber,
   Popconfirm,
-  Typography,
   notification,
+  DatePicker,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -50,12 +52,14 @@ export {
   Form,
   Input,
   Checkbox,
+  DatePicker,
+  Typography,
+  Tooltip,
   Table,
   Statistic,
   Divider,
   Radio,
   InputNumber,
   Popconfirm,
-  Typography,
   notification,
 };
