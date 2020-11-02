@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Select, Tooltip, Input } from '../ant';
+import { Form, Select, Tooltip } from '../ant';
 const { Option } = Select;
 
 function MultiSelectField(props) {

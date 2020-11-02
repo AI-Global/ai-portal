@@ -10,8 +10,6 @@ const { Title } = Typography;
 function AddOrganizations() {
   let onSubmit = async (values) => {};
   let onFail = (values) => {};
-  let fieldRules = [{ required: true, message: 'Required Field!' }];
-
   return (
     <Layout>
       <FormHeader />

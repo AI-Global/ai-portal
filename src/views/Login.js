@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Layout,
   Content,
@@ -16,10 +16,10 @@ import API from '../api';
 import { useAppEnv } from './../env';
 import { useHistory } from 'react-router';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title } = Typography;
 
 export default function Login() {
-  let { setUser, setKey, goTo } = useAppEnv();
+  let { setUser, setKey } = useAppEnv();
   let history = useHistory();
   let onSubmit = async (values) => {
     let result = await API.post('/api/auth/login', values);
@@ -48,6 +48,7 @@ export default function Login() {
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <a href="/">
         <img
+          alt="logo"
           style={{ float: 'left', marginRight: '40px' }}
           src="/logo.png"
           width={'160px'}

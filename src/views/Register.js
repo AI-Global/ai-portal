@@ -3,7 +3,6 @@ import { Layout, Content, Form, Row, Col, Button, Input } from '../ant';
 import { Typography } from 'antd';
 import Footer from '../components/Footer';
 import API from '../api';
-import { useAppEnv } from './../env';
 import { useHistory } from 'react-router';
 import { notification } from 'antd';
 
@@ -36,6 +35,7 @@ export default function Register() {
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <a href="/">
         <img
+          alt="logo"
           style={{ float: 'left', marginRight: '40px' }}
           src="/logo.png"
           width={'160px'}
