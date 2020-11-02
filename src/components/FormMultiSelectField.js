@@ -14,7 +14,9 @@ function MultiSelectField(props) {
       <Form.Item
         label={props.field}
         name={props.field}
-        rules={[{ required: props.req, message: 'Please add the ' + props.field }]}
+        rules={[
+          { required: props.req, message: 'Please add the ' + props.field },
+        ]}
       >
         <Select
           showSearch
