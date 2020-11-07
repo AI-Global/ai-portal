@@ -13,7 +13,6 @@ import {
   Space,
   Tag,
   Table,
-  Statistic,
   Button,
   Tooltip,
 } from '../ant';
