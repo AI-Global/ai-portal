@@ -37,7 +37,7 @@ function Dashboard({ users }) {
     <Card id="overview" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
         User Overview &nbsp;
-        <Tooltip title="View your profile information">
+        <Tooltip title="View your profile information" placement="right">
           <QuestionCircleTwoTone style={{ fontSize: '0.8em' }} />{' '}
         </Tooltip>
       </h1>
@@ -216,6 +216,7 @@ function Resources({ resources }) {
               View the resources you've added and edit them if necessary
             </p>
           }
+          placement="right"
         >
           <QuestionCircleTwoTone style={{ fontSize: '0.8em' }} />{' '}
         </Tooltip>
@@ -312,6 +313,7 @@ function Organizations({ organizations }) {
               choose
             </p>
           }
+          placement="right"
         >
           <QuestionCircleTwoTone style={{ fontSize: '0.8em' }} />{' '}
         </Tooltip>

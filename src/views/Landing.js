@@ -1,5 +1,14 @@
 import React from 'react';
-import { Layout, Content, Search, Row, Col, Card, Button } from '../ant';
+import {
+  Layout,
+  Content,
+  Search,
+  Row,
+  Col,
+  Card,
+  Button,
+  Tooltip,
+} from '../ant';
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
 
@@ -28,7 +37,7 @@ function Landing() {
   let [query, setQuery] = React.useState('');
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
-      <a href="/">
+      <a href="/" style={{ position: 'fixed' }}>
         <img alt="logo" src="/logo.png" width={'160px'} />
       </a>
       <Button
@@ -38,7 +47,7 @@ function Landing() {
           width: '100px',
           top: '20px',
           right: '20px',
-          position: 'absolute',
+          position: 'fixed',
         }}
       >
         Login
@@ -47,13 +56,18 @@ function Landing() {
         <Row justify="center" style={{ marginTop: '4rem' }}>
           <Col span={12} style={{ textAlign: 'center' }}>
             <h1 style={{ fontSize: '2rem' }}>Responsible AI Resource Search</h1>
-            <Search
-              placeholder="Search for Resources"
-              enterButton
-              size="large"
-              onChange={(e) => setQuery(e.target.value)}
-              onSearch={() => history.push('/resources?q=' + query)}
-            />
+            <Tooltip
+              placement="bottom"
+              title="Search for relevant resources here"
+            >
+              <Search
+                placeholder="AI Design Assistant"
+                enterButton
+                size="large"
+                onChange={(e) => setQuery(e.target.value)}
+                onSearch={() => history.push('/resources?q=' + query)}
+              />
+            </Tooltip>
           </Col>
         </Row>
         <Row justify="center" style={{ marginTop: '2rem' }} gutter={[24, 16]}>
