@@ -10,7 +10,6 @@ import {
   Search,
   Card,
   Affix,
-  Badge,
   Space,
   Tag,
 } from '../ant';
