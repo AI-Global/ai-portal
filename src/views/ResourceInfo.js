@@ -25,26 +25,28 @@ import {
 
 } from '../ant';
 import {notification, Typography} from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined , EditOutlined, EllipsisOutlined, SettingOutlined} from '@ant-design/icons';
 import Footer from '../components/Footer';
 import API from '../api';
 import { useAppEnv } from './../env';
 import { useHistory } from 'react-router';
+import FormHeader from '../components/FormHeader';
 const { Link } = Anchor;
 const { Title, Paragraph, Text } = Typography;
 const { Panel } = Collapse;
-const resourceData = [
-  {
+const resourceData = {
     name: 'Living Dictionary',
-    desc: '',
-    type: '',
-    path: '',
+    desc: 'An interactive dictionary of technical computer science and social science terms in plain language',
+    type: ['Education Tool'],
+    path: ['Explorer Path'],
+    avaterIcon: "",
+    aiSystemsType:[],
     uploadDate: '',
     creationDate: '',
     modifiedDate:'',
     licenseName :'',
     technical: '',
-    trustIndexCategories: [],
+    trustIndexCategories: ['Explainability & Interpretability'],
     fundedBy: '',
     creator: '',
     dataDictLink: '',
@@ -64,36 +66,39 @@ const resourceData = [
     individualsIdentified : '',
     noiseDescription :' ',
     externalRestrictions:'',
-    files: [],
+    files: [{name: "Dictionary", link: "https://montrealethics.ai/dictionary/", type:"URL"},
+  {name:"Click me", link:"www.google.com", type:"URL"}],
     topics: [],
-    organizations: []
-  }
-];
-function FileTable() {
+    organizations: ["Montreal AI Ethics Institute"]
+  };
+function FileTable(props) {
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a>{text}</a>,
-    }
-  ]
-  const data = [
+    },
     {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    }
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: 'Link',
+      dataIndex: 'link',
+      key: 'link',
+      render: text => <a href={text}>{text}</a>
+    },
   ]
   return (
     <div>
     <Title style ={{padding: "10px"}} level={5}>Files</Title>
-    <Table columns={columns} dataSource={data} />
+    <Table columns={columns} dataSource={props.data} />
     </div>
   )
 }
+
+
 
 export default function showExample() {
   return (
@@ -116,41 +121,12 @@ function ResourceInfo(props) {
   // let onClick = (e) => {
   //   titleRef.current.scrollIntoView({ behavior: 'smooth' })
   // };
+
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden', }}>
-      <Affix offsetTop={0}>
-        <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
-          <a href="/">
-            <img
-              style={{ float: 'left', marginRight: '40px' }}
-              src="/logo.png"
-              width={'160px'}
-            />
-          </a>
-          <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
-            <Menu.Item key="s" disabled>
-              <Search
-                className="menu-search"
-                style={{ marginTop: '20px' }}
-                placeholder="Search for Resources"
-                enterButton
-                onSearch={console.log}
-              />
-            </Menu.Item>
-          </Menu>
-
-        </Header>
-      </Affix>      
+      <FormHeader/>
       <Layout>
         <Sider width="300px" style = {{  background: "#fff"}}>
-         <PageHeader
-          className= {{border: "1px solid"}}
-          onBack={() => null}
-          title="Resource Example"
-          style = {{background : "#00ADEE"}}
-        >
-          <p>Key Word 1 || Key Word 2</p>
-        </PageHeader> 
         <Menu width={200}
             defaultSelectedKeys={['1']}
             mode="inline"
@@ -158,49 +134,49 @@ function ResourceInfo(props) {
             theme="light"
             // onClick={onClick}
           >
-          <Menu.Item key="1" >Option 1       </Menu.Item>
+          <Menu.Item key="1" >Overview</Menu.Item>
 
-          <Menu.Item key="2" >Option 2 </Menu.Item>
-          <Menu.Item key="3" >Option 3 </Menu.Item>
+          <Menu.Item key="2" >Details </Menu.Item>
+          <Menu.Item key="3" >Files </Menu.Item>
 
         </Menu> 
       </Sider>
       <Content>
-      {/* <Space split={<Divider type="vertical" />}> */}
       <div></div>
-      <Descriptions title="Resource Info" style ={{padding: "10px"}}>
-        <Paragraph>
-        The model analyzed in this card detects one or more faces within an image or a video frame, and returns a box around each face along with the location of the faces' major landmarks. The model's goal is exclusively to identify the existence and location of faces in an image. It does not attempt to discover identities or demographics.
-        On this page, you can learn more about how well the model performs on images with different characteristics, including face demographics, and what kinds of images you should expect the model to perform well or poorly on.
-        </Paragraph>
-        </Descriptions>
+      <PageHeader
+    title={props.resource.name}
+    onBack={() => window.history.back()}
+    className="site-page-header"
+    subTitle={props.resource.organizations.join(", ")}
+    tags={<Tag color="blue">Running</Tag>}
+    extra={[
+    <Button icon=     {  <EditOutlined />}
+      key="3" shape="round">Edit Resource</Button>,
+
+      // <DropdownMenu key="more" />,
+    ]}
+    
+  >
+            {props.resource.desc}
+
+  </PageHeader>,
    
     <Title style ={{padding: "10px"}} level={5}>Details</Title>
 
     <Collapse defaultActiveKey={['1']}  >
     <Panel header="Primary Details" key="1">
      <Descriptions  column= {1} >
-     <Descriptions.Item label="Resource Type">empty</Descriptions.Item>
-    <Descriptions.Item label="Resource Path">empty</Descriptions.Item>
-    <Descriptions.Item label="Upload Date">empty</Descriptions.Item>
-    <Descriptions.Item label="Creation Date">empty</Descriptions.Item>
-    <Descriptions.Item label="Modified Date">empty    </Descriptions.Item>
-    <Descriptions.Item label="License Name">empty</Descriptions.Item>
-
-    <Descriptions.Item label="Technical">empty</Descriptions.Item>
-    <Descriptions.Item label="Featured">empty</Descriptions.Item>
-
-    <Descriptions.Item label="Trust Index Categories">empty</Descriptions.Item> 
+  <Descriptions.Item label="Resource Type/Format">{props.resource.type.join(", ")}</Descriptions.Item>
+    <Descriptions.Item label="Resource Path">{props.resource.path.join(", ")}</Descriptions.Item>
+  <Descriptions.Item label="Responsible AI Trust Index Categories">{props.resource.trustIndexCategories.join(", ")}</Descriptions.Item>
+    <Descriptions.Item label="AI Systems Type">{props.resource.aiSystemsType.join(", ")}</Descriptions.Item>
     </Descriptions>
    </Panel>
     <Panel header="More Details" key="2">
       <p>he</p>
     </Panel>
-    <Panel header="This is panel header 3" key="3" >
-      <p>he</p>
-    </Panel>
   </Collapse>
-    <FileTable ></FileTable>
+    <FileTable data={props.resource.files}></FileTable>
       </Content>
       
       </Layout>
