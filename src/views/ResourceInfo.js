@@ -2,37 +2,21 @@ import React, { useState, useRef } from 'react';
 import {
   Layout,
   Content,
-  Form,
   Descriptions,
-  Row,
-  Col,
-  Input,
-  Space,
-  Divider,
-  Checkbox,
   Button,
-  Header,
   Anchor,
   Sider,
   Menu,
   Affix,
-  Search,
-  Card,
   PageHeader,
   Collapse,
   Table,
   Tag,
 
 } from '../ant';
-import {notification, Typography} from 'antd'
-import { UserOutlined, LockOutlined , EditOutlined, EllipsisOutlined, SettingOutlined} from '@ant-design/icons';
-import Footer from '../components/Footer';
-import API from '../api';
-import { useAppEnv } from './../env';
-import { useHistory } from 'react-router';
+import { FileDoneOutlined, SearchOutlined , EditOutlined, FolderOpenOutlined} from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
-const { Link } = Anchor;
-const { Title, Paragraph, Text } = Typography;
+
 const { Panel } = Collapse;
 const resourceData = {
     name: 'Living Dictionary',
@@ -68,9 +52,10 @@ const resourceData = {
     externalRestrictions:'',
     files: [{name: "Dictionary", link: "https://montrealethics.ai/dictionary/", type:"URL"},
   {name:"Click me", link:"www.google.com", type:"URL"}],
-    topics: [],
+    topics: ["Other topic"],
     organizations: ["Montreal AI Ethics Institute"]
   };
+
 function FileTable(props) {
   const columns = [
     {
@@ -92,79 +77,102 @@ function FileTable(props) {
   ]
   return (
     <div>
-    <Title style ={{padding: "10px"}} level={5}>Files</Title>
+    <h1 style={{ padding:'10px',fontSize: '2em', fontWeight: 'bold'}}>Files</h1>
     <Table columns={columns} dataSource={props.data} />
     </div>
   )
 }
 
+function SideBar(props){
+  return(
+  <Affix offsetTop={60}>
+
+  <Sider width={250}>
+    <Menu
+      mode="inline"
+      theme="light"
+      defaultOpenKeys={['users', 'resources']}
+      style={{ height: '100%', borderRight: 0 }}
+    >
+      <Menu.Item 
+        key="overview" 
+        icon={<FileDoneOutlined/>}
+        style={{ marginTop: '30px' }}
+        onClick={() => {
+          props.topRef.current.scrollIntoView();
+        }}>
+          Overview
+      </Menu.Item>
+
+      <Menu.Item 
+        key="details"  
+        icon={<SearchOutlined/>}                     
+        onClick={() => {
+          props.detailRef.current.scrollIntoView();
+        }} >
+          Details 
+      </Menu.Item>
+      <Menu.Item 
+        key="files"
+        icon={<FolderOpenOutlined/>}
+        onClick={() => {
+          props.fileRef.current.scrollIntoView();
+        }} >
+          Files 
+      </Menu.Item>
+    </Menu>
+  </Sider>
+  </Affix> );
+}
 
 
-export default function showExample() {
+export default function ShowExample() {
   return (
     <ResourceInfo resource = {resourceData}/>
   );
 }
 
 function ResourceInfo(props) {
-//   let onClick  = (e) => {
-//     console.log(e);
-//     let offset = 100;
-//     window.onload =  window.scrollTo({
-//     behavior: "smooth",
-//     top:document.getElementById("inner").getBoundingClientRect().top -
-//     document.body.getBoundingClientRect().top -100
-// });
-  //};
-  
-  // const titleRef = useRef()
-  // let onClick = (e) => {
-  //   titleRef.current.scrollIntoView({ behavior: 'smooth' })
-  // };
+  let topRef = useRef(null);
+  let fileRef = useRef(null);
+  let detailRef = useRef(null);
+  let children= [];
+  for (let i = 0; i < props.resource.topics.length; i++) {
+    children.push(<Tag color='blue'> {props.resource.topics[i]}</Tag>)
+  }
 
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden', }}>
       <FormHeader/>
       <Layout>
-        <Sider width="300px" style = {{  background: "#fff"}}>
-        <Menu width={200}
-            defaultSelectedKeys={['1']}
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            theme="light"
-            // onClick={onClick}
-          >
-          <Menu.Item key="1" >Overview</Menu.Item>
+        <SideBar topRef={topRef} fileRef={fileRef} detailRef={fileRef}/>
 
-          <Menu.Item key="2" >Details </Menu.Item>
-          <Menu.Item key="3" >Files </Menu.Item>
+        <Content>
+          <div ref = {topRef}>
+            <PageHeader
+              title={props.resource.name}
+              onBack={() => window.history.back()}
+              className="site-page-header"
+              subTitle={props.resource.organizations.join(", ")}
+              tags={children}
+              extra={[
+                <Button 
+                  icon={  <EditOutlined />}
+                  key="3" 
+                  shape="round">
+                    Edit Resource
+                </Button>,
+              ]}
+            >
+              {props.resource.desc}
+            </PageHeader>,
+          </div>
+    {/* <Title style ={{padding: "10px"}} level={5}>Details</Title> */}
+    <div ref={detailRef}></div>
 
-        </Menu> 
-      </Sider>
-      <Content>
-      <div></div>
-      <PageHeader
-    title={props.resource.name}
-    onBack={() => window.history.back()}
-    className="site-page-header"
-    subTitle={props.resource.organizations.join(", ")}
-    tags={<Tag color="blue">Running</Tag>}
-    extra={[
-    <Button icon=     {  <EditOutlined />}
-      key="3" shape="round">Edit Resource</Button>,
-
-      // <DropdownMenu key="more" />,
-    ]}
-    
-  >
-            {props.resource.desc}
-
-  </PageHeader>,
-   
-    <Title style ={{padding: "10px"}} level={5}>Details</Title>
-
+    <h1 style={{ padding:'10px',fontSize: '2em', fontWeight: 'bold'}}>Details</h1>
     <Collapse defaultActiveKey={['1']}  >
-    <Panel header="Primary Details" key="1">
+    <Panel header="Primary Details" key="1" showArrow={false}>
      <Descriptions  column= {1} >
   <Descriptions.Item label="Resource Type/Format">{props.resource.type.join(", ")}</Descriptions.Item>
     <Descriptions.Item label="Resource Path">{props.resource.path.join(", ")}</Descriptions.Item>
@@ -172,13 +180,23 @@ function ResourceInfo(props) {
     <Descriptions.Item label="AI Systems Type">{props.resource.aiSystemsType.join(", ")}</Descriptions.Item>
     </Descriptions>
    </Panel>
+
     <Panel header="More Details" key="2">
-      <p>he</p>
+    <Descriptions  column= {1} >
+  <Descriptions.Item label="Creation Date"></Descriptions.Item>
+    <Descriptions.Item label="Modified Date"></Descriptions.Item>
+  <Descriptions.Item label="Upload Date"></Descriptions.Item>
+    <Descriptions.Item label="Technical"></Descriptions.Item>
+    <Descriptions.Item label="Creator"></Descriptions.Item>
+    <Descriptions.Item label="Funded By"></Descriptions.Item>
+
+    </Descriptions>
     </Panel>
   </Collapse>
-    <FileTable data={props.resource.files}></FileTable>
+  <div ref={fileRef}></div>
+    <FileTable  data={props.resource.files}></FileTable>
       </Content>
-      
+
       </Layout>
       
     </Layout>
