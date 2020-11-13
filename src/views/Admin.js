@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Layout,
   Content,
@@ -21,23 +21,10 @@ import {
   TeamOutlined,
   FileProtectOutlined,
 } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
-
-// convert string to color
-var stringToColor = (str) => {
-  var hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  var color = '#';
-  for (let i = 0; i < 3; i++) {
-    var value = (hash >> (i * 8)) & 0xff;
-    color += ('00' + value.toString(16)).substr(-2);
-  }
-  return color;
-};
+import API from '../api';
+import { stringToColor } from './../util';
 
 // resource columns
 const resourcesColumns = [
@@ -114,7 +101,7 @@ const resourcesColumns = [
     render: (
       link // create clickable link to new tab
     ) => (
-      <a href={link} target="_blank">
+      <a href={link} rel="noopener noreferrer" target="_blank">
         {link}
       </a>
     ),
@@ -124,8 +111,8 @@ const resourcesColumns = [
     key: 'action',
     render: (text, record) => (
       <Space size="middle">
-        <a>Accept</a>
-        <a>Reject</a>
+        <a href="/">Accept</a>
+        <a href="/">Reject</a>
       </Space>
     ),
   },
@@ -164,112 +151,6 @@ const resourcesData = [
   },
 ];
 
-// resource columns
-const userColumns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    // -> will now order alphabetically
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['descend', 'ascend'],
-  },
-  {
-    title: 'Date Joined',
-    dataIndex: 'date',
-    sorter: (a, b) => {
-      let aDate = new Date(a.date);
-      let bDate = new Date(b.date);
-      return aDate.getTime() - bDate.getTime();
-    },
-  },
-  {
-    title: 'User Type',
-    key: 'type',
-    dataIndex: 'type',
-    sorter: (a, b) => a.type.localeCompare(b.type),
-    sortDirections: ['descend', 'ascend'],
-    render: (type) => {
-      let color = stringToColor(type);
-      return (
-        <Tag
-          style={{ color: 'white', fontWeight: 'bold' }}
-          color={color}
-          key={type}
-        >
-          {type.toUpperCase()}
-        </Tag>
-      );
-    },
-  },
-  {
-    title: 'Organizations',
-    key: 'organizations',
-    dataIndex: 'organizations',
-    render: (organizations) => (
-      <>
-        {organizations.map((org) => {
-          let color = stringToColor(org);
-          return (
-            <Tag
-              style={{ color: 'white', fontWeight: 'bold' }}
-              color={color}
-              key={org}
-            >
-              {org}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'No. Uploaded Resources',
-    dataIndex: 'uploaded',
-    key: 'uploaded',
-    sorter: (a, b) => parseInt(a, 10) - parseInt(b, 10),
-    sortDirections: ['descend', 'ascend'],
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <Space size="middle">
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const userData = [
-  {
-    key: '1',
-    name: 'John Smith',
-    date: '2015-03-25',
-    type: 'Industry',
-    organizations: ['IBM', 'University of Texas'],
-    uploaded: '15',
-  },
-  {
-    key: '2',
-    name: 'Anakin Skywalker',
-    date: '2019-03-25',
-    type: 'Academia',
-    organizations: ['University of Alberta'],
-    uploaded: '3',
-  },
-  {
-    key: '3',
-    name: 'Ben Kenobi',
-    date: '2012-03-25',
-    type: 'Civil Society',
-    organizations: ['Galactic Republic', 'Jedi Council', 'Star Wars'],
-    uploaded: '0',
-  },
-];
-
 // rowSelection object indicates the need for row selection
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -289,7 +170,7 @@ function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
-function Dashboard() {
+function Dashboard({ users }) {
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
@@ -297,7 +178,7 @@ function Dashboard() {
       </h1>
       <Row gutter={16}>
         <Col span={4}>
-          <Statistic title="Active Accounts" value={userData.length} />
+          <Statistic title="Accounts" value={users.length} />
         </Col>
         <Col span={4}>
           <Statistic title="Pending Resources" value={resourcesData.length} />
@@ -311,7 +192,6 @@ function Resources() {
   return (
     <Card id="resources" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>Pending Resources</h1>
-
       <p>Existing requests to add resources to Portal.</p>
       <Search
         style={{ width: '50%', marginBottom: '20px' }}
@@ -319,7 +199,6 @@ function Resources() {
         enterButton
         onSearch={console.log}
       />
-
       <Table
         rowSelection={{
           type: 'checkbox',
@@ -335,11 +214,85 @@ function Resources() {
   );
 }
 
-function Users() {
+function Users({ users }) {
+  console.log(users);
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      sorter: (a, b) => a.email.localeCompare(b.email),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'User Role',
+      key: 'role',
+      dataIndex: 'role',
+      sorter: (a, b) => a.role.localeCompare(b.role),
+      sortDirections: ['descend', 'ascend'],
+      render: (role) => {
+        let color = stringToColor(role);
+        return (
+          <Tag
+            style={{ color: 'white', fontWeight: 'bold' }}
+            color={color}
+            key={role}
+          >
+            {role.toUpperCase()}
+          </Tag>
+        );
+      },
+    },
+    // {
+    //   title: 'Date Joined',
+    //   dataIndex: 'date',
+    //   sorter: (a, b) => {
+    //     let aDate = new Date(a.date);
+    //     let bDate = new Date(b.date);
+    //     return aDate.getTime() - bDate.getTime();
+    //   },
+    // },
+    // {
+    //   title: 'Organizations',
+    //   key: 'organizations',
+    //   dataIndex: 'organizations',
+    //   render: (organizations) => (
+    //     <>
+    //       {organizations.map((org) => {
+    //         let color = stringToColor(org);
+    //         return (
+    //           <Tag
+    //             style={{ color: 'white', fontWeight: 'bold' }}
+    //             color={color}
+    //             key={org}
+    //           >
+    //             {org}
+    //           </Tag>
+    //         );
+    //       })}
+    //     </>
+    //   ),
+    // },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+          <a href="/">Delete</a> | <a href="/">Change Role</a>
+        </Space>
+      ),
+    },
+  ];
   return (
     <Card id="users">
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>Manage Users</h1>
-
       <p>
         Edit user privileges and accounts. View individual user information by
         selecting the relevant person.
@@ -350,14 +303,13 @@ function Users() {
         enterButton
         onSearch={console.log}
       />
-
       <Table
         rowSelection={{
           type: 'checkbox',
           ...rowSelection,
         }}
-        columns={userColumns}
-        dataSource={userData}
+        columns={columns}
+        dataSource={users}
         onChange={onChange}
         pagination={{ pageSize: 10 }}
         scroll={{ y: 240 }}
@@ -420,15 +372,16 @@ function Sidebar() {
 }
 
 function Admin() {
-  const [selectionType, setSelectionType] = useState('checkbox');
-  let history = useHistory();
-  let [query, setQuery] = React.useState('');
+  let [users, setUsers] = useState([]);
+  useEffect(() => {
+    API.get('/api/users/').then(setUsers);
+  }, []);
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <Row justify="start" align="middle">
         <Col span={3}>
           <a href="/" style={{ margin: '15px' }}>
-            <img src="/logo.png" width={'160px'} />
+            <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
         <Col span={17}>
@@ -437,17 +390,15 @@ function Admin() {
               <a href="/">Home</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <a href="">User Name</a>
+              <a href="/">User Name</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>Administration</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
         <Col span={4}>
-          {/* configure displaying logout button */}
           <LoginButton />
         </Col>
       </Row>
-
       <Layout>
         <Sidebar />
         <Content
@@ -457,9 +408,9 @@ function Admin() {
           }}
           offsetTop={100}
         >
-          <Dashboard />
+          {users && <Dashboard users={users} />}
           <Resources />
-          <Users />
+          {users && <Users users={users} />}
         </Content>
       </Layout>
       <Footer />

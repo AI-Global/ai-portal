@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Layout,
   Content,
@@ -10,7 +10,6 @@ import {
   Search,
   Card,
   Affix,
-  Badge,
   Space,
   Tag,
 } from '../ant';
@@ -34,19 +33,21 @@ let queryParamsFromProps = (props) => {
 
 function Resources(props) {
   let { q } = queryParamsFromProps(props);
-  let fetchDatasets = async () => {
-    let resources = await API.get('/api/resources', { query: q });
-    // TODO: show resources
-  };
+  let [resources, setResources] = useState([]);
   useEffect(() => {
-    fetchDatasets();
-  });
+    let fetchResources = async () => {
+      let resources = await API.get('/api/resources', { query: q });
+      setResources(resources);
+    };
+    fetchResources();
+  }, [q]);
   return (
     <Layout>
       <Affix offsetTop={0}>
         <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
           <a href="/">
             <img
+              alt="logo"
               style={{ float: 'left', marginRight: '40px' }}
               src="/logo.png"
               width={'160px'}
@@ -124,8 +125,8 @@ function Resources(props) {
         <Layout style={{ padding: '24px 24px 24px' }}>
           <Content>
             <Space direction="vertical" style={{ width: '100%' }}>
-              {[...Array(20).keys()].map((i) => (
-                <DatasetCard key={i} />
+              {resources.map((res) => (
+                <ResourceCard key={res._id} resource={res} />
               ))}
             </Space>
           </Content>
@@ -136,17 +137,16 @@ function Resources(props) {
   );
 }
 
-function DatasetCard() {
+function ResourceCard({ resource }) {
+  let tags = resource.type;
   return (
     <Card
-      title={<a>ImageNet</a>}
-      extra={[
-        <Tag>Custom</Tag>,
-        <Tag>Computer Vision</Tag>,
-        <Badge style={{ backgroundColor: '#52c41a' }} count={'A+'} />,
-      ]}
+      title={<a href="/">{resource.name}</a>}
+      extra={tags.map((t) => (
+        <Tag>{t}</Tag>
+      ))}
     >
-      <Card.Meta description="A big dataset with lots of images for testing deep learning models." />
+      <Card.Meta description={resource.desc} />
     </Card>
   );
 }

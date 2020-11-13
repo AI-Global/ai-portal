@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
+import React, { createContext, useContext, useState } from 'react';
 import API from './api';
 
 export const AppContext = createContext();
@@ -25,7 +24,7 @@ export function AppEnv({ children }) {
   if (!window.userUpdated) {
     API.get('/api/auth/self').then((user) => {
       window.userUpdated = true;
-      if (user) {
+      if (user && user.id) {
         setUser(user);
       }
     });
