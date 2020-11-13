@@ -4,7 +4,6 @@ import {
   Content,
   Descriptions,
   Button,
-  Anchor,
   Sider,
   Menu,
   Affix,
@@ -23,7 +22,7 @@ const resourceData = {
     desc: 'An interactive dictionary of technical computer science and social science terms in plain language',
     type: ['Education Tool'],
     path: ['Explorer Path'],
-    avaterIcon: "",
+    avatarIcon: "https://cdn.substack.com/image/fetch/w_170,c_limit,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F3fcac70c-a37c-4152-a109-f702c6375c31_256x256.png",
     aiSystemsType:[],
     uploadDate: '',
     creationDate: '',
@@ -77,8 +76,8 @@ function FileTable(props) {
   ]
   return (
     <div>
-    <h1 style={{ padding:'10px',fontSize: '2em', fontWeight: 'bold'}}>Files</h1>
-    <Table columns={columns} dataSource={props.data} />
+      <h1 style={{ padding:'10px',fontSize: '2em', fontWeight: 'bold'}}>Files</h1>
+      <Table columns={columns} dataSource={props.data} />
     </div>
   )
 }
@@ -86,42 +85,41 @@ function FileTable(props) {
 function SideBar(props){
   return(
   <Affix offsetTop={60}>
+    <Sider width={250}>
+      <Menu
+        mode="inline"
+        theme="light"
+        defaultOpenKeys={['overview']}
+        style={{ height: '100%', borderRight: 0 }}
+      >
+        <Menu.Item 
+          key="overview" 
+          icon={<FileDoneOutlined/>}
+          style={{ marginTop: '30px' }}
+          onClick={() => {
+            props.topRef.current.scrollIntoView();
+          }}>
+            Overview
+        </Menu.Item>
 
-  <Sider width={250}>
-    <Menu
-      mode="inline"
-      theme="light"
-      defaultOpenKeys={['users', 'resources']}
-      style={{ height: '100%', borderRight: 0 }}
-    >
-      <Menu.Item 
-        key="overview" 
-        icon={<FileDoneOutlined/>}
-        style={{ marginTop: '30px' }}
-        onClick={() => {
-          props.topRef.current.scrollIntoView();
-        }}>
-          Overview
-      </Menu.Item>
-
-      <Menu.Item 
-        key="details"  
-        icon={<SearchOutlined/>}                     
-        onClick={() => {
-          props.detailRef.current.scrollIntoView();
-        }} >
-          Details 
-      </Menu.Item>
-      <Menu.Item 
-        key="files"
-        icon={<FolderOpenOutlined/>}
-        onClick={() => {
-          props.fileRef.current.scrollIntoView();
-        }} >
-          Files 
-      </Menu.Item>
-    </Menu>
-  </Sider>
+        <Menu.Item 
+          key="details"  
+          icon={<SearchOutlined/>}                     
+          onClick={() => {
+            props.detailRef.current.scrollIntoView();
+          }} >
+            Details 
+        </Menu.Item>
+        <Menu.Item 
+          key="files"
+          icon={<FolderOpenOutlined/>}
+          onClick={() => {
+            props.fileRef.current.scrollIntoView();
+          }} >
+            Files 
+        </Menu.Item>
+      </Menu>
+    </Sider>
   </Affix> );
 }
 
@@ -145,8 +143,7 @@ function ResourceInfo(props) {
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden', }}>
       <FormHeader/>
       <Layout>
-        <SideBar topRef={topRef} fileRef={fileRef} detailRef={fileRef}/>
-
+        <SideBar topRef={topRef} fileRef={fileRef} detailRef={detailRef}/>
         <Content>
           <div ref = {topRef}>
             <PageHeader
@@ -155,6 +152,7 @@ function ResourceInfo(props) {
               className="site-page-header"
               subTitle={props.resource.organizations.join(", ")}
               tags={children}
+              avatar={{ src: props.resource.avatarIcon}}
               extra={[
                 <Button 
                   icon={  <EditOutlined />}
@@ -167,38 +165,36 @@ function ResourceInfo(props) {
               {props.resource.desc}
             </PageHeader>,
           </div>
-    {/* <Title style ={{padding: "10px"}} level={5}>Details</Title> */}
-    <div ref={detailRef}></div>
+          <div ref={detailRef}>
 
-    <h1 style={{ padding:'10px',fontSize: '2em', fontWeight: 'bold'}}>Details</h1>
-    <Collapse defaultActiveKey={['1']}  >
-    <Panel header="Primary Details" key="1" showArrow={false}>
-     <Descriptions  column= {1} >
-  <Descriptions.Item label="Resource Type/Format">{props.resource.type.join(", ")}</Descriptions.Item>
-    <Descriptions.Item label="Resource Path">{props.resource.path.join(", ")}</Descriptions.Item>
-  <Descriptions.Item label="Responsible AI Trust Index Categories">{props.resource.trustIndexCategories.join(", ")}</Descriptions.Item>
-    <Descriptions.Item label="AI Systems Type">{props.resource.aiSystemsType.join(", ")}</Descriptions.Item>
-    </Descriptions>
-   </Panel>
+            <h1 style={{ padding:'10px',fontSize: '2em', fontWeight: 'bold'}}>Details</h1>
+            <Collapse defaultActiveKey={['1']}  >
+              <Panel header="Primary Details" key="1" showArrow={false}>
+                <Descriptions  column= {1} >
+                  <Descriptions.Item label="Resource Type/Format">{props.resource.type.join(", ")}</Descriptions.Item>
+                  <Descriptions.Item label="Resource Path">{props.resource.path.join(", ")}</Descriptions.Item>
+                  <Descriptions.Item label="Responsible AI Trust Index Categories">{props.resource.trustIndexCategories.join(", ")}</Descriptions.Item>
+                  <Descriptions.Item label="AI Systems Type">{props.resource.aiSystemsType.join(", ")}</Descriptions.Item>
+                </Descriptions>
+              </Panel>
 
-    <Panel header="More Details" key="2">
-    <Descriptions  column= {1} >
-  <Descriptions.Item label="Creation Date"></Descriptions.Item>
-    <Descriptions.Item label="Modified Date"></Descriptions.Item>
-  <Descriptions.Item label="Upload Date"></Descriptions.Item>
-    <Descriptions.Item label="Technical"></Descriptions.Item>
-    <Descriptions.Item label="Creator"></Descriptions.Item>
-    <Descriptions.Item label="Funded By"></Descriptions.Item>
-
-    </Descriptions>
-    </Panel>
-  </Collapse>
-  <div ref={fileRef}></div>
-    <FileTable  data={props.resource.files}></FileTable>
-      </Content>
-
+              <Panel header="More Details" key="2">
+                <Descriptions  column= {1} >
+                  <Descriptions.Item label="Creation Date"></Descriptions.Item>
+                  <Descriptions.Item label="Modified Date"></Descriptions.Item>
+                  <Descriptions.Item label="Upload Date"></Descriptions.Item>
+                  <Descriptions.Item label="Technical"></Descriptions.Item>
+                  <Descriptions.Item label="Creator"></Descriptions.Item>
+                  <Descriptions.Item label="Funded By"></Descriptions.Item>
+                </Descriptions>
+            </Panel>
+            </Collapse>
+          </div>
+          <div ref={fileRef}>
+            <FileTable  data={props.resource.files}></FileTable>
+          </div>
+        </Content>
       </Layout>
-      
     </Layout>
   );
 }

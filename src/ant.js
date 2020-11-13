@@ -22,7 +22,6 @@ import {
   Popconfirm,
   PageHeader,
   Descriptions,
-  Anchor,
   Collapse
 } from 'antd';
 
@@ -60,6 +59,5 @@ export {
   Popconfirm,
   PageHeader,
   Descriptions,
-  Anchor,
   Collapse
 };
