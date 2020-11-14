@@ -141,7 +141,11 @@ function SideBar(props) {
   );
 }
 
-export default function ResourceInfo(props = { resourceData }) {
+export default function ShowExample() {
+  return <ViewResource resource={resourceData} />;
+}
+
+function ViewResource(props) {
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
@@ -155,11 +159,7 @@ export default function ResourceInfo(props = { resourceData }) {
       <FormHeader />
       <Layout>
         <SideBar topRef={topRef} fileRef={fileRef} detailRef={detailRef} />
-        <Content
-          style={{
-            paddingLeft: '100px',
-          }}
-        >
+        <Content>
           <div ref={topRef}>
             <PageHeader
               title={props.resource.name}
