@@ -21,7 +21,7 @@ import {
 import FormHeader from '../components/FormHeader';
 
 const { Panel } = Collapse;
-const resourceData = {
+const props = {
   name: 'Living Dictionary',
   desc:
     'An interactive dictionary of technical computer science and social science terms in plain language',
@@ -141,17 +141,13 @@ function SideBar(props) {
   );
 }
 
-export default function ShowExample() {
-  return <ViewResource resource={resourceData} />;
-}
-
-function ViewResource(props) {
+export default function ViewResource() {
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
   let children = [];
-  for (let i = 0; i < props.resource.topics.length; i++) {
-    children.push(<Tag color="blue"> {props.resource.topics[i]}</Tag>);
+  for (let i = 0; i < props.topics.length; i++) {
+    children.push(<Tag color="blue"> {props.topics[i]}</Tag>);
   }
 
   return (
@@ -159,24 +155,27 @@ function ViewResource(props) {
       <FormHeader />
       <Layout>
         <SideBar topRef={topRef} fileRef={fileRef} detailRef={detailRef} />
-        <Content>
+        <Content
+          style={{
+            padding: '24px 24px 24px',
+          }}
+        >
           <div ref={topRef}>
             <PageHeader
-              title={props.resource.name}
+              title={props.name}
               onBack={() => window.history.back()}
               className="site-page-header"
-              subTitle={props.resource.organizations.join(', ')}
+              subTitle={props.organizations.join(', ')}
               tags={children}
-              avatar={{ src: props.resource.avatarIcon }}
+              avatar={{ src: props.avatarIcon }}
               extra={[
                 <Button icon={<EditOutlined />} key="3" shape="round">
                   Edit Resource
                 </Button>,
               ]}
             >
-              {props.resource.desc}
+              {props.desc}
             </PageHeader>
-            ,
           </div>
           <div ref={detailRef}>
             <h1
@@ -185,19 +184,24 @@ function ViewResource(props) {
               Details
             </h1>
             <Collapse defaultActiveKey={['1']}>
-              <Panel header="Primary Details" key="1" showArrow={false}>
+              <Panel
+                header="Primary Details"
+                key="1"
+                showArrow={false}
+                disabled={true}
+              >
                 <Descriptions column={1}>
                   <Descriptions.Item label="Resource Type/Format">
-                    {props.resource.type.join(', ')}
+                    {props.type.join(', ')}
                   </Descriptions.Item>
                   <Descriptions.Item label="Resource Path">
-                    {props.resource.path.join(', ')}
+                    {props.path.join(', ')}
                   </Descriptions.Item>
                   <Descriptions.Item label="Responsible AI Trust Index Categories">
-                    {props.resource.trustIndexCategories.join(', ')}
+                    {props.trustIndexCategories.join(', ')}
                   </Descriptions.Item>
                   <Descriptions.Item label="AI Systems Type">
-                    {props.resource.aiSystemsType.join(', ')}
+                    {props.aiSystemsType.join(', ')}
                   </Descriptions.Item>
                 </Descriptions>
               </Panel>
@@ -215,7 +219,7 @@ function ViewResource(props) {
             </Collapse>
           </div>
           <div ref={fileRef}>
-            <FileTable data={props.resource.files}></FileTable>
+            <FileTable data={props.files}></FileTable>
           </div>
         </Content>
       </Layout>
