@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const email = require('../lib/email');
 
 exports.User = User;
 
 exports.create = async (params) => {
   let user = new User(params);
   await user.save();
+  await email.send.createAccount(params.email, { name: params.name });
   return user;
 };
 
