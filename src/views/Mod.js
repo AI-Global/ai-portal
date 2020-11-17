@@ -2,14 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Layout,
   Content,
-  Search,
   Row,
   Col,
   Card,
   Breadcrumb,
-  Space,
-  Tag,
-  Table,
   Statistic,
   Tooltip,
 } from '../ant';
@@ -17,7 +13,6 @@ import {
 import {
   QuestionCircleTwoTone,
   AreaChartOutlined,
-  TeamOutlined,
   FileProtectOutlined,
 } from '@ant-design/icons';
 import Footer from '../components/Footer';
@@ -65,25 +60,21 @@ const resourcesData = [
   },
 ];
 
-function onChange(pagination, filters, sorter, extra) {
-  console.log('params', pagination, filters, sorter, extra);
-}
-
 function Dashboard({ users }) {
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
-        Administration Overview &nbsp;
+        Moderator Overview &nbsp;
         <Tooltip
           title={
             <p style={{ textAlign: 'center', marginBottom: '0' }}>
-              Overview of resources pending approval and number of active user
-              accounts
+              Overview of resources pending approval from administrator or
+              moderators
             </p>
           }
           placement="right"
         >
-          <QuestionCircleTwoTone style={{ fontSize: '0.8em' }} />
+          <QuestionCircleTwoTone style={{ fontSize: '0.8em' }} />{' '}
         </Tooltip>
       </h1>
       <Row gutter={16}>
@@ -98,97 +89,13 @@ function Dashboard({ users }) {
   );
 }
 
-function Users({ users }) {
-  console.log(users);
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      sorter: (a, b) => a.email.localeCompare(b.email),
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'User Role',
-      key: 'role',
-      dataIndex: 'role',
-      sorter: (a, b) => a.role.localeCompare(b.role),
-      sortDirections: ['descend', 'ascend'],
-      render: (role) => {
-        return (
-          <Tag
-            style={{ color: 'white', fontWeight: 'bold' }}
-            color={'#097AE8'}
-            key={role}
-          >
-            {role.toUpperCase()}
-          </Tag>
-        );
-      },
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a href="/">Delete</a> | <a href="/">Change Role</a>
-        </Space>
-      ),
-    },
-  ];
-  return (
-    <Card id="users">
-      <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
-        Manage Users &nbsp;
-        <Tooltip
-          title={
-            <p style={{ textAlign: 'center', marginBottom: '0' }}>
-              List of active users and their Portal roles that can be edited by
-              you
-            </p>
-          }
-          placement="right"
-        >
-          <QuestionCircleTwoTone style={{ fontSize: '0.8em' }} />{' '}
-        </Tooltip>
-      </h1>
-      <Tooltip title="Search for a user" placement="right">
-        <Search
-          style={{ width: '50%', marginBottom: '20px' }}
-          placeholder="Anakin Skywalker"
-          enterButton
-          onSearch={console.log}
-        />
-      </Tooltip>
-
-      <Table
-        columns={columns}
-        dataSource={users}
-        onChange={onChange}
-        pagination={{ pageSize: 10 }}
-        scroll={{ y: 240 }}
-      />
-    </Card>
-  );
-}
-
-function Admin() {
+function Mod() {
   let [users, setUsers] = useState([]);
   useEffect(() => {
     API.get('/api/users/').then(setUsers);
   }, []);
-
   let dashRef = useRef(null),
-    resourceRef = useRef(null),
-    userRef = useRef(null);
-
+    resourceRef = useRef(null);
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <Row justify="start" align="middle">
@@ -205,7 +112,7 @@ function Admin() {
             <Breadcrumb.Item>
               <a href="/">User Name</a>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>Administration</Breadcrumb.Item>
+            <Breadcrumb.Item>Moderator</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
         <Col span={4}>
@@ -214,13 +121,9 @@ function Admin() {
       </Row>
       <Layout>
         <Sidebar
-          headings={['Overview', 'Pending Resources', 'Manage Users']}
-          icons={[
-            <AreaChartOutlined />,
-            <FileProtectOutlined />,
-            <TeamOutlined />,
-          ]}
-          refs={[dashRef, resourceRef, userRef]}
+          headings={['Overview', 'Pending Resources']}
+          icons={[<AreaChartOutlined />, <FileProtectOutlined />]}
+          refs={[dashRef, resourceRef]}
         />
         <Content
           style={{
@@ -237,7 +140,6 @@ function Admin() {
           <div ref={resourceRef}>
             <ResourceTable resources={resourcesData} admin={true} edit={true} />
           </div>
-          <div ref={userRef}>{users && <Users users={users} />}</div>
         </Content>
       </Layout>
       <Footer />
@@ -245,4 +147,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default Mod;

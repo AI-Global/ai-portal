@@ -11,7 +11,9 @@ import AddResources from './views/AddResource';
 import Admin from './views/Admin';
 import ViewResource from './views/ViewResource';
 import AddOrganization from './views/AddOrganization';
+import ViewOrganization from './views/ViewOrganization';
 import UserSettings from './views/UserSettings';
+import Mod from './views/Mod';
 
 function App() {
   return (
@@ -27,10 +29,16 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/admin" component={Admin} />
             <Route path="/settings" component={UserSettings} />
+            <Route path="/mod" component={Mod} />
             <Route
               exact
               path="/organizations/create"
               component={AddOrganization}
+            />
+            <Route
+              exact
+              path="/organizations/example"
+              component={ViewOrganization}
             />
           </Switch>
         </BrowserRouter>
