@@ -1,3 +1,5 @@
 module.exports.subject = ({}) => `AI Global: Password Reset`;
-module.exports.text = ({}) => `Your password has been reset.`;
-module.exports.html = ({}) => `<strong>Your password has been reset.<strong>`;
+module.exports.text = ({ resetURL }) =>
+  `Visit ${resetURL} to reset your password.`;
+module.exports.html = ({ resetURL }) =>
+  `<strong>Visit ${resetURL} to reset your password.<strong>`;

@@ -22,6 +22,12 @@ module.exports = (app) => {
     return res.json({});
   });
 
+  app.post('/api/auth/reset/password', async (req, res) => {
+    let user = await req.getUser();
+    await userUtil.sendReset(user);
+    return res.json({ sent: true });
+  });
+
   app.post('/api/users', async (req, res) => {
     const { name, username, email, password, confirmPassword } = req.body;
     let errors = [];
