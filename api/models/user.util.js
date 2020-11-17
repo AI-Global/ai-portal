@@ -4,10 +4,16 @@ const email = require('../lib/email');
 
 exports.User = User;
 
-exports.create = async (params) => {
-  let user = new User(params);
+exports.create = async ({ name, email }) => {
+  let emailToken = Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, '');
+  let user = new User({ name, email, emailToken });
   await user.save();
-  await email.send.createAccount(params.email, { name: params.name });
+  await email.send.createAccount(params.email, {
+    name: params.name,
+    verifyUrl: `${process.env.BASE_URL}/verify?email=${email}&token=${emailToken}`,
+  });
   return user;
 };
 
