@@ -9,7 +9,6 @@ import {
   Affix,
   PageHeader,
   Collapse,
-  Table,
   Tag,
 } from '../ant';
 import {
@@ -19,7 +18,7 @@ import {
   FolderOpenOutlined,
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
-import { stringToColor } from './../util';
+import ResourceTable from '../components/ResourceTable';
 
 const { Panel } = Collapse;
 const props = {
@@ -39,9 +38,11 @@ const props = {
       description:
         ' An interactive dictionary of technical computer science and social science terms in plain language',
       date: 'n/a',
-      topics: ['Other topic'],
+      topic: 'Other topic',
+      path: 'Curious Path',
+      type: 'Education Tool',
       link: 'https://montrealethics.ai/dictionary/',
-      tags: ['education tool'],
+      keywords: [],
     },
     {
       key: '2',
@@ -49,111 +50,54 @@ const props = {
       description:
         "A white paper on COVI, a contact tracing app, on the extent which diversity is considered on the app, assumptions surrounding users', and unanswered questions surrounding transparency, accountability, and security",
       date: 'n/a',
-      topics: ['Health'],
+      topic: 'Health',
+      path: 'Explorer Path',
+      type: 'Research',
       link:
         'https://montrealethics.ai/wp-content/uploads/2020/06/MAIEI-Official-COVI-Response.docx.pdf',
-      tags: ['research'],
+      keywords: [],
     },
   ],
   desc: 'Do we want a description?',
 };
-
-function FileTable(props) {
-  const resourcesColumns = [
-    {
-      title: 'Resource Name',
-      dataIndex: 'resourceName',
-      key: 'resourceName',
-      sorter: (a, b) => a.resourceName.localeCompare(b.resourceName),
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-    },
-    {
-      title: 'Upload Date',
-      dataIndex: 'date',
-      sorter: (a, b) => {
-        let aDate = new Date(a.date);
-        let bDate = new Date(b.date);
-        return aDate.getTime() - bDate.getTime();
-      },
-    },
-    {
-      title: 'Topics',
-      key: 'topics',
-      dataIndex: 'topics',
-      sorter: (a, b) => a.topic.localeCompare(b.topic),
-      sortDirections: ['descend', 'ascend'],
-      render: (topics) => (
-        <>
-          {topics.map((topic) => {
-            let color = stringToColor(topic);
-            return (
-              <Tag
-                style={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                }}
-                color={color}
-                key={topic}
-              >
-                {topic.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = stringToColor(tag);
-            return (
-              <Tag
-                style={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                }}
-                color={color}
-                key={tag}
-              >
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Link',
-      key: 'link',
-      dataIndex: 'link',
-      render: (
-        link // create clickable link to new tab
-      ) => (
-        <a href={link} rel="noopener noreferrer" target="_blank">
-          {link}
-        </a>
-      ),
-    },
-  ];
-
-  return (
-    <div>
-      <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
-        Resources
-      </h1>
-      <Table columns={resourcesColumns} dataSource={props.data} />
-    </div>
-  );
-}
-
+const resourcesData = [
+  {
+    key: '1',
+    resourceName: 'IBM AI Fairness 360',
+    description:
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+    date: '2015-03-25',
+    topic: 'Banking',
+    path: 'Designer',
+    type: 'Research',
+    link: 'https://aif360.mybluemix.net/',
+    keywords: ['NLP', 'CV'],
+  },
+  {
+    key: '2',
+    resourceName: 'IBM AI Fairness 360',
+    description:
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+    date: '2015-03-25',
+    topic: 'Finance',
+    path: 'Developer',
+    type: 'Podcast',
+    link: 'https://aif360.mybluemix.net/',
+    keywords: ['Data Analytics', 'IPA'],
+  },
+  {
+    key: '3',
+    resourceName: 'IBM AI Fairness 360',
+    description:
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+    date: '2015-03-25',
+    topic: 'Banking',
+    path: 'Designer',
+    type: 'Research',
+    link: 'https://aif360.mybluemix.net/',
+    keywords: ['NLP'],
+  },
+];
 function SideBar(props) {
   return (
     <Affix offsetTop={60}>
@@ -272,7 +216,11 @@ export default function ViewOrganization() {
             </Collapse>
           </div>
           <div ref={fileRef}>
-            <FileTable data={props.resources}></FileTable>
+            <ResourceTable
+              resources={props.resources}
+              admin={false}
+              edit={false}
+            />
           </div>
         </Content>
       </Layout>
