@@ -13,6 +13,6 @@ exports.getAll = async () => {
   return await Topic.find();
 };
 
-exports.toJSON = async (resource) => {
-  return { ...resource };
+exports.toJSON = async (topic) => {
+  return { ...topic };
 };

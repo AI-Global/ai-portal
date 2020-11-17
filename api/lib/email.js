@@ -8,6 +8,9 @@ const fromEmail = 'noreply@ai-global.org';
 module.exports.send = {};
 
 fs.readdirSync(emailsPath).forEach((fn) => {
+  if (!fn.includes('.email')) {
+    return;
+  }
   let name = fn.split('.')[0];
   let template = require('./emails/' + fn);
   module.exports.send[name] = (toEmail, data) =>
