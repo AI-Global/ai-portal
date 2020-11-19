@@ -34,25 +34,25 @@ const props = {
   resources: [
     {
       key: '1',
-      resourceName: 'Living Dictionary',
-      description:
+      name: 'Living Dictionary',
+      desc:
         ' An interactive dictionary of technical computer science and social science terms in plain language',
-      date: 'n/a',
-      topic: 'Other topic',
-      path: 'Curious Path',
-      type: 'Education Tool',
+      uploadDate: 'n/a',
+      topics: ['Other topic'],
+      path: ['Curious Path'],
+      type: ['Education Tool'],
       link: 'https://montrealethics.ai/dictionary/',
       keywords: [],
     },
     {
       key: '2',
-      resourceName: 'Response to COVI Contact Tracing App',
-      description:
+      name: 'Response to COVI Contact Tracing App',
+      desc:
         "A white paper on COVI, a contact tracing app, on the extent which diversity is considered on the app, assumptions surrounding users', and unanswered questions surrounding transparency, accountability, and security",
-      date: 'n/a',
-      topic: 'Health',
-      path: 'Explorer Path',
-      type: 'Research',
+      uploadDate: 'n/a',
+      topics: ['Health'],
+      path: ['Explorer Path'],
+      type: ['Research'],
       link:
         'https://montrealethics.ai/wp-content/uploads/2020/06/MAIEI-Official-COVI-Response.docx.pdf',
       keywords: [],
