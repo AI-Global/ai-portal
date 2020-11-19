@@ -17,6 +17,7 @@ import {
 import FormHeader from '../components/FormHeader';
 import ResourceTable from '../components/ResourceTable';
 import Sidebar from '../components/Sidebar';
+
 const { Panel } = Collapse;
 const props = {
   name: 'Montreal AI Ethics Institute',
