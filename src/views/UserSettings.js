@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import {
   Layout,
   Content,
@@ -12,23 +12,32 @@ import {
   Table,
   Button,
   Tooltip,
+  notification,
 } from '../ant';
 
 import {
   QuestionCircleTwoTone,
   ExclamationCircleTwoTone,
+  AreaChartOutlined,
+  TeamOutlined,
+  FileProtectOutlined,
 } from '@ant-design/icons';
 import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
 import API from '../api';
+import { useAppEnv } from './../env';
 
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
 function Dashboard({ user }) {
+  let resetPassword = async () => {
+    await API.post('/api/auth/reset/password');
+    notification.info({ message: 'Password reset email sent.' });
+  };
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
@@ -71,7 +80,9 @@ function Dashboard({ user }) {
                 </Button>
               </Tooltip>
               <Tooltip title="Change your current password" placement="bottom">
-                <Button href="#">Change Password</Button>
+                <Button href="#" onClick={resetPassword}>
+                  Change Password
+                </Button>
               </Tooltip>
               {user.verified && (
                 <Tooltip title="Verify your account email" placement="bottom">
@@ -206,10 +217,12 @@ function Organizations({ organizations }) {
 }
 
 function UserSettings() {
-  let [user, setUsers] = useState([]);
-  useEffect(() => {
-    API.get('/api/users/').then(setUsers);
-  }, []);
+  let { user } = useAppEnv();
+
+  let dashRef = useRef(null),
+    resourceRef = useRef(null),
+    orgRef = useRef(null);
+
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <Row justify="start" align="middle">
@@ -235,8 +248,13 @@ function UserSettings() {
       </Row>
       <Layout>
         <Sidebar
-          mod={false}
           headings={['User Overview', 'Uploaded Resources', 'Organizations']}
+          icons={[
+            <AreaChartOutlined />,
+            <FileProtectOutlined />,
+            <TeamOutlined />,
+          ]}
+          refs={[dashRef, resourceRef, orgRef]}
         />
         <Content
           style={{
@@ -245,15 +263,25 @@ function UserSettings() {
           }}
           offsetTop={100}
         >
-          {user && <Dashboard user={user} />}
           {user && (
-            <ResourceTable
-              edit={true}
-              admin={false}
-              resources={user.resources}
-            />
+            <div ref={dashRef}>
+              <Dashboard user={user} />
+            </div>
           )}
-          {user && <Organizations organizations={user.organizations} />}
+          {user && (
+            <div ref={resourceRef}>
+              <ResourceTable
+                edit={true}
+                admin={false}
+                resources={user.resources}
+              />
+            </div>
+          )}
+          {user && (
+            <div ref={orgRef}>
+              <Organizations organizations={user.organizations} />
+            </div>
+          )}
         </Content>
       </Layout>
       <Footer />
