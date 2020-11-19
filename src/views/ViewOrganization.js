@@ -4,9 +4,6 @@ import {
   Content,
   Descriptions,
   Button,
-  Sider,
-  Menu,
-  Affix,
   PageHeader,
   Collapse,
   Tag,
@@ -19,7 +16,7 @@ import {
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
 import ResourceTable from '../components/ResourceTable';
-
+import Sidebar from '../components/Sidebar';
 const { Panel } = Collapse;
 const props = {
   name: 'Montreal AI Ethics Institute',
@@ -61,51 +58,6 @@ const props = {
   desc: 'Do we want a description?',
 };
 
-function SideBar(props) {
-  return (
-    <Affix offsetTop={60}>
-      <Sider width={250}>
-        <Menu
-          mode="inline"
-          theme="light"
-          defaultOpenKeys={['overview']}
-          style={{ height: '100%', borderRight: 0 }}
-        >
-          <Menu.Item
-            key="overview"
-            icon={<FileDoneOutlined />}
-            style={{ marginTop: '30px' }}
-            onClick={() => {
-              props.topRef.current.scrollIntoView();
-            }}
-          >
-            Overview
-          </Menu.Item>
-
-          <Menu.Item
-            key="details"
-            icon={<SearchOutlined />}
-            onClick={() => {
-              props.detailRef.current.scrollIntoView();
-            }}
-          >
-            Details
-          </Menu.Item>
-          <Menu.Item
-            key="resources"
-            icon={<FolderOpenOutlined />}
-            onClick={() => {
-              props.fileRef.current.scrollIntoView();
-            }}
-          >
-            Resources
-          </Menu.Item>
-        </Menu>
-      </Sider>
-    </Affix>
-  );
-}
-
 export default function ViewOrganization() {
   let topRef = useRef(null);
   let fileRef = useRef(null);
@@ -119,7 +71,15 @@ export default function ViewOrganization() {
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <FormHeader />
       <Layout>
-        <SideBar topRef={topRef} fileRef={fileRef} detailRef={detailRef} />
+        <Sidebar
+          headings={['Overview', 'Details', 'Uploaded Resources']}
+          icons={[
+            <FileDoneOutlined />,
+            <SearchOutlined />,
+            <FolderOpenOutlined />,
+          ]}
+          refs={[topRef, detailRef, fileRef]}
+        />
         <Content
           style={{
             padding: '24px 24px 24px',
