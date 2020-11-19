@@ -33,8 +33,6 @@ const props = {
     {
       key: '1',
       name: 'Living Dictionary',
-      desc:
-        ' An interactive dictionary of technical computer science and social science terms in plain language',
       uploadDate: 'n/a',
       topics: ['Other topic'],
       path: ['Curious Path'],
@@ -100,7 +98,6 @@ export default function ViewOrganization() {
                 </Button>,
               ]}
             >
-              <h3> {props.desc} </h3>
             </PageHeader>
           </div>
           <div ref={detailRef}>
