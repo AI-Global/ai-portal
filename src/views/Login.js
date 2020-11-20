@@ -21,7 +21,7 @@ import { queryParamsFromProps } from '../util';
 const { Title } = Typography;
 
 export default function Login(props) {
-  let { username } = queryParamsFromProps(props);
+  let { username, redirect } = queryParamsFromProps(props);
   useEffect(() => {
     if (username) {
       notification.info({
@@ -43,7 +43,12 @@ export default function Login(props) {
     }
     setUser(result.user);
     setKey('token', result.token);
-    history.push('/resources');
+    if (redirect) {
+      // TODO: validate redirect & issue new token
+      window.location = redirect + '?token=' + result.token;
+    } else {
+      history.push('/resources');
+    }
   };
   let onFail = (values) => {
     var i;
