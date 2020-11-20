@@ -46,7 +46,6 @@ export default function Login(props) {
     history.push('/resources');
   };
   let onFail = (values) => {
-    var i;
     console.log(values);
     for (let err of values.errorFields) {
       notification.error({
