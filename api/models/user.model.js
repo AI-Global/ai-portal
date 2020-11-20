@@ -14,8 +14,11 @@ const UserSchema = new Schema({
   hashedPassword: { type: String },
   salt: { type: String, required: true },
   creationDate: { type: Date, default: Date.now },
-  orgs: [
+  organizations: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: [] },
+  ],
+  resources: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', default: [] },
   ],
 });
 
