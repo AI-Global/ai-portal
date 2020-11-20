@@ -52,16 +52,6 @@ UserSchema.methods = {
       return '';
     }
   },
-
-  toPrivateJSON: function () {
-    let { _id, email, name, username, role } = this;
-    return { _id, email, name, username, role };
-  },
-
-  toTokenJSON: function () {
-    let { _id, email, name, username, role } = this;
-    return { _id, email, name, username, role };
-  },
 };
 
 UserSchema.statics = {
