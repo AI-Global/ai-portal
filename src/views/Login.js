@@ -13,7 +13,6 @@ import {
 } from '../ant';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Footer from '../components/Footer';
-import API from '../api';
 import { useAppEnv } from './../env';
 import { useHistory } from 'react-router';
 import { queryParamsFromProps } from '../util';
@@ -29,10 +28,10 @@ export default function Login(props) {
       });
     }
   }, [username]);
-  let { setUser, setKey } = useAppEnv();
+  let { setUser, setKey, api } = useAppEnv();
   let history = useHistory();
   let onSubmit = async (values) => {
-    let result = await API.post('/api/auth/login', values);
+    let result = await api.post('/api/auth/login', values);
     if (result.errors) {
       for (let error of result.errors) {
         notification.error({
