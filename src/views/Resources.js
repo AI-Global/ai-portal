@@ -126,26 +126,26 @@ function Resources(props) {
 
 // mock data for testing modal
 // I kept this in to show the visual if resources is empty
-let MOCK_DATA = [
-  {
-    id: 1,
-    name: 'Example 1',
-    type: ['api'],
-    desc: 'Lorem ipsum',
-    link: 'https://www.google.com',
-  },
-  {
-    id: 2,
-    name: 'Example 2',
-    type: ['algorithm', 'api'],
-    desc: 'Lorem ipsum',
-  },
-  {
-    id: 3,
-    name: 'Example 3',
-    type: ['algorithm'],
-    desc: 'Lorem ipsum',
-  },
-];
+// let MOCK_DATA = [
+//   {
+//     id: 1,
+//     name: 'Example 1',
+//     type: ['api'],
+//     desc: 'Lorem ipsum',
+//     link: 'https://www.google.com',
+//   },
+//   {
+//     id: 2,
+//     name: 'Example 2',
+//     type: ['algorithm', 'api'],
+//     desc: 'Lorem ipsum',
+//   },
+//   {
+//     id: 3,
+//     name: 'Example 3',
+//     type: ['algorithm'],
+//     desc: 'Lorem ipsum',
+//   },
+// ];
 
 export default Resources;
