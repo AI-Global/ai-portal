@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   Layout,
   Content,
@@ -17,22 +17,22 @@ import {
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
 import Sidebar from '../components/Sidebar';
+import API from '../api';
+import { useParams } from 'react-router-dom';
+
 const { Panel } = Collapse;
-const props = {
-  name: 'Living Dictionary',
-  desc:
-    'An interactive dictionary of technical computer science and social science terms in plain language',
-  type: ['Education Tool'],
-  path: ['Explorer Path'],
-  avatarIcon:
-    'https://cdn.substack.com/image/fetch/w_170,c_limit,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F3fcac70c-a37c-4152-a109-f702c6375c31_256x256.png',
+const emptyRes = {
+  name: '',
+  desc: '',
+  type: [],
+  path: [],
+  avatarIcon: '',
   aiSystemsType: [],
   uploadDate: '',
   creationDate: '',
   modifiedDate: '',
   licenseName: '',
-  technical: '',
-  trustIndexCategories: ['Explainability & Interpretability'],
+  trustIndexCategories: [''],
   fundedBy: '',
   creator: '',
   dataDictLink: '',
@@ -54,14 +54,20 @@ const props = {
   externalRestrictions: '',
   files: [
     {
-      name: 'Dictionary',
-      link: 'https://montrealethics.ai/dictionary/',
+      name: 'Resource A',
+      link:
+        'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
       type: 'URL',
     },
-    { name: 'Click me', link: 'www.google.com', type: 'URL' },
+    {
+      name: 'Resource B',
+      link:
+        'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+      type: 'URL',
+    },
   ],
-  topics: ['Other topic'],
-  organizations: ['Montreal AI Ethics Institute'],
+  topics: [''],
+  organizations: [''],
 };
 
 function FileTable(props) {
@@ -94,12 +100,26 @@ function FileTable(props) {
 }
 
 export default function ViewResource() {
+  let [resource, setResource] = useState(emptyRes);
+  let { resId } = useParams();
+  console.log(`resource id is ${resId}`);
+
+  useEffect(() => {
+    let fetchResource = async () => {
+      let resource = await API.get('/api/resources/' + resId);
+      setResource(resource);
+    };
+    fetchResource();
+    console.log('here' + JSON.stringify(resource));
+    console.log('query topics' + resource.path);
+  });
+
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
   let children = [];
-  for (let i = 0; i < props.topics.length; i++) {
-    children.push(<Tag color="blue"> {props.topics[i]}</Tag>);
+  for (let i = 0; i < resource.topics.length; i++) {
+    children.push(<Tag color="blue"> {resource.topics[i]}</Tag>);
   }
 
   return (
@@ -122,20 +142,22 @@ export default function ViewResource() {
         >
           <div ref={topRef}>
             <PageHeader
-              title={props.name}
+              title={resource.name}
               onBack={() => window.history.back()}
               className="site-page-header"
-              subTitle={props.organizations.join(', ')}
+              subTitle={resource.organizations.join(', ')}
               tags={children}
-              avatar={{ src: props.avatarIcon }}
               extra={[
-                <Button icon={<EditOutlined />} key="3" shape="round">
+                <Button
+                  icon={<EditOutlined />}
+                  key="3"
+                  shape="round"
+                  href={'/resources/' + resId + '/edit'}
+                >
                   Edit Resource
                 </Button>,
               ]}
-            >
-              {props.desc}
-            </PageHeader>
+            />
           </div>
           <div ref={detailRef}>
             <h1
@@ -152,16 +174,16 @@ export default function ViewResource() {
               >
                 <Descriptions column={1}>
                   <Descriptions.Item label="Resource Type/Format">
-                    {props.type.join(', ')}
+                    {resource.type.join(', ')}
                   </Descriptions.Item>
                   <Descriptions.Item label="Resource Path">
-                    {props.path.join(', ')}
+                    {resource.path.join(', ')}
                   </Descriptions.Item>
                   <Descriptions.Item label="Responsible AI Trust Index Categories">
-                    {props.trustIndexCategories.join(', ')}
+                    {resource.trustIndexCategories.join(', ')}
                   </Descriptions.Item>
                   <Descriptions.Item label="AI Systems Type">
-                    {props.aiSystemsType.join(', ')}
+                    <text>Not available yet</text>
                   </Descriptions.Item>
                 </Descriptions>
               </Panel>
@@ -171,15 +193,16 @@ export default function ViewResource() {
                   <Descriptions.Item label="Creation Date"></Descriptions.Item>
                   <Descriptions.Item label="Modified Date"></Descriptions.Item>
                   <Descriptions.Item label="Upload Date"></Descriptions.Item>
-                  <Descriptions.Item label="Technical"></Descriptions.Item>
-                  <Descriptions.Item label="Creator"></Descriptions.Item>
+                  <Descriptions.Item label="Creator">
+                    {resource.creator}
+                  </Descriptions.Item>
                   <Descriptions.Item label="Funded By"></Descriptions.Item>
                 </Descriptions>
               </Panel>
             </Collapse>
           </div>
           <div ref={fileRef}>
-            <FileTable data={props.files}></FileTable>
+            <FileTable data={emptyRes.files}></FileTable>
           </div>
         </Content>
       </Layout>
