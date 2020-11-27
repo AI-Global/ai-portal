@@ -110,8 +110,6 @@ export default function ViewResource() {
       setResource(resource);
     };
     fetchResource();
-    console.log('here' + JSON.stringify(resource));
-    console.log('query topics' + resource.path);
   });
 
   let topRef = useRef(null);

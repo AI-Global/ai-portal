@@ -24,7 +24,6 @@ function Resources(props) {
     let fetchResources = async () => {
       let resources = await API.get('/api/resources', { query: q });
       setResources(resources);
-      // setResources(MOCK_DATA);
     };
     fetchResources();
   }, [q]);
