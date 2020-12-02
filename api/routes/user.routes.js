@@ -40,18 +40,18 @@ module.exports = (app) => {
       errors.push({ msg: 'Passwords do not match' });
     if (errors.length > 0) {
       return res.json({ errors: errors });
-    } else {
-      try {
-        let newUser = await userUtil.create({
-          name,
-          email,
-          username,
-          password,
-        });
-        return res.json(userUtil.toPrivateJSON(newUser));
-      } catch (err) {
-        res.json({ errors: [err] });
-      }
+    }
+    try {
+      let newUser = await userUtil.create({
+        name,
+        email,
+        username,
+        password,
+      });
+      return res.json(userUtil.toPrivateJSON(newUser));
+    } catch (err) {
+      console.warn(err);
+      res.json({ errors: [{ msg: '' + err }] });
     }
   });
 
