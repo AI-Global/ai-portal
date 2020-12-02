@@ -65,6 +65,10 @@ module.exports = (app) => {
     return res.json({});
   });
 
+  app.delete('/api/users/:_id', async (req, res) => {
+    return res.json({});
+  });
+
   app.get('/api/users/:_id/resources', async (req, res) => {
     return res.json([]);
   });

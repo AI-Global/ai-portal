@@ -37,4 +37,8 @@ module.exports = (app) => {
   app.put('/api/resources/:_id', async (req, res) => {
     return await resourceUtil.update(req.params, req.body);
   });
+
+  app.delete('/api/resources/:_id', async (req, res) => {
+    return res.json({});
+  });
 };
