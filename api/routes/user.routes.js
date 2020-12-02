@@ -50,7 +50,6 @@ module.exports = (app) => {
       });
       return res.json(userUtil.toPrivateJSON(newUser));
     } catch (err) {
-      console.warn(err);
       res.json({ errors: [{ msg: '' + err }] });
     }
   });
