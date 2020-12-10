@@ -8,6 +8,7 @@ import {
   Collapse,
   Table,
   Tag,
+  Spin,
 } from '../ant';
 import {
   FileDoneOutlined,
@@ -22,7 +23,7 @@ import { useParams } from 'react-router-dom';
 
 const { Panel } = Collapse;
 const emptyRes = {
-  name: '',
+  name: 'HELLO',
   desc: '',
   type: [],
   path: [],
@@ -35,23 +36,6 @@ const emptyRes = {
   trustIndexCategories: [''],
   fundedBy: '',
   creator: '',
-  dataDictLink: '',
-  sensitiveData: '',
-  qualityReview: '',
-  ethicsReview: '',
-  usage: '',
-  isConfidential: '',
-  offensiveContent: '',
-  numInstances: '',
-  instances: [],
-  label: '',
-  rawData: '',
-  distribution: '',
-  personalInfoRemoved: '',
-  privacyProcedure: '',
-  individualsIdentified: '',
-  noiseDescription: ' ',
-  externalRestrictions: '',
   files: [
     {
       name: 'Resource A',
@@ -66,7 +50,7 @@ const emptyRes = {
       type: 'URL',
     },
   ],
-  topics: [''],
+  topics: ['A', 'B', 'C'],
   organizations: [''],
 };
 
@@ -100,14 +84,16 @@ function FileTable(props) {
 }
 
 export default function ViewResource() {
-  let [resource, setResource] = useState(emptyRes);
+  let [resource, setResource] = useState(null);
+  let [loading, setLoading] = useState(true);
+
   let { resId } = useParams();
-  console.log(`resource id is ${resId}`);
 
   useEffect(() => {
     let fetchResource = async () => {
       let resource = await API.get('/api/resources/' + resId);
       setResource(resource);
+      setLoading(false);
     };
     fetchResource();
   });
@@ -115,95 +101,130 @@ export default function ViewResource() {
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
-  let children = [];
-  for (let i = 0; i < resource.topics.length; i++) {
-    children.push(<Tag color="blue"> {resource.topics[i]}</Tag>);
-  }
 
-  return (
-    <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
-      <FormHeader />
-      <Layout>
-        <Sidebar
-          headings={['Overview', 'Details', 'Files']}
-          icons={[
-            <FileDoneOutlined />,
-            <SearchOutlined />,
-            <FolderOpenOutlined />,
-          ]}
-          refs={[topRef, detailRef, fileRef]}
-        />
-        <Content
-          style={{
-            padding: '24px 24px 24px',
-          }}
-        >
-          <div ref={topRef}>
-            <PageHeader
-              title={resource.name}
-              onBack={() => window.history.back()}
-              className="site-page-header"
-              subTitle={resource.organizations.join(', ')}
-              tags={children}
-              extra={[
-                <Button
-                  icon={<EditOutlined />}
-                  key="3"
-                  shape="round"
-                  href={'/resources/' + resId + '/edit'}
-                >
-                  Edit Resource
-                </Button>,
-              ]}
-            />
-          </div>
-          <div ref={detailRef}>
-            <h1
-              style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}
-            >
-              Details
-            </h1>
-            <Collapse defaultActiveKey={['1']}>
-              <Panel
-                header="Primary Details"
-                key="1"
-                showArrow={false}
-                disabled={true}
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Spin size="large"></Spin>
+      </div>
+    );
+  } else {
+    return (
+      <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
+        <FormHeader />
+        <Layout>
+          <Sidebar
+            headings={['Overview', 'Details', 'Files']}
+            icons={[
+              <FileDoneOutlined />,
+              <SearchOutlined />,
+              <FolderOpenOutlined />,
+            ]}
+            refs={[topRef, detailRef, fileRef]}
+          />
+          <Content
+            style={{
+              padding: '24px 24px 24px',
+            }}
+          >
+            <div ref={topRef}>
+              <PageHeader
+                title={resource.name}
+                onBack={() => window.history.back()}
+                className="site-page-header"
+                subTitle={resource.organizations.join(', ')}
+                tags={resource.topics.map((t) => {
+                  return (
+                    <Tag
+                      color={'#00CDFF'}
+                      style={{
+                        color: 'white',
+                        fontWeight: 'bold',
+                        marginBottom: '2px',
+                      }}
+                    >
+                      {' '}
+                      {t}
+                    </Tag>
+                  );
+                })}
+                extra={[
+                  <Button
+                    icon={<EditOutlined />}
+                    key="3"
+                    shape="round"
+                    href={'/resources/' + resId + '/edit'}
+                  >
+                    Edit Resource
+                  </Button>,
+                ]}
               >
-                <Descriptions column={1}>
-                  <Descriptions.Item label="Resource Type/Format">
-                    {resource.type.join(', ')}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Resource Path">
-                    {resource.path.join(', ')}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Responsible AI Trust Index Categories">
-                    {resource.trustIndexCategories.join(', ')}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="AI Systems Type">
-                    <text>Not available yet</text>
-                  </Descriptions.Item>
-                </Descriptions>
-              </Panel>
+                {resource.desc}
+              </PageHeader>
+            </div>
+            <div ref={detailRef}>
+              <h1
+                style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}
+              >
+                Details
+              </h1>
+              <Collapse defaultActiveKey={['1']}>
+                <Panel
+                  header="Primary Details"
+                  key="1"
+                  showArrow={false}
+                  disabled={true}
+                >
+                  <Descriptions column={1}>
+                    <Descriptions.Item label="Resource Type/Format">
+                      {resource.type.join(', ')}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Resource Path">
+                      {resource.path.join(', ')}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Responsible AI Trust Index Categories">
+                      {resource.trustIndexCategories.join(', ')}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="AI Systems Type">
+                      <text>Not available yet</text>
+                    </Descriptions.Item>
+                  </Descriptions>
+                </Panel>
 
-              <Panel header="More Details" key="2">
-                <Descriptions column={1}>
-                  <Descriptions.Item label="Creation Date"></Descriptions.Item>
-                  <Descriptions.Item label="Modified Date"></Descriptions.Item>
-                  <Descriptions.Item label="Upload Date"></Descriptions.Item>
-                  <Descriptions.Item label="Creator">
-                    {resource.creator}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Funded By"></Descriptions.Item>
-                </Descriptions>
-              </Panel>
-            </Collapse>
-          </div>
-          <div ref={fileRef}>
-            <FileTable data={emptyRes.files}></FileTable>
-          </div>
-        </Content>
+                <Panel header="More Details" key="2">
+                  <Descriptions column={1}>
+                    <Descriptions.Item label="Creation Date">
+                      {resource.creationDate}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Modified Date">
+                      {resource.modifiedDate}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Upload Date">
+                      {resource.uploadDate}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Creator">
+                      {resource.creator}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Funded By">
+                      {resource.fundedBy}
+                    </Descriptions.Item>
+                  </Descriptions>
+                </Panel>
+              </Collapse>
+            </div>
+            <div ref={fileRef}>
+              <FileTable data={emptyRes.files}></FileTable>
+            </div>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
-  );
+    );
+  }
 }
