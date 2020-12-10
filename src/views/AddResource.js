@@ -51,6 +51,9 @@ const example = {
   license: 'Creative Commons (CC BY 4.0)',
   purpse:
     'Where in the World is AI? Map highlights helpful and harmful AI cases worldwide to start discussions around responsible AI',
+  creator:
+    'Martha Czernuszenko, Shrivu Shankar, Ameya Deshmukh, Colin Philips, and Lucinda Nguyen',
+  contact_email: 'admin@ai-global.org',
 };
 
 let questions_core1 = [
@@ -292,8 +295,47 @@ let questions_core2 = [
     tip: 'A short sentence about the purpose of the resource',
     example_ans: example.purpose,
   },
+  {
+    string: 'What should this resource not be used for?',
+    val: 'unrelated-tasks',
+    type: 'text-area',
+    options: null,
+    required: false,
+    tip: '',
+    example_ans: null,
+  },
+  {
+    string: 'Who created this resource? (*o*)',
+    val: 'creators',
+    type: 'text-area',
+    options: null,
+    required: false,
+    tip: 'List first and last names of any creators of resource',
+    example_ans: example.creator,
+  },
+  {
+    string:
+      'What is the email address of one of the owners? (This information will be made publicly available on our portal))',
+    val: 'contactEmail',
+    type: 'type',
+    options: null,
+    required: false,
+    tip: 'This will be a publicly available in case anyone has any questions',
+    example_ans: example.contact_email,
+  },
 ];
 
+let questions_dataset = [
+  {
+    string: 'If applicable, upload data dictionary',
+    val: '',
+    type: 'text-area',
+    options: null,
+    required: false,
+    tip: '',
+    example_ans: '',
+  },
+];
 let steps = [
   {
     title: 'Core 1',
@@ -303,18 +345,13 @@ let steps = [
     title: 'Core 2',
     content: questions_core2,
   },
-  // {
-  //   title: 'Last',
-  //   content: 'Last-content',
-  // },
 ];
-let data = {
-  0: {},
-  1: {},
-  2: {},
-};
-
 function AddResource2() {
+  let data = {
+    0: {},
+    1: {},
+    2: {},
+  };
   const [form] = Form.useForm();
   // console.log(JSON.stringify(form.getFieldsValue()));
   const [current, setCurrent] = React.useState(0);
@@ -323,6 +360,17 @@ function AddResource2() {
     console.log('inside next');
     data[current] = form.getFieldsValue();
     console.log('updated data', JSON.stringify(data));
+    if (current === 0) {
+      if (data[0]['formats'].includes('Dataset')) {
+        //TODO: bug, push dataset once
+        console.log('included dataset');
+        steps.push({
+          title: 'Dataset',
+          content: questions_dataset,
+        });
+      }
+      //Q: what field to check for model?
+    }
     if (current === steps.length - 1) {
       message.success('Processing complete!');
     } else {
@@ -347,7 +395,7 @@ function AddResource2() {
           style={{ marginTop: '4rem', marginBottom: '4rem' }}
         >
           <Col
-            span={22}
+            span={16}
             style={{
               textAlign: 'center',
               backgroundColor: '#fff',
@@ -369,16 +417,16 @@ function AddResource2() {
               resource will be checked by an AI Global team member and approved
               based on your responses.{' '}
             </p>
-            <Steps current={current}>
+            <Steps current={current} style={{ width: '60%', padding: '26px' }}>
               {steps.map((item) => (
                 <Step key={item.title} title={item.title} />
               ))}
             </Steps>
-
             <Form
-              labelCol={{ span: 7 }}
+              labelCol={{ span: 15 }}
               wrapperCol={{ span: 11 }}
               name="basic"
+              layout="vertical"
               initialValues={{ remember: true }}
               onFinish={next}
               form={form}
@@ -412,7 +460,7 @@ function AddResource2() {
                 )}
                 {current > 0 && (
                   <Form.Item>
-                    <Button style={{ margin: '0 8px' }} htmlType="submit">
+                    <Button style={{ margin: '0 8px' }} onClick={prev}>
                       Previous
                     </Button>
                   </Form.Item>

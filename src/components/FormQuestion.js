@@ -35,6 +35,7 @@ function FormQuestion(props) {
           name={props.question.val}
           label={props.question.string}
           rules={[{ required: props.question.required }]}
+          initialValue={props.question.example_ans}
         >
           <Select
             showSearch
@@ -54,6 +55,7 @@ function FormQuestion(props) {
           name={props.question.val}
           label={props.question.string}
           rules={[{ required: props.question.required }]}
+          initialValue={props.question.example_ans}
         >
           <Select
             showSearch
