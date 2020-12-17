@@ -74,17 +74,33 @@ exports.getAll = async () => {
 };
 
 exports.sendReset = async (user) => {
-  let token = Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, '');
-  await email.send.resetPassword(user.email, {
+  let token = exports.makeToken();
+  await exports.update(user, { resetToken: token });
+  await _email.send.resetPassword(user.email, {
     resetURL: `${process.env.BASE_URL}/reset?username=${user.username}&token=${token}`,
+  });
+};
+
+exports.resetPassword = async (user, resetToken, newPassword) => {
+  if (user.resetToken != resetToken) return false;
+  let salt = exports.makeSalt();
+  let hashedPassword = crypto
+    .createHmac('sha1', salt)
+    .update(newPassword)
+    .digest('hex');
+  await exports.update(user, {
+    resetToken: null,
+    salt: salt,
+    hashedPassword: hashedPassword,
   });
 };
 
 exports.verifyEmail = async (user, token) => {
   if (user.emailToken != token) return false;
-  await exports.update(user, { emailToken: null, emailVerified: true });
+  await exports.update(user, {
+    emailToken: null,
+    emailVerified: true,
+  });
   return true;
 };
 

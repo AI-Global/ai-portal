@@ -5,7 +5,7 @@ module.exports = (app) => {
   app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
     let user = await userUtil.getByUsernameOrEmail(username);
-    if (!user || !user.authenticate(password)) {
+    if (!user || !userUtil.comparePassword(user, password)) {
       return res.json({ errors: [{ msg: 'Failed to login' }] });
     }
     let token = req.jwtSign(userUtil.toTokenJSON(user));
@@ -25,9 +25,21 @@ module.exports = (app) => {
   });
 
   app.post('/api/auth/reset/password', async (req, res) => {
+    // avoid timing attacks
+    setTimeout(() => res.json({ done: true }), 1000);
+    let { username, token, password } = req.body;
     let user = await req.getUser();
-    await userUtil.sendReset(user);
-    return res.json({ sent: true });
+    if (!user && username) {
+      user = await userUtil.getByUsernameOrEmail(username);
+    }
+    if (!token) {
+      // user is requesting reset
+      await userUtil.sendReset(user);
+    } else {
+      // user is using reset link
+      await userUtil.resetPassword(user, token, password);
+    }
+    return;
   });
 
   app.post('/api/auth/verify/email', async (req, res) => {
