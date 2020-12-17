@@ -1,8 +1,20 @@
 const organizationUtil = require('../models/organization.util');
+const resourceUtil = require('../models/resource.util');
 
 module.exports = (app) => {
   app.get('/api/organizations', async (req, res) => {
-    res.json(await organizationUtil.getAll());
+    let orgs = await organizationUtil.getAll();
+    res.json(orgs.map((o) => organizationUtil.toJSON(o)));
+  });
+
+  app.get('/api/organizations/:_id', async (req, res) => {
+    let org = await organizationUtil.getById(req.params);
+    res.json(organizationUtil.toJSON(org));
+  });
+
+  app.get('/api/organizations/:_id/resources', async (req, res) => {
+    let resources = await organizationUtil.getResources(req.params);
+    res.json(resources.map((r) => resourceUtil.toJSON(r)));
   });
 
   app.post('/api/organizations', async (req, res) => {

@@ -29,30 +29,6 @@ function ResourceTable({ resources, edit, admin }) {
       },
     },
     {
-      title: 'Topics',
-      key: 'topics',
-      dataIndex: 'topics',
-      render: (topics) => (
-        <>
-          {topics.map((topic) => {
-            return (
-              <Tag
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  marginBottom: '2px',
-                }}
-                color={'#42D3D4'}
-                key={topic}
-              >
-                {topic.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
       title: 'Path',
       key: 'path',
       dataIndex: 'path',
@@ -94,30 +70,6 @@ function ResourceTable({ resources, edit, admin }) {
                 key={t}
               >
                 {t.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Keywords',
-      key: 'keywords',
-      dataIndex: 'keywords',
-      render: (keywords) => (
-        <>
-          {keywords.map((keyword) => {
-            return (
-              <Tag
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  marginBottom: '2px',
-                }}
-                color={'#009B72'}
-                key={keyword}
-              >
-                {keyword.toUpperCase()}
               </Tag>
             );
           })}

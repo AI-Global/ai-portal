@@ -40,7 +40,7 @@ function App() {
             />
             <Route
               exact
-              path="/organizations/example"
+              path="/organizations/:orgId"
               component={ViewOrganization}
             />
             <Route exact path="/topics/create" component={AddTopic} />

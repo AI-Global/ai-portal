@@ -18,8 +18,8 @@ import {
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
 import Sidebar from '../components/Sidebar';
-import API from '../api';
 import { useParams } from 'react-router-dom';
+import { useAppEnv } from './../env';
 
 const { Panel } = Collapse;
 const demoFiles = [
@@ -69,22 +69,19 @@ function FileTable(props) {
 export default function ViewResource() {
   let [resource, setResource] = useState(null);
   let [loading, setLoading] = useState(true);
-
+  let { api } = useAppEnv();
   let { resId } = useParams();
-
   useEffect(() => {
     let fetchResource = async () => {
-      let resource = await API.get('/api/resources/' + resId);
+      let resource = await api.get('/api/resources/' + resId);
       setResource(resource);
       setLoading(false);
     };
     fetchResource();
   });
-
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
-
   if (loading) {
     return (
       <div
