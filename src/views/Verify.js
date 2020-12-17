@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Content, Row, Col, Switch, Typography } from '../ant';
+import { Layout, Content, Row, Col, Switch } from '../ant';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import Footer from '../components/Footer';
 
