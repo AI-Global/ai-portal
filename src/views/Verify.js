@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Layout, Content, Row, Col, Switch, Typography } from '../ant';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import Footer from '../components/Footer';
-
-const { Title } = Typography;
 
 export default function Verify() {
   let [check, setChecked] = useState(true);
@@ -37,15 +35,24 @@ export default function Verify() {
             <div>
               {check && (
                 <div>
-                  <CheckCircleTwoTone style={{ fontSize: '160px' }} />
+                  <div style={{ marginBottom: '20px' }}>
+                    <CheckCircleTwoTone
+                      style={{ fontSize: '160px' }}
+                      twoToneColor="#00adee"
+                    />
+                  </div>
+                  <b>Verified!</b>
                 </div>
               )}
               {!check && (
                 <div>
                   <div style={{ marginBottom: '20px' }}>
-                    <CloseCircleTwoTone style={{ fontSize: '160px' }} />
+                    <CloseCircleTwoTone
+                      style={{ fontSize: '160px' }}
+                      twoToneColor="#00adee"
+                    />
                   </div>
-                  <b>Something went wrong</b>
+                  <b>Looks like something went wrong. Try again</b>
                 </div>
               )}
             </div>
