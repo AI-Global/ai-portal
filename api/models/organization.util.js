@@ -14,5 +14,9 @@ exports.getAll = async () => {
 };
 
 exports.toJSON = async (organization) => {
-  return { ...organization };
+  return JSON.parse(JSON.stringify(organization));
+};
+
+exports.getByName = async (name) => {
+  return await Organization.findOne({ name: name });
 };

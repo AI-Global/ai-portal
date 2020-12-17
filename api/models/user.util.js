@@ -78,5 +78,5 @@ exports.toTokenJSON = (user) => {
 };
 
 exports.toPrivateJSON = (user) => {
-  return { ...user };
+  return JSON.parse(JSON.stringify(user));
 };

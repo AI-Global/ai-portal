@@ -22,37 +22,20 @@ import API from '../api';
 import { useParams } from 'react-router-dom';
 
 const { Panel } = Collapse;
-const emptyRes = {
-  name: 'HELLO',
-  desc: '',
-  type: [],
-  path: [],
-  avatarIcon: '',
-  aiSystemsType: [],
-  uploadDate: '',
-  creationDate: '',
-  modifiedDate: '',
-  licenseName: '',
-  trustIndexCategories: [''],
-  fundedBy: '',
-  creator: '',
-  files: [
-    {
-      name: 'Resource A',
-      link:
-        'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-      type: 'URL',
-    },
-    {
-      name: 'Resource B',
-      link:
-        'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-      type: 'URL',
-    },
-  ],
-  topics: ['A', 'B', 'C'],
-  organizations: [''],
-};
+const demoFiles = [
+  {
+    name: 'Resource A',
+    link:
+      'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+    type: 'URL',
+  },
+  {
+    name: 'Resource B',
+    link:
+      'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+    type: 'URL',
+  },
+];
 
 function FileTable(props) {
   const columns = [
@@ -139,7 +122,7 @@ export default function ViewResource() {
                 title={resource.name}
                 onBack={() => window.history.back()}
                 className="site-page-header"
-                subTitle={resource.organizations.join(', ')}
+                subTitle={resource.organizations.map((o) => o.name).join(', ')}
                 tags={resource.topics.map((t) => {
                   return (
                     <Tag
@@ -151,7 +134,7 @@ export default function ViewResource() {
                       }}
                     >
                       {' '}
-                      {t}
+                      {t.name}
                     </Tag>
                   );
                 })}
@@ -220,7 +203,7 @@ export default function ViewResource() {
               </Collapse>
             </div>
             <div ref={fileRef}>
-              <FileTable data={emptyRes.files}></FileTable>
+              <FileTable data={demoFiles}></FileTable>
             </div>
           </Content>
         </Layout>
