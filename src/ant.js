@@ -28,6 +28,7 @@ import {
   notification,
   DatePicker,
   Switch,
+  Spin,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -70,4 +71,5 @@ export {
   Collapse,
   notification,
   Switch,
+  Spin,
 };
