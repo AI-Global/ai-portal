@@ -49,10 +49,10 @@ function Resources(props) {
                 onSearch={console.log}
               />
             </Menu.Item>
-            <Menu.Item key="1">20 Datasets</Menu.Item>
-            <Menu.Item key="2">5 Tools</Menu.Item>
-            <Menu.Item key="3">520 Articles</Menu.Item>
-            <Menu.Item key="4">&#43; Suggest Resource</Menu.Item>
+            <Menu.Item key="resources">Resouces</Menu.Item>
+            <Menu.Item key="organizations">Organizations</Menu.Item>
+            <Menu.Item key="upload">Upload</Menu.Item>
+            <Menu.Item key="feedback">Feedback</Menu.Item>
           </Menu>
           <div style={{ position: 'absolute', top: '0px', right: '20px' }}>
             <LoginButton />
@@ -122,29 +122,5 @@ function Resources(props) {
     </Layout>
   );
 }
-
-// mock data for testing modal
-// I kept this in to show the visual if resources is empty
-// let MOCK_DATA = [
-//   {
-//     id: 1,
-//     name: 'Example 1',
-//     type: ['api'],
-//     desc: 'Lorem ipsum',
-//     link: 'https://www.google.com',
-//   },
-//   {
-//     id: 2,
-//     name: 'Example 2',
-//     type: ['algorithm', 'api'],
-//     desc: 'Lorem ipsum',
-//   },
-//   {
-//     id: 3,
-//     name: 'Example 3',
-//     type: ['algorithm'],
-//     desc: 'Lorem ipsum',
-//   },
-// ];
 
 export default Resources;
