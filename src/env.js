@@ -22,7 +22,6 @@ export function AppEnv({ children }) {
     setUser(null);
     setKey('token', '');
   };
-  console.log(user);
   if (!window.contextFound) {
     API.get('/api/context').then(({ user, enums }) => {
       window.contextFound = true;

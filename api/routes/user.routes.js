@@ -30,6 +30,13 @@ module.exports = (app) => {
     return res.json({ sent: true });
   });
 
+  app.post('/api/auth/verify/email', async (req, res) => {
+    const { username, token } = req.body;
+    let user = await userUtil.getByUsernameOrEmail(username);
+    let verified = await userUtil.verifyEmail(user, token);
+    return res.json({ verified: verified });
+  });
+
   app.post('/api/users', async (req, res) => {
     const { name, username, email, password, confirmPassword } = req.body;
     let errors = [];
