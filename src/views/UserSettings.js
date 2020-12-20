@@ -219,7 +219,6 @@ function Organizations({ orgs }) {
 
 function UserSettings() {
   let { user, userID } = useAppEnv();
-  // let q = queryParamsFromProps();
 
   let dashRef = useRef(null),
     resourceRef = useRef(null),
@@ -234,7 +233,7 @@ function UserSettings() {
       setResources(resources);
     };
     let fetchOrgs = async () => {
-      let orgs = await API.get('/api/users' + userID + '/organizations');
+      let orgs = await API.get('/api/users/' + userID + '/organizations');
       setOrgs(orgs);
     };
     fetchResources();
