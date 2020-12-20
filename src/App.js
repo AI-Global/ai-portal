@@ -33,6 +33,7 @@ function App() {
             <Route path="/admin" component={Admin} />
             <Route path="/settings" component={UserSettings} />
             <Route path="/mod" component={Mod} />
+            <Route exact path="/organizations" component={SearchResults} />
             <Route
               exact
               path="/organizations/create"

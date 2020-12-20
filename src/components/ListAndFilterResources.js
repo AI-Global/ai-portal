@@ -8,6 +8,7 @@ import {
   Select,
   Affix,
   Space,
+  Spin,
 } from '../ant';
 import ResourceCard from '../components/ResourceCard';
 import { useAppEnv } from '../env';
@@ -21,7 +22,7 @@ export default function ListAndFilterResources({
   query,
 }) {
   let { api } = useAppEnv();
-  let [resources, setResources] = useState([]);
+  let [resources, setResources] = useState(null);
   let [topics, setTopics] = useState([]);
   let [orgs, setOrgs] = useState([]);
   useEffect(() => {
@@ -126,11 +127,14 @@ export default function ListAndFilterResources({
       </Affix>
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content>
-          <Space direction="vertical" style={{ width: '100%' }}>
-            {resources.map((res) => (
-              <ResourceCard key={res._id} resource={res} />
-            ))}
-          </Space>
+          {resources != null && (
+            <Space direction="vertical" style={{ width: '100%' }}>
+              {resources.map((res) => (
+                <ResourceCard key={res._id} resource={res} />
+              ))}
+            </Space>
+          )}
+          {resources == null && <Spin />}
         </Content>
       </Layout>
     </Layout>
