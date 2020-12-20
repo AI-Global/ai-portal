@@ -138,7 +138,7 @@ function LoginView(props) {
           </Button>
         </Form.Item>
         <p>
-          <a onClick={() => props.setShowLogin(false)} href="#">
+          <a onClick={() => props.setShowLogin(false)} href="#!">
             Forgot login?
           </a>
         </p>
@@ -148,8 +148,7 @@ function LoginView(props) {
 }
 
 function LoginForgetView(props) {
-  let { setUser, setKey, api } = useAppEnv();
-  let history = useHistory();
+  let { api } = useAppEnv();
   let onSubmit = async ({ username }) => {
     let result = await api.post('/api/auth/reset/password', { username });
     if (result.errors) {
@@ -207,7 +206,7 @@ function LoginForgetView(props) {
           </Button>
         </Form.Item>
         <p>
-          <a onClick={() => props.setShowLogin(true)} href="#">
+          <a onClick={() => props.setShowLogin(true)} href="#!">
             Login
           </a>
         </p>

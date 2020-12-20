@@ -6,7 +6,6 @@ import { AppEnv } from './env';
 import Landing from './views/Landing';
 import Login from './views/Login';
 import Register from './views/Register';
-import Resources from './views/Resources';
 import AddResources from './views/AddResource';
 import Admin from './views/Admin';
 import ViewResource from './views/ViewResource';
@@ -18,6 +17,7 @@ import AddTopic from './views/AddTopic';
 import Feedback from './views/Feedback';
 import ResetPassword from './views/ResetPassword';
 import Verify from './views/Verify';
+import SearchResults from './views/SearchResults';
 function App() {
   return (
     <div className="App">
@@ -25,7 +25,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/resources" component={Resources} />
+            <Route exact path="/resources" component={SearchResults} />
             <Route exact path="/resources/create" component={AddResources} />
             <Route path="/resources/:resId" component={ViewResource} />
             <Route path="/login" component={Login} />

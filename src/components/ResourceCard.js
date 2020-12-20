@@ -67,7 +67,7 @@ class ResourceCard extends React.Component {
             <strong style={{ marginRight: '10px' }}>Organizations: </strong>{' '}
             <Space>
               {resource.organizations.map((org) => (
-                <span>org.name</span>
+                <span key={org.name}>{org.name}</span>
               ))}
             </Space>
           </p>

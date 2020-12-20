@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Content, Row, Col, Switch, Spin } from '../ant';
+import { Layout, Content, Row, Col, Spin } from '../ant';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import Footer from '../components/Footer';
 import { queryParamsFromProps } from '../util';
@@ -23,7 +23,7 @@ export default function Verify(props) {
       }
       setLoading(false);
     });
-  }, []);
+  }, [api, username, token]);
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <Content

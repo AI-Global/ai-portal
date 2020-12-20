@@ -6,7 +6,6 @@ import {
   Button,
   PageHeader,
   Collapse,
-  Tag,
   Spin,
 } from '../ant';
 import {
@@ -40,7 +39,7 @@ export default function ViewOrganization() {
     api.get('/api/organizations/' + orgId + '/resources').then((resources) => {
       setOrgRes(resources);
     });
-  }, []);
+  }, [api, orgId]);
   if (loading) {
     return (
       <div
