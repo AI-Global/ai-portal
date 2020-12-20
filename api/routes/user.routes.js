@@ -80,7 +80,7 @@ module.exports = (app) => {
 
   app.put('/api/users/:_id', async (req, res) => {
     await userUtil.update(req.params, req.body);
-    return res.json({});
+    return res.json(Object.assign({}, req.params, req.body));
   });
 
   app.delete('/api/users/:_id', async (req, res) => {

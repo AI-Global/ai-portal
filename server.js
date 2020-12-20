@@ -66,7 +66,10 @@ app.use((req, res, next) => {
     }
     return null;
   };
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  let fetchOrigin = req.headers.origin;
+  // TODO: validate fetchOrigin
+  res.header('Access-Control-Allow-Origin', fetchOrigin);
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'

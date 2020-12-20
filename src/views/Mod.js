@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Layout,
-  Content,
-  Row,
-  Col,
-  Card,
-  Breadcrumb,
-  Statistic,
-  Tooltip,
-} from '../ant';
+import { Layout, Content, Row, Col, Card, Statistic, Tooltip } from '../ant';
 
 import {
   QuestionCircleTwoTone,
@@ -104,17 +95,7 @@ function Mod() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={17}>
-          <Breadcrumb style={{ marginLeft: '20px' }}>
-            <Breadcrumb.Item>
-              <a href="/">Home</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="/">User Name</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Moderator</Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
+        <Col span={17}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>

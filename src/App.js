@@ -18,6 +18,7 @@ import Feedback from './views/Feedback';
 import ResetPassword from './views/ResetPassword';
 import Verify from './views/Verify';
 import SearchResults from './views/SearchResults';
+
 function App() {
   return (
     <div className="App">

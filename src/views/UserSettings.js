@@ -6,7 +6,6 @@ import {
   Row,
   Col,
   Card,
-  Breadcrumb,
   Space,
   Tag,
   Table,
@@ -28,10 +27,6 @@ import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
 import API from '../api';
 import { useAppEnv } from './../env';
-
-function onChange(pagination, filters, sorter, extra) {
-  console.log('params', pagination, filters, sorter, extra);
-}
 
 function Dashboard({ user }) {
   let resetPassword = async () => {
@@ -209,7 +204,7 @@ function Organizations({ orgs }) {
       <Table
         columns={columns}
         dataSource={orgs}
-        onChange={onChange}
+        onChange={console.log}
         pagination={{ pageSize: 10 }}
         scroll={{ y: 240 }}
       />
@@ -248,17 +243,7 @@ function UserSettings() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={17}>
-          <Breadcrumb style={{ marginLeft: '20px' }}>
-            <Breadcrumb.Item>
-              <a href="/">Home</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="/">User Name</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Settings</Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
+        <Col span={17}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>

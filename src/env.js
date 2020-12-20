@@ -14,6 +14,7 @@ let getKey = (key) => {
 export function AppEnv({ children }) {
   let [user, _setUser] = useState(getKey('user'));
   let [enums, _setEnums] = useState(getKey('enums'));
+  let [api, setAPI] = useState({ ...API, refreshKey: 0 });
   let setUser = (user) => {
     setKey('user', user);
     _setUser(user);
@@ -31,10 +32,15 @@ export function AppEnv({ children }) {
       _setEnums(enums);
     });
   }
+  // This will force any components that rely on an API call
+  // to retrigger and refresh content.
+  let refreshAPI = () => {
+    setAPI({ ...API, refreshKey: api.refreshKey++ });
+  };
   return (
     <AppContext.Provider
       value={{
-        api: API,
+        api: api,
         userID: user?.id,
         user: user,
         enums: enums,
@@ -42,6 +48,7 @@ export function AppEnv({ children }) {
         setKey: setKey,
         getKey: getKey,
         logout: logout,
+        refresh: refreshAPI,
       }}
     >
       {children}
