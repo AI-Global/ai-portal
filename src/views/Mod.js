@@ -10,7 +10,7 @@ import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
-import API from '../api';
+import { useAppEnv } from './../env';
 
 const resourcesData = [
   {
@@ -81,10 +81,11 @@ function Dashboard({ users }) {
 }
 
 function Mod() {
+  let { api } = useAppEnv();
   let [users, setUsers] = useState([]);
   useEffect(() => {
-    API.get('/api/users/').then(setUsers);
-  }, []);
+    api.get('/api/users').then(setUsers);
+  }, [api]);
   let dashRef = useRef(null),
     resourceRef = useRef(null);
   return (

@@ -25,15 +25,14 @@ import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
-import API from '../api';
 import { useAppEnv } from './../env';
 
 function Dashboard({ user }) {
+  let { api } = useAppEnv();
   let resetPassword = async () => {
-    await API.post('/api/auth/reset/password');
+    await api.post('/api/auth/reset/password');
     notification.info({ message: 'Password reset email sent.' });
   };
-
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
@@ -213,7 +212,7 @@ function Organizations({ orgs }) {
 }
 
 function UserSettings() {
-  let { user, userID } = useAppEnv();
+  let { api, user, userID } = useAppEnv();
 
   let dashRef = useRef(null),
     resourceRef = useRef(null),
@@ -223,17 +222,13 @@ function UserSettings() {
   let [orgs, setOrgs] = useState([]);
 
   useEffect(() => {
-    let fetchResources = async () => {
-      let resources = await API.get('/api/users/' + userID + '/resources');
-      setResources(resources);
-    };
-    let fetchOrgs = async () => {
-      let orgs = await API.get('/api/users/' + userID + '/organizations');
-      setOrgs(orgs);
-    };
-    fetchResources();
-    fetchOrgs();
-  });
+    api
+      .get('/api/users/' + userID + '/resources')
+      .then((resources) => setResources(resources));
+    api
+      .get('/api/users/' + userID + '/organizations')
+      .then((orgs) => setOrgs(orgs));
+  }, [api, userID]);
 
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
