@@ -16,9 +16,15 @@ import OrganizationCard from './OrganizationCard';
 export default function ListAndFilterOrganizations({ orgTypes, query }) {
   let { api } = useAppEnv();
   let [orgs, setOrgs] = useState(null);
+  let [filterVals, setFilterVals] = useState({});
   useEffect(() => {
-    api.get('/api/organizations').then((orgs) => setOrgs(orgs));
-  }, [query, api]);
+    api
+      .get('/api/organizations', { query: query, ...filterVals })
+      .then((orgs) => setOrgs(orgs));
+  }, [query, api, filterVals]);
+  let updateFilters = (newFilters) => {
+    setFilterVals({ ...filterVals, ...newFilters });
+  };
   return (
     <Layout>
       <Affix offsetTop={64}>

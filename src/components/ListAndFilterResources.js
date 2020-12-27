@@ -25,13 +25,19 @@ export default function ListAndFilterResources({
   let [resources, setResources] = useState(null);
   let [topics, setTopics] = useState([]);
   let [orgs, setOrgs] = useState([]);
+  let [filterVals, setFilterVals] = useState({});
   useEffect(() => {
-    api
-      .get('/api/resources', { query: query })
-      .then((resources) => setResources(resources));
     api.get('/api/organizations').then((orgs) => setOrgs(orgs));
     api.get('/api/topics').then((topics) => setTopics(topics));
-  }, [query, api]);
+  }, [api]);
+  useEffect(() => {
+    api
+      .get('/api/resources', { query: query, ...filterVals })
+      .then((resources) => setResources(resources));
+  }, [query, filterVals, api]);
+  let updateFilters = (newFilters) => {
+    setFilterVals({ ...filterVals, ...newFilters });
+  };
   return (
     <Layout>
       <Affix offsetTop={64}>
@@ -57,12 +63,13 @@ export default function ListAndFilterResources({
             </Menu.Item>
             <Menu.Item key="orgs" disabled>
               <Select
+                onChange={(v) => updateFilters({ organizationId: v })}
                 showSearch
                 defaultValue="Organization"
                 style={{ width: '100%' }}
               >
-                {orgs.map((res) => (
-                  <Select.Option value={res.name}>{res.name}</Select.Option>
+                {orgs.map((org) => (
+                  <Select.Option value={org._id}>{org.name}</Select.Option>
                 ))}
               </Select>
             </Menu.Item>
