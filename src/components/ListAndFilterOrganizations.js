@@ -50,6 +50,7 @@ export default function ListAndFilterOrganizations({ orgTypes, query }) {
             </Menu.Item>
             <Menu.Item key="orgTypes" disabled>
               <Select
+                onChange={(v) => updateFilters({ organizationType: v })}
                 showSearch
                 defaultValue="Organization Type"
                 style={{ width: '100%' }}

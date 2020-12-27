@@ -14,7 +14,7 @@ export default function ManageResourceModal({
     setEditedResource(JSON.parse(JSON.stringify(resource)));
   }, [resource]);
   let { api, refresh } = useAppEnv();
-  let unsavedEdit = JSON.stringify(resource) != JSON.stringify(editedResource);
+  let unsavedEdit = JSON.stringify(resource) !== JSON.stringify(editedResource);
   let saveChanges = () => {
     api
       .put(`/api/resources/${resource._id}`, editedResource)

@@ -80,7 +80,7 @@ export default function ViewResource() {
       setLoading(false);
     };
     fetchResource();
-  }, [api]);
+  }, [api, resId]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
