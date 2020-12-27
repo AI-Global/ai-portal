@@ -22,7 +22,12 @@ exports.create = async (params) => {
 };
 
 exports.update = async (resource, params) => {
-  return await Model.update({ _id: resource._id }, { $set: params }).exec();
+  let { topics, files, organizations, _id, __v, ...cleanParams } = params;
+  console.log(resource, cleanParams);
+  return await Resource.update(
+    { _id: resource._id },
+    { $set: cleanParams }
+  ).exec();
 };
 
 exports.toJSON = (resource) => {

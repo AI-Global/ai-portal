@@ -78,6 +78,11 @@ module.exports = (app) => {
     return res.json(users);
   });
 
+  app.get('/api/users/:_id', async (req, res) => {
+    let user = await userUtil.getById(req.params);
+    return res.json(userUtil.toJSON(user));
+  });
+
   app.put('/api/users/:_id', async (req, res) => {
     await userUtil.update(req.params, req.body);
     return res.json(Object.assign({}, req.params, req.body));

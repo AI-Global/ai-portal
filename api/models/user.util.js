@@ -104,6 +104,14 @@ exports.verifyEmail = async (user, token) => {
   return true;
 };
 
+exports.getById = async (id) => {
+  return await User.findById(id);
+};
+
+exports.toJSON = (user) => {
+  return JSON.parse(JSON.stringify(user));
+};
+
 exports.toTokenJSON = (user) => {
   let { _id, email, name, username, role } = user;
   return { _id, email, name, username, role };

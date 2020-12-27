@@ -22,7 +22,8 @@ module.exports = (app) => {
   });
 
   app.put('/api/resources/:_id', async (req, res) => {
-    return await resourceUtil.update(req.params, req.body);
+    await resourceUtil.update(req.params, req.body);
+    res.json({});
   });
 
   app.get('/api/resources/:_id', async (req, res) => {
