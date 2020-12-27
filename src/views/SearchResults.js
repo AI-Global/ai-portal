@@ -16,7 +16,8 @@ export default function SearchResults(props) {
   let resourceTypes = enums ? enums.RESOURCE_TYPES : [];
   let resourcePath = enums ? enums.RESOURCE_PATHS : [];
   let { q } = queryParamsFromProps(props);
-  let View = history.location.pathname.includes('/resources')
+  let isResourceView = history.location.pathname.includes('/resources');
+  let View = isResourceView
     ? ListAndFilterResources
     : ListAndFilterOrganizations;
   let search = history.location.search;
@@ -37,7 +38,9 @@ export default function SearchResults(props) {
               <Search
                 className="menu-search"
                 style={{ marginTop: '20px' }}
-                placeholder="Search for Resources"
+                placeholder={`Search for ${
+                  isResourceView ? 'resources' : 'organizations'
+                }`}
                 enterButton
                 onSearch={console.log}
               />

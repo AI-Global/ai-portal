@@ -20,6 +20,7 @@ import FormHeader from '../components/FormHeader';
 import Sidebar from '../components/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
+import ManageResourceModal from './../components/ManageResourceModal';
 
 const { Panel } = Collapse;
 const demoFiles = [
@@ -69,6 +70,7 @@ function FileTable(props) {
 export default function ViewResource() {
   let [resource, setResource] = useState(null);
   let [loading, setLoading] = useState(true);
+  let [showModal, setShowModal] = useState(false);
   let { api } = useAppEnv();
   let { resId } = useParams();
   useEffect(() => {
@@ -78,7 +80,7 @@ export default function ViewResource() {
       setLoading(false);
     };
     fetchResource();
-  });
+  }, [api]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
@@ -98,6 +100,11 @@ export default function ViewResource() {
   } else {
     return (
       <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
+        <ManageResourceModal
+          resource={resource}
+          modalVisible={showModal}
+          setModalVisible={(v) => setShowModal(v)}
+        />
         <FormHeader />
         <Layout>
           <Sidebar
@@ -140,7 +147,7 @@ export default function ViewResource() {
                     icon={<EditOutlined />}
                     key="3"
                     shape="round"
-                    href={'/resources/' + resId + '/edit'}
+                    onClick={() => setShowModal(true)}
                   >
                     Edit Resource
                   </Button>,

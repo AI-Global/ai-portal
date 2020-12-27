@@ -26,7 +26,7 @@ export function AppEnv({ children }) {
   if (!window.contextFound) {
     API.get('/api/context').then(({ user, enums }) => {
       window.contextFound = true;
-      if (user && user.id) {
+      if (user && user._id) {
         setUser(user);
       }
       _setEnums(enums);
@@ -35,6 +35,7 @@ export function AppEnv({ children }) {
   // This will force any components that rely on an API call
   // to retrigger and refresh content.
   let refreshAPI = () => {
+    console.log('Refreshing all remote data...');
     setAPI({ ...API, refreshKey: api.refreshKey++ });
   };
   return (

@@ -100,7 +100,7 @@ function ManageUsersTable({ users }) {
       },
     },
     {
-      title: 'Action',
+      title: 'Manage',
       key: 'action',
       render: (text, user) => (
         <Button onClick={() => setManageUser(user)}>Edit</Button>

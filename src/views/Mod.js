@@ -12,46 +12,7 @@ import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
 import { useAppEnv } from './../env';
 
-const resourcesData = [
-  {
-    key: '1',
-    name: 'IBM AI Fairness 360',
-    desc:
-      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-    uploadDate: '2015-03-25',
-    topics: ['Banking'],
-    path: ['Designer'],
-    type: ['Research'],
-    link: 'https://aif360.mybluemix.net/',
-    keywords: ['NLP', 'CV'],
-  },
-  {
-    key: '2',
-    name: 'IBM AI Fairness 360',
-    desc:
-      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-    uploadDate: '2015-03-25',
-    topics: ['Finance'],
-    path: ['Developer'],
-    type: ['Podcast'],
-    link: 'https://aif360.mybluemix.net/',
-    keywords: ['Data Analytics', 'IPA'],
-  },
-  {
-    key: '3',
-    name: 'IBM AI Fairness 360',
-    desc:
-      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-    uploadDate: '2015-03-25',
-    topics: ['Banking', 'Other'],
-    path: ['Designer'],
-    type: ['Research'],
-    link: 'https://aif360.mybluemix.net/',
-    keywords: ['NLP'],
-  },
-];
-
-function Dashboard({ users }) {
+function Dashboard({ users, pendingResources }) {
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
@@ -70,7 +31,10 @@ function Dashboard({ users }) {
       </h1>
       <Row gutter={16}>
         <Col span={4}>
-          <Statistic title="Pending Resources" value={resourcesData.length} />
+          <Statistic
+            title="Pending Resources"
+            value={pendingResources.length}
+          />
         </Col>
         <Col span={4}>
           <Statistic title="Accounts" value={users.length} />
@@ -83,11 +47,13 @@ function Dashboard({ users }) {
 function Mod() {
   let { api } = useAppEnv();
   let [users, setUsers] = useState([]);
+  let [pendingResources, setPendingResources] = useState([]);
   useEffect(() => {
     api.get('/api/users').then(setUsers);
+    api.get('/api/resources?pending=true').then(setPendingResources);
   }, [api]);
-  let dashRef = useRef(null),
-    resourceRef = useRef(null);
+  let dashRef = useRef(null);
+  let resourceRef = useRef(null);
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <Row justify="start" align="middle">
@@ -116,11 +82,15 @@ function Mod() {
         >
           {users && (
             <div ref={dashRef}>
-              <Dashboard users={users} />
+              <Dashboard pendingResources={pendingResources} users={users} />
             </div>
           )}
           <div ref={resourceRef}>
-            <ResourceTable resources={resourcesData} admin={true} edit={true} />
+            <ResourceTable
+              resources={pendingResources}
+              admin={true}
+              edit={true}
+            />
           </div>
         </Content>
       </Layout>
