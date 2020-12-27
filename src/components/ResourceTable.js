@@ -1,12 +1,10 @@
-import React from 'react';
-import { Search, Card, Space, Tag, Table, Tooltip } from '../ant';
+import React, { useState } from 'react';
+import { Search, Card, Button, Tag, Table, Tooltip } from '../ant';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
-
-function onChange(pagination, filters, sorter, extra) {
-  console.log('params', pagination, filters, sorter, extra);
-}
+import ManageResourceModal from './ManageResourceModal';
 
 function ResourceTable({ resources, edit, admin }) {
+  let [manageResource, setManageResource] = useState(null);
   const resourcesColumns = [
     {
       title: 'Resource Name',
@@ -89,31 +87,13 @@ function ResourceTable({ resources, edit, admin }) {
       ),
     },
     {
-      title: 'Action',
+      title: 'Manage',
       key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a href="/">Edit</a> | <a href="/">Remove</a>
-        </Space>
+      render: (text, resource) => (
+        <Button onClick={() => setManageResource(resource)}>Edit</Button>
       ),
     },
   ];
-
-  // remove last column if no privilege (regular user)
-  if (!edit) {
-    resourcesColumns.pop();
-  } else if (admin) {
-    resourcesColumns.pop();
-    resourcesColumns.push({
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a href="/">Accept</a> | <a href="/">Edit</a> | <a href="/">Remove</a>
-        </Space>
-      ),
-    });
-  }
 
   let title = 'Uploaded Resources';
   if (admin) title = 'Pending Resources';
@@ -143,9 +123,14 @@ function ResourceTable({ resources, edit, admin }) {
       <Table
         columns={resourcesColumns}
         dataSource={resources}
-        onChange={onChange}
+        onChange={console.log}
         pagination={{ pageSize: 10 }}
         scroll={{ y: 240 }}
+      />
+      <ManageResourceModal
+        resource={manageResource}
+        modalVisible={manageResource != null}
+        setModalVisible={() => setManageResource(null)}
       />
     </Card>
   );
