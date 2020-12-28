@@ -19,9 +19,16 @@ export function AppEnv({ children }) {
     setKey('user', user);
     _setUser(user);
   };
+  // This will force any components that rely on an API call
+  // to retrigger and refresh content.
+  let refreshAPI = () => {
+    console.log('Refreshing all remote data...');
+    setAPI({ ...API, refreshKey: api.refreshKey++ });
+  };
   let logout = () => {
     setUser(null);
     setKey('token', '');
+    refreshAPI();
   };
   if (!window.contextFound) {
     API.get('/api/context').then(({ user, enums }) => {
@@ -32,12 +39,6 @@ export function AppEnv({ children }) {
       _setEnums(enums);
     });
   }
-  // This will force any components that rely on an API call
-  // to retrigger and refresh content.
-  let refreshAPI = () => {
-    console.log('Refreshing all remote data...');
-    setAPI({ ...API, refreshKey: api.refreshKey++ });
-  };
   return (
     <AppContext.Provider
       value={{

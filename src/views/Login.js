@@ -20,7 +20,30 @@ import { queryParamsFromProps } from '../util';
 const { Title } = Typography;
 
 export default function Login(props) {
+  let { user } = useAppEnv();
+  let history = useHistory();
+  // Control login fields vs forget password (overriden by oauth flow)
   let [showLogin, setShowLogin] = useState(true);
+  let { username, flow, ...oauthParams } = queryParamsFromProps(props);
+  useEffect(() => {
+    if (username) {
+      notification.info({
+        message: `Login as ${username} and verify your account by visiting the url sent to your email.`,
+      });
+    }
+  }, [username]);
+  let inOAuth = !!oauthParams.client_id;
+  useEffect(() => {
+    if (user && !inOAuth) {
+      // already logged in?
+      history.push('/');
+    }
+  }, [user, inOAuth]);
+  let redirect = inOAuth
+    ? `/auth?flow=post&${Object.keys(oauthParams)
+        .map((k) => k + '=' + oauthParams[k])
+        .join('&')}`
+    : '/resources';
   return (
     <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
       <a href="/">
@@ -39,8 +62,14 @@ export default function Login(props) {
         }}
       >
         <Row justify="center" style={{ marginTop: '4rem' }}>
-          {showLogin ? (
-            <LoginView {...props} setShowLogin={setShowLogin} />
+          {inOAuth && user ? (
+            <OAuthConfirmView oauthParams={oauthParams} />
+          ) : showLogin ? (
+            <LoginView
+              {...props}
+              redirect={redirect}
+              setShowLogin={setShowLogin}
+            />
           ) : (
             <LoginForgetView {...props} setShowLogin={setShowLogin} />
           )}
@@ -53,15 +82,50 @@ export default function Login(props) {
   );
 }
 
-function LoginView(props) {
-  let { username, redirect } = queryParamsFromProps(props);
+function OAuthConfirmView({ oauthParams }) {
+  let [oauthInfo, setOAuthInfo] = useState(null);
+  let { api } = useAppEnv();
+  let history = useHistory();
   useEffect(() => {
-    if (username) {
-      notification.info({
-        message: `Login as ${username} and verify your account by visiting the url sent to your email.`,
-      });
+    if (oauthParams.client_id) {
+      api.get(`/api/oauth/clients/${oauthParams.client_id}`).then(setOAuthInfo);
     }
-  }, [username]);
+  }, [api, oauthParams.client_id]);
+  let allow = () => {
+    api.post('/api/oauth/authcode', oauthParams).then(console.log);
+  };
+  return (
+    <Col
+      span={8}
+      style={{
+        textAlign: 'center',
+        backgroundColor: '#fff',
+        padding: '26px',
+        minWidth: '700px',
+      }}
+    >
+      <Typography>
+        <Title style={{ minWidth: '500px' }}>{oauthInfo?.name}</Title>
+        <span>Allow {oauthInfo?.name} to access your AI Global account?</span>
+        <br />
+        <div style={{ marginTop: '10px' }}>
+          <Button type="danger" onClick={() => history.push('/')}>
+            Deny
+          </Button>
+          <Button
+            style={{ marginLeft: '10px' }}
+            type="primary"
+            onClick={() => allow()}
+          >
+            Allow
+          </Button>
+        </div>
+      </Typography>
+    </Col>
+  );
+}
+
+function LoginView({ setShowLogin, redirect }) {
   let { setUser, setKey, api } = useAppEnv();
   let history = useHistory();
   let onSubmit = async (values) => {
@@ -76,12 +140,7 @@ function LoginView(props) {
     }
     setUser(result.user);
     setKey('token', result.token);
-    if (redirect) {
-      // TODO: validate redirect & issue new token
-      window.location = redirect + '?token=' + result.token;
-    } else {
-      history.push('/resources');
-    }
+    history.push(redirect);
   };
   let onFail = (values) => {
     for (let err of values.errorFields) {
@@ -138,7 +197,7 @@ function LoginView(props) {
           </Button>
         </Form.Item>
         <p>
-          <a onClick={() => props.setShowLogin(false)} href="#!">
+          <a onClick={() => setShowLogin(false)} href="#!">
             Forgot login?
           </a>
         </p>

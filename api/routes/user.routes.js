@@ -8,7 +8,7 @@ module.exports = (app) => {
     if (!user || !userUtil.comparePassword(user, password)) {
       return res.json({ errors: [{ msg: 'Failed to login' }] });
     }
-    let token = req.jwtSign(userUtil.toTokenJSON(user));
+    let token = req.jwtSign(userUtil.toTokenJSON(user, 'portal'));
     return res.json({
       user: userUtil.toPrivateJSON(user),
       token: token,

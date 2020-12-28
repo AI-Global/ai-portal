@@ -60,6 +60,9 @@ app.use((req, res, next) => {
       algorithm: 'HS256',
     });
   };
+  req.jwtDecode = (token) => {
+    return jwt.verify(token, secret);
+  };
   req.getUser = async () => {
     if (req.user) {
       return await userUtil.get({ _id: req.user._id });

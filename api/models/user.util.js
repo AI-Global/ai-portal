@@ -112,9 +112,9 @@ exports.toJSON = (user) => {
   return JSON.parse(JSON.stringify(user));
 };
 
-exports.toTokenJSON = (user) => {
+exports.toTokenJSON = (user, accessClient) => {
   let { _id, email, name, username, role } = user;
-  return { _id, email, name, username, role };
+  return { _id, email, name, username, role, accessClient };
 };
 
 exports.toPrivateJSON = (user) => {

@@ -29,6 +29,8 @@ function App() {
             <Route exact path="/resources" component={SearchResults} />
             <Route exact path="/resources/create" component={AddResources} />
             <Route path="/resources/:resId" component={ViewResource} />
+            {/* auth is just alias for login */}
+            <Route path="/auth" component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/admin" component={Admin} />
