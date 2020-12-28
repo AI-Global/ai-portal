@@ -25,16 +25,23 @@ import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
+import ManageUserModal from './../components/ManageUserModal';
 import { useAppEnv } from './../env';
 
 function Dashboard({ user }) {
   let { api } = useAppEnv();
+  let [showEditModal, setShowEditModal] = useState(null);
   let resetPassword = async () => {
     await api.post('/api/auth/reset/password');
     notification.info({ message: 'Password reset email sent.' });
   };
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
+      <ManageUserModal
+        user={user}
+        modalVisible={showEditModal}
+        setModalVisible={(v) => setShowEditModal(v)}
+      />
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
         User Overview &nbsp;
         <Tooltip title="View your profile information" placement="right">
@@ -70,7 +77,7 @@ function Dashboard({ user }) {
             <hr />
             <Space>
               <Tooltip title="Edit your profile information" placement="bottom">
-                <Button type="primary" href="#">
+                <Button type="primary" onClick={() => setShowEditModal(true)}>
                   Edit Information
                 </Button>
               </Tooltip>
