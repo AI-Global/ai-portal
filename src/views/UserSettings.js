@@ -112,12 +112,6 @@ function Dashboard({ user }) {
                 {user.role}
               </span>
             </h3>
-            <h3>
-              <strong>Description: </strong>
-              <span id="description" style={{ fontWeight: 'normal' }}>
-                {user.description}
-              </span>
-            </h3>
           </div>
         </Col>
       </Row>

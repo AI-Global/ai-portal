@@ -15,12 +15,17 @@ import OrganizationCard from './OrganizationCard';
 
 export default function ListAndFilterOrganizations({ orgTypes, query }) {
   let { api } = useAppEnv();
+  let [loading, setLoading] = useState(true);
   let [orgs, setOrgs] = useState(null);
   let [filterVals, setFilterVals] = useState({});
   useEffect(() => {
+    setLoading(true);
     api
       .get('/api/organizations', { query: query, ...filterVals })
-      .then((orgs) => setOrgs(orgs));
+      .then((orgs) => {
+        setOrgs(orgs);
+        setLoading(false);
+      });
   }, [query, api, filterVals]);
   let updateFilters = (newFilters) => {
     setFilterVals({ ...filterVals, ...newFilters });
@@ -65,14 +70,14 @@ export default function ListAndFilterOrganizations({ orgTypes, query }) {
       </Affix>
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content>
-          {orgs != null && (
+          {!loading && (
             <Space direction="vertical" style={{ width: '100%' }}>
               {orgs.map((org) => (
                 <OrganizationCard key={org._id} organization={org} />
               ))}
             </Space>
           )}
-          {orgs == null && <Spin />}
+          {loading && <Spin />}
         </Content>
       </Layout>
     </Layout>

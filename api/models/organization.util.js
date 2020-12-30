@@ -25,6 +25,14 @@ exports.getById = async (id) => {
   return await Organization.findById(id);
 };
 
+exports.update = async (organization, params) => {
+  let { _id, __v, ...cleanParams } = params;
+  return await Organization.update(
+    { _id: organization._id },
+    { $set: cleanParams }
+  ).exec();
+};
+
 exports.getResources = async (org) => {
   let { resources } = await Organization.findById(org._id).populate(
     'resources',

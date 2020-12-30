@@ -29,7 +29,7 @@ export default function ManageResourceModal({
       footer={[]}
       width={600}
     >
-      {resource && (
+      {resource && editedResource && (
         <>
           <Input
             placeholder="Name"

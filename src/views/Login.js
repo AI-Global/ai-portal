@@ -38,7 +38,7 @@ export default function Login(props) {
       // already logged in?
       history.push('/');
     }
-  }, [user, inOAuth]);
+  }, [user, inOAuth, history]);
   let redirect = inOAuth
     ? `/auth?flow=post&${Object.keys(oauthParams)
         .map((k) => k + '=' + oauthParams[k])

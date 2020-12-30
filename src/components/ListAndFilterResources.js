@@ -23,6 +23,7 @@ export default function ListAndFilterResources({
 }) {
   let { api } = useAppEnv();
   let [resources, setResources] = useState(null);
+  let [loading, setLoading] = useState(true);
   let [topics, setTopics] = useState([]);
   let [orgs, setOrgs] = useState([]);
   let [filterVals, setFilterVals] = useState({});
@@ -31,9 +32,13 @@ export default function ListAndFilterResources({
     api.get('/api/topics').then((topics) => setTopics(topics));
   }, [api]);
   useEffect(() => {
+    setLoading(true);
     api
       .get('/api/resources', { query: query, ...filterVals })
-      .then((resources) => setResources(resources));
+      .then((resources) => {
+        setResources(resources);
+        setLoading(false);
+      });
   }, [query, filterVals, api]);
   let updateFilters = (newFilters) => {
     setFilterVals({ ...filterVals, ...newFilters });
@@ -134,14 +139,14 @@ export default function ListAndFilterResources({
       </Affix>
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content>
-          {resources != null && (
+          {!loading && (
             <Space direction="vertical" style={{ width: '100%' }}>
               {resources.map((res) => (
                 <ResourceCard key={res._id} resource={res} />
               ))}
             </Space>
           )}
-          {resources == null && <Spin />}
+          {loading && <Spin />}
         </Content>
       </Layout>
     </Layout>

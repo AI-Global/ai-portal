@@ -23,7 +23,6 @@ exports.create = async (params) => {
 
 exports.update = async (resource, params) => {
   let { topics, files, organizations, _id, __v, ...cleanParams } = params;
-  console.log(resource, cleanParams);
   return await Resource.update(
     { _id: resource._id },
     { $set: cleanParams }

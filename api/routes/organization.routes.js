@@ -12,6 +12,11 @@ module.exports = (app) => {
     res.json(organizationUtil.toJSON(org));
   });
 
+  app.put('/api/organizations/:_id', async (req, res) => {
+    await organizationUtil.update(req.params, req.body);
+    res.json({});
+  });
+
   app.get('/api/organizations/:_id/resources', async (req, res) => {
     let resources = await organizationUtil.getResources(req.params);
     res.json(resources.map((r) => resourceUtil.toJSON(r)));
