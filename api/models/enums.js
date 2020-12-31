@@ -24,6 +24,7 @@ module.exports.RESOURCE_TYPES = [
   'Vision Tool',
   'Working Groups',
   'Workshop',
+  'Dataset',
 ];
 module.exports.RESOURCE_PATHS = [
   'Designer Path',
@@ -38,3 +39,8 @@ module.exports.ORG_TYPES = [
   'Government',
   'Civil Society',
 ];
+module.exports.FILE_TYPES = [
+  { name: 'DOCX', ext: 'doc', app: 'Microsoft Word' },
+  { name: 'CSV', ext: 'csv', app: 'Comma Separated Values' },
+];
+module.exports.FILE_EXTS = module.exports.FILE_TYPES.map((ft) => ft.ext);

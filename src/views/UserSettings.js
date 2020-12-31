@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Layout,
   Content,
@@ -6,7 +6,6 @@ import {
   Row,
   Col,
   Card,
-  Breadcrumb,
   Space,
   Tag,
   Table,
@@ -26,20 +25,23 @@ import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
-import API from '../api';
+import ManageUserModal from './../components/ManageUserModal';
 import { useAppEnv } from './../env';
 
-function onChange(pagination, filters, sorter, extra) {
-  console.log('params', pagination, filters, sorter, extra);
-}
-
 function Dashboard({ user }) {
+  let { api } = useAppEnv();
+  let [showEditModal, setShowEditModal] = useState(null);
   let resetPassword = async () => {
-    await API.post('/api/auth/reset/password');
+    await api.post('/api/auth/reset/password');
     notification.info({ message: 'Password reset email sent.' });
   };
   return (
     <Card id="overview" style={{ marginBottom: '20px' }}>
+      <ManageUserModal
+        user={user}
+        modalVisible={showEditModal}
+        setModalVisible={(v) => setShowEditModal(v)}
+      />
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
         User Overview &nbsp;
         <Tooltip title="View your profile information" placement="right">
@@ -75,7 +77,7 @@ function Dashboard({ user }) {
             <hr />
             <Space>
               <Tooltip title="Edit your profile information" placement="bottom">
-                <Button type="primary" href="#">
+                <Button type="primary" onClick={() => setShowEditModal(true)}>
                   Edit Information
                 </Button>
               </Tooltip>
@@ -84,7 +86,7 @@ function Dashboard({ user }) {
                   Change Password
                 </Button>
               </Tooltip>
-              {user.verified && (
+              {!user.emailVerified && (
                 <Tooltip title="Verify your account email" placement="bottom">
                   <Button danger href="#">
                     <ExclamationCircleTwoTone twoToneColor="red" /> Verify Email
@@ -110,12 +112,6 @@ function Dashboard({ user }) {
                 {user.role}
               </span>
             </h3>
-            <h3>
-              <strong>Description: </strong>
-              <span id="description" style={{ fontWeight: 'normal' }}>
-                {user.description}
-              </span>
-            </h3>
           </div>
         </Col>
       </Row>
@@ -123,7 +119,7 @@ function Dashboard({ user }) {
   );
 }
 
-function Organizations({ organizations }) {
+function Organizations({ orgs }) {
   const columns = [
     {
       title: 'Organization',
@@ -207,8 +203,8 @@ function Organizations({ organizations }) {
       </Tooltip>
       <Table
         columns={columns}
-        dataSource={organizations}
-        onChange={onChange}
+        dataSource={orgs}
+        onChange={console.log}
         pagination={{ pageSize: 10 }}
         scroll={{ y: 240 }}
       />
@@ -217,11 +213,23 @@ function Organizations({ organizations }) {
 }
 
 function UserSettings() {
-  let { user } = useAppEnv();
+  let { api, user, userID } = useAppEnv();
 
   let dashRef = useRef(null),
     resourceRef = useRef(null),
     orgRef = useRef(null);
+
+  let [resources, setResources] = useState([]);
+  let [orgs, setOrgs] = useState([]);
+
+  useEffect(() => {
+    api
+      .get('/api/users/' + userID + '/resources')
+      .then((resources) => setResources(resources));
+    api
+      .get('/api/users/' + userID + '/organizations')
+      .then((orgs) => setOrgs(orgs));
+  }, [api, userID]);
 
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
@@ -231,17 +239,7 @@ function UserSettings() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={17}>
-          <Breadcrumb style={{ marginLeft: '20px' }}>
-            <Breadcrumb.Item>
-              <a href="/">Home</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="/">User Name</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Settings</Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
+        <Col span={17}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>
@@ -270,16 +268,12 @@ function UserSettings() {
           )}
           {user && (
             <div ref={resourceRef}>
-              <ResourceTable
-                edit={true}
-                admin={false}
-                resources={user.resources}
-              />
+              <ResourceTable edit={true} admin={false} resources={resources} />
             </div>
           )}
           {user && (
             <div ref={orgRef}>
-              <Organizations organizations={user.organizations} />
+              <Organizations organizations={orgs} />
             </div>
           )}
         </Content>

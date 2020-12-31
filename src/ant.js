@@ -29,6 +29,9 @@ import {
   DatePicker,
   Steps,
   message,
+  Switch,
+  Spin,
+  Modal,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -72,4 +75,7 @@ export {
   notification,
   Steps,
   message,
+  Switch,
+  Spin,
+  Modal,
 };
