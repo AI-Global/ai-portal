@@ -9,8 +9,10 @@ import {
   Typography,
   DatePicker,
   Tooltip,
+  InputNumber,
   Row,
   Select,
+  Upload,
 } from '../ant';
 import Footer from '../components/Footer';
 import MultiSelectField from '../components/FormMultiSelectField';
@@ -44,7 +46,7 @@ function FormQuestion(props) {
             defaultValue={props.question.example_ans}
           >
             {props.question.options.map((option) => (
-              <Option value={option.toLowerCase()}>{option} </Option>
+              <Option value={option}>{option} </Option>
             ))}
           </Select>
         </Form.Item>
@@ -65,7 +67,7 @@ function FormQuestion(props) {
             defaultValue={props.question.example_ans}
           >
             {props.question.options.map((option) => (
-              <Option value={option.toLowerCase()}>{option} </Option>
+              <Option value={option}>{option} </Option>
             ))}
           </Select>
         </Form.Item>
@@ -86,6 +88,38 @@ function FormQuestion(props) {
           rules={[{ required: props.question.required }]}
         >
           <DatePicker />
+        </Form.Item>
+      )}
+      {props.question.type === 'linkFile' && (
+        <Form.Item
+          name={props.question.val}
+          label={props.question.string}
+          rules={[{ required: props.question.required }]}
+        >
+          {/* <Input /> */}
+          <Upload>
+            <Button> click</Button>
+          </Upload>
+        </Form.Item>
+      )}
+      {props.question.type === 'number' && (
+        <Form.Item
+          name={props.question.val}
+          label={props.question.string}
+          rules={[{ required: props.question.required }]}
+        >
+          <InputNumber />
+        </Form.Item>
+      )}
+      {props.question.type === 'multiple-type' && (
+        <Form.Item
+          name={props.question.val}
+          label={props.question.string}
+          rules={[{ required: props.question.required }]}
+        >
+          {props.question.options.map((option) => (
+            <Input placeholder={option} />
+          ))}
         </Form.Item>
       )}
     </Tooltip>
