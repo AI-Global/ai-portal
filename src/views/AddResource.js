@@ -44,7 +44,7 @@ let steps = [
   },
 ];
 
-function AddResource2() {
+function AddResource() {
   let topRef = useRef(null);
   const [form] = Form.useForm();
   const [current, setCurrent] = React.useState(0);
@@ -191,4 +191,4 @@ function AddResource2() {
   );
 }
 
-export default AddResource2;
+export default AddResource;
