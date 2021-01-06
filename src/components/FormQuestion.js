@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Layout,
-  Content,
-  Button,
   Input,
   Form,
-  Col,
-  Typography,
   DatePicker,
   Tooltip,
   InputNumber,
-  Row,
   Select,
+  Space,
   Upload,
 } from '../ant';
-import Footer from '../components/Footer';
-import MultiSelectField from '../components/FormMultiSelectField';
-import FormField from '../components/FormField';
-import FormHeader from '../components/FormHeader';
+
 const { Option } = Select;
 const { TextArea } = Input;
+
 function FormQuestion(props) {
+  const [uploadURL, switchUploadType] = useState(true);
+  const handleUploadType = () => {
+    switchUploadType((prev) => !prev);
+  };
+  const uploadTypes = (
+    <Select
+      defaultValue={uploadURL ? 'URL ' : 'FileUpload'}
+      className="uploadTypes"
+      onChange={handleUploadType}
+    >
+      <Option value="URL">URL</Option>
+      <Option value="FileUpload">File Upload</Option>
+    </Select>
+  );
   return (
     <Tooltip title={props.question.tip}>
       {props.question.type === 'type' && (
@@ -90,16 +97,24 @@ function FormQuestion(props) {
           <DatePicker />
         </Form.Item>
       )}
-      {props.question.type === 'linkFile' && (
+      {props.question.type === 'linkFile' && !uploadURL && (
         <Form.Item
           name={props.question.val}
           label={props.question.string}
           rules={[{ required: props.question.required }]}
         >
-          {/* <Input /> */}
           <Upload>
-            <Button> click</Button>
+            <Input addonBefore={uploadTypes}></Input>
           </Upload>
+        </Form.Item>
+      )}
+      {props.question.type === 'linkFile' && uploadURL && (
+        <Form.Item
+          name={props.question.val}
+          label={props.question.string}
+          rules={[{ required: props.question.required }]}
+        >
+          <Input addonBefore={uploadTypes}></Input>
         </Form.Item>
       )}
       {props.question.type === 'number' && (
@@ -117,9 +132,14 @@ function FormQuestion(props) {
           label={props.question.string}
           rules={[{ required: props.question.required }]}
         >
-          {props.question.options.map((option) => (
-            <Input placeholder={option} />
-          ))}
+          <Space direction="vertical" size="middle">
+            {props.question.options.map((option) => (
+              <Input
+                placeholder={option}
+                style={{ width: '600px', textAlign: 'left' }}
+              />
+            ))}
+          </Space>
         </Form.Item>
       )}
     </Tooltip>

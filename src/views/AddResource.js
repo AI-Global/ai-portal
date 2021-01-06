@@ -42,7 +42,6 @@ let steps = [
     title: 'Core 1',
     content: questions_core1,
   },
-  core2Page,
 ];
 
 function AddResource2() {
@@ -83,7 +82,8 @@ function AddResource2() {
     updatePages();
     console.log(JSON.stringify(form.getFieldValue()));
     if (current === steps.length - 1) {
-      message.success('Processing complete!');
+      message.success('Form completed!');
+      console.log('answers are ', JSON.stringify(form.getFieldValue()));
     } else {
       setCurrent(current + 1);
     }

@@ -41,7 +41,7 @@ export const example = {
     'We have a civil society trust channel with responsible AI advisors that reviewed these cases.',
   intendedAudience:
     'Responsible AI Civil Society, Policymakers, Researchers, Professors',
-  privacyProcedure: 'Not applicable because no personal information is used',
+  privacyProcedure: '',
   dataDictLink: '',
   dataCollectorOwnerRelation: 'Both are Martha Czernuszenko.',
   dataCollection:
@@ -59,7 +59,6 @@ export const example = {
   individualsConsent:
     'We assume yes because we only use reputable sources. We assume the media asked.',
   personalInfoRemoved: 'No',
-  privacyProcedure: '',
   offensiveContent:
     'Yes, there are some cases of unjust systems, racial bias and violence.',
   fieldsRelationship: 'N/A',
@@ -99,6 +98,7 @@ export const example = {
   hardwareRequirements: '8 GPUs',
   pretrainedModels: 'https://huggingface.co/bert-base-uncased',
   modelMetrics: 'Accuracy, Precision, Recall',
+  removalRequest: 'Not applicable because no personal information is used',
 };
 
 export const questions_core1 = [
@@ -435,12 +435,12 @@ export const questions_core2 = [
   {
     string:
       'If applicable, describe any mechanisms through which individuals can request information to be removed.',
-    val: 'privacyProcedure',
+    val: 'removalRequest',
     type: 'text-area',
     options: null,
     required: false,
     tip: 'Describe any applicable methods for de-identification',
-    example_ans: example.privacyProcedure,
+    example_ans: example.removalRequest,
   },
 ];
 // {
