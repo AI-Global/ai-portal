@@ -17,7 +17,6 @@ import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
 import { notification } from 'antd';
 import { DatabaseTwoTone, QuestionCircleOutlined } from '@ant-design/icons';
-import { findByLabelText } from '@testing-library/react';
 
 let TEMP_FRONTEND_ITEMS = [
   {
