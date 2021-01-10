@@ -265,9 +265,9 @@ function FirstTime() {
     localStorage.setItem('raiportal:visited', true);
   };
 
-  // useEffect(() => {
-  //   setLSHasVisited();
-  // });
+  useEffect(() => {
+    setLSHasVisited();
+  });
 
   const [isModalVisible, setModalVisible] = useState(false);
   const message = (
