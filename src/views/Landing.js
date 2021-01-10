@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Layout,
   Content,
@@ -9,10 +9,13 @@ import {
   Tooltip,
   Space,
   Tag,
+  Modal,
+  Button,
 } from '../ant';
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
+import { notification } from 'antd';
 
 let TEMP_FRONTEND_ITEMS = [
   {
@@ -210,9 +213,68 @@ function Landing() {
             </Col>
           ))}
         </Row>
+        <FirstTime />
       </Content>
       <Footer />
     </Layout>
+  );
+}
+
+function FirstTime() {
+  let [hasVisited, setVisited] = useState(
+    localStorage.getItem('raiportal:visited')
+  );
+  let setLSHasVisited = () => {
+    localStorage.setItem('raiportal:visited', true);
+  };
+
+  useEffect(() => {
+    setLSHasVisited();
+  });
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const message = (
+    <p style={{ fontWeight: 'bold', marginBottom: '0' }}>First Time?</p>
+  );
+  const description = (
+    <>
+      <p style={{ marginBottom: '10px' }}>
+        Learn more by the Responsible AI Portal
+      </p>
+      <Button
+        type="primary"
+        size="small"
+        onClick={() => {
+          setModalVisible(true);
+        }}
+      >
+        Explore
+      </Button>
+    </>
+  );
+
+  const openNotification = () => {
+    setVisited(true);
+    notification.info({
+      key: 'first',
+      message,
+      placement: 'bottomRight',
+      duration: 0,
+      description,
+      hoverable: true,
+    });
+  };
+
+  return (
+    <>
+      {!hasVisited && openNotification()}
+      <Modal
+        title="Welcome"
+        visible={isModalVisible}
+        onOk={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+      ></Modal>
+    </>
   );
 }
 
