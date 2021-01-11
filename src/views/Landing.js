@@ -262,6 +262,7 @@ function FirstTime() {
   );
   let setLSHasVisited = () => {
     localStorage.setItem('raiportal:visited', true);
+    setVisited(true);
   };
 
   useEffect(() => {
