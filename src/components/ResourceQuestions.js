@@ -893,7 +893,7 @@ export const QUESTIONS_MODEL = [
     string: 'What type of learning is this model?',
     val: 'learningType',
     type: 'select',
-    options: ['Unsupervised, Supervised', 'Reinforcement'],
+    options: ['Unsupervised', 'Supervised', 'Reinforcement'],
     required: false,
     tip: 'Unsupervised, Supervised, or Reinforcement Learning',
     example_ans: EXAMPLE.learningType,
