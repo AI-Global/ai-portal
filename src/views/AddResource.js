@@ -15,32 +15,32 @@ import FormHeader from '../components/FormHeader';
 import FormQuestion from '../components/FormQuestion';
 
 import {
-  questions_core1,
-  questions_core2,
-  questions_dataset,
-  questions_model,
+  QUESTIONS_CORE1,
+  QUESTIONS_CORE2,
+  QUESTIONS_DATASET,
+  QUESTIONS_MODEL,
 } from '../components/ResourceQuestions';
 const { Step } = Steps;
 const { Title } = Typography;
 
 let core2Page = {
   title: 'Core 2',
-  content: questions_core2,
+  content: QUESTIONS_CORE2,
 };
 
 let datasetPage = {
   title: 'Dataset',
-  content: questions_dataset,
+  content: QUESTIONS_DATASET,
 };
 
 let modelPage = {
   title: 'Model',
-  content: questions_model,
+  content: QUESTIONS_MODEL,
 };
 let steps = [
   {
     title: 'Core 1',
-    content: questions_core1,
+    content: QUESTIONS_CORE1,
   },
 ];
 

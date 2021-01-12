@@ -1,5 +1,5 @@
 import React from 'react';
-export const example = {
+export const EXAMPLE = {
   name: 'Where in the Word is AI? Map',
   desc:
     'An interactive web visualization and dataset with 300+ helpful and harmful AI cases worldwide',
@@ -101,7 +101,7 @@ export const example = {
   removalRequest: 'Not applicable because no personal information is used',
 };
 
-export const questions_core1 = [
+export const QUESTIONS_CORE1 = [
   {
     string: 'Do you own this resource (Yes/No)?',
     val: 'isOwner',
@@ -118,7 +118,7 @@ export const questions_core1 = [
     options: null,
     required: true,
     tips: '',
-    example_ans: example.name,
+    example_ans: EXAMPLE.name,
   },
   {
     string: 'Resource Description',
@@ -127,7 +127,7 @@ export const questions_core1 = [
     options: null,
     required: true,
     tip: 'A short summary sentence of the resource',
-    example_ans: example.desc,
+    example_ans: EXAMPLE.desc,
   },
   {
     string: 'Format(s)',
@@ -159,7 +159,7 @@ export const questions_core1 = [
     required: true,
     tip:
       'Select any tags that are relevant. If we are missing a tag, please let us know.',
-    example_ans: example.formats,
+    example_ans: EXAMPLE.formats,
   },
   {
     string: 'Topic of Resource (Ex: Health Services, Law Enforcement)',
@@ -178,7 +178,7 @@ export const questions_core1 = [
     ],
     required: true,
     tip: 'Select any topics that are relevant',
-    example_ans: example.topics,
+    example_ans: EXAMPLE.topics,
   },
   {
     string: 'Which organization(s) is the resource from?',
@@ -187,7 +187,7 @@ export const questions_core1 = [
     options: ['Org A', 'Org B', 'Org C'],
     required: true,
     tip: 'Please avoid any abbreviations or acronyms',
-    example_ans: example.organization,
+    example_ans: EXAMPLE.organization,
   },
   {
     string: 'What type(s) of organization(s) (Ex: Industry, Academia)',
@@ -204,7 +204,7 @@ export const questions_core1 = [
     required: true,
     tip:
       'If you are unsure of what the organization type is, select civil society',
-    example_ans: example.org_types,
+    example_ans: EXAMPLE.org_types,
   },
   {
     string: 'Responsible AI Trust Index',
@@ -228,7 +228,7 @@ export const questions_core1 = [
         </a>
       </t>
     ),
-    example_ans: example.trust_index,
+    example_ans: EXAMPLE.trust_index,
   },
   {
     string: 'Who is your resource intended for?',
@@ -244,7 +244,7 @@ export const questions_core1 = [
     ],
     required: true,
     tip: '',
-    example_ans: example.paths,
+    example_ans: EXAMPLE.paths,
   },
   {
     string: 'Which AI System type does the resource align with?',
@@ -260,7 +260,7 @@ export const questions_core1 = [
     ],
     required: true,
     tip: 'AI System type values are defined by OECD.',
-    example_ans: example.ai_system_type,
+    example_ans: EXAMPLE.ai_system_type,
   },
   {
     //TODO: make new question type for this one
@@ -270,7 +270,7 @@ export const questions_core1 = [
     options: null,
     required: true,
     tip: 'Please add a url or upload any files via Google Drive url.',
-    example_ans: example.url,
+    example_ans: EXAMPLE.url,
   },
   {
     string: 'When was the resource created?',
@@ -297,7 +297,7 @@ export const questions_core1 = [
     options: null,
     required: false,
     tip: 'Please list any version numbers of indicators',
-    example_ans: example.version,
+    example_ans: EXAMPLE.version,
   },
   {
     string: 'How often is this resource updated?',
@@ -306,7 +306,7 @@ export const questions_core1 = [
     options: ['Weekly', 'Monthly', 'Annually'],
     required: false,
     tip: 'Maintenance/Update Frequency',
-    example_ans: example.update_frequency,
+    example_ans: EXAMPLE.update_frequency,
   },
   {
     string: 'If applicable, are there any licenses to this resource?',
@@ -315,7 +315,7 @@ export const questions_core1 = [
     options: null,
     required: false,
     tip: 'List any licenses or acknowledgements to the resource',
-    example_ans: example.license,
+    example_ans: EXAMPLE.license,
   },
   {
     string: 'Select up to 5 keywords for the resource',
@@ -324,7 +324,7 @@ export const questions_core1 = [
     options: [],
     required: true,
     tip: '',
-    example_ans: example.keywords,
+    example_ans: EXAMPLE.keywords,
   },
 
   // {
@@ -338,7 +338,7 @@ export const questions_core1 = [
   // }
 ];
 
-export const questions_core2 = [
+export const QUESTIONS_CORE2 = [
   {
     string: 'What is the purpose of the resource?',
     val: 'purpose',
@@ -346,7 +346,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'A short sentence about the purpose of the resource',
-    example_ans: example.purpose,
+    example_ans: EXAMPLE.purpose,
   },
   {
     string: 'What should this resource not be used for?',
@@ -364,7 +364,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'List first and last names of any creators of resource',
-    example_ans: example.creator,
+    example_ans: EXAMPLE.creator,
   },
   {
     string:
@@ -374,7 +374,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'This will be publicly available in case anyone has any questions',
-    example_ans: example.contact_email,
+    example_ans: EXAMPLE.contact_email,
   },
   {
     string: 'Where was the resource made?',
@@ -383,7 +383,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Please list city, state, country',
-    example_ans: example.location,
+    example_ans: EXAMPLE.location,
   },
   {
     string:
@@ -393,7 +393,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Please list any affiliations or organizations',
-    example_ans: example.fundedBy,
+    example_ans: EXAMPLE.fundedBy,
   },
   {
     string: 'If applicable, does the resource have any missing information?',
@@ -402,7 +402,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Describe any missing information',
-    example_ans: example.missingInfo,
+    example_ans: EXAMPLE.missingInfo,
   },
   {
     string: 'If applicable, how did you ensure quality for the resource?',
@@ -411,7 +411,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Describe any quality resources',
-    example_ans: example.qualityReview,
+    example_ans: EXAMPLE.qualityReview,
   },
   {
     string:
@@ -421,7 +421,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Please include any outcomes and links to supporting documentation',
-    example_ans: example.ethicsReview,
+    example_ans: EXAMPLE.ethicsReview,
   },
   {
     string: 'Who is the intended audience?',
@@ -430,7 +430,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Please list any target audiences',
-    example_ans: example.intendedAudience,
+    example_ans: EXAMPLE.intendedAudience,
   },
   {
     string:
@@ -440,7 +440,7 @@ export const questions_core2 = [
     options: null,
     required: false,
     tip: 'Describe any applicable methods for de-identification',
-    example_ans: example.removalRequest,
+    example_ans: EXAMPLE.removalRequest,
   },
 ];
 // {
@@ -452,7 +452,7 @@ export const questions_core2 = [
 //   tip: ,
 //   example_ans:
 // }
-export const questions_dataset = [
+export const QUESTIONS_DATASET = [
   {
     string: 'If applicable, upload data dictionary',
     val: 'dataDictLink',
@@ -471,7 +471,7 @@ export const questions_dataset = [
     required: false,
     tip:
       'State if they are the same person or if different people and their relationship',
-    example_ans: example.dataCollectorOwnerRelation,
+    example_ans: EXAMPLE.dataCollectorOwnerRelation,
   },
   {
     string: 'What is the data collection process?  (*o*)',
@@ -480,7 +480,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Describe data collection process if manual or automated and sources.',
-    example_ans: example.dataCollection,
+    example_ans: EXAMPLE.dataCollection,
   },
   {
     string:
@@ -490,7 +490,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Describe if data is changed and managed',
-    example_ans: example.infoCollected,
+    example_ans: EXAMPLE.infoCollected,
   },
   {
     string: 'Are there any restrictions on accessing data?',
@@ -500,7 +500,7 @@ export const questions_dataset = [
     required: true,
     tip:
       'Describe any access permissions. Either Yes and explain restrictions or No',
-    example_ans: example.externalRestrictions,
+    example_ans: EXAMPLE.externalRestrictions,
   },
   {
     string: 'Is there sensitive data?',
@@ -510,7 +510,7 @@ export const questions_dataset = [
     required: false,
     tip:
       'Please describe any sensitive data such as personal information, business information  or classified information Sensitive Data is Data that could reveal: Racial or ethnic origin, political opinion, religious beliefs, biometric data, health data, sexual orientation, financial information, personal information',
-    example_ans: example.sensitiveData,
+    example_ans: EXAMPLE.sensitiveData,
   },
   {
     string: 'What are some tasks that the dataset has been used for?',
@@ -519,7 +519,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Describe any past use cases of dataset',
-    example_ans: example.datasetTasks,
+    example_ans: EXAMPLE.datasetTasks,
   },
   {
     string:
@@ -530,7 +530,7 @@ export const questions_dataset = [
     required: false,
     tip:
       'Describe by age, gender, race, or other categories and provide a description of their respective distributions within the dataset. There are several definitions available for the term “vulnerable populations”, the words simply imply the disadvantaged sub-segment of the community requiring upmost care, specific ancillary considerations and augmented protections in research.  The vulnerable individuals’ freedom and capability to protect one-self from intended or inherent risks is variably abbreviated, from decreased freewill to inability to make informed choices(NCBI).',
-    example_ans: example.datasetDemographics,
+    example_ans: EXAMPLE.datasetDemographics,
   },
   {
     string:
@@ -540,7 +540,7 @@ export const questions_dataset = [
     options: ['Yes', 'No'],
     required: false,
     tip: null,
-    example_ans: example.individualsIdentified,
+    example_ans: EXAMPLE.individualsIdentified,
   },
   {
     string:
@@ -550,7 +550,7 @@ export const questions_dataset = [
     options: ['Yes', 'No'],
     required: false,
     tip: null,
-    example_ans: example.isConfidential,
+    example_ans: EXAMPLE.isConfidential,
   },
   {
     string:
@@ -560,7 +560,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Describe any consent procedures',
-    example_ans: example.individualsConsent,
+    example_ans: EXAMPLE.individualsConsent,
   },
   //TODO: form that has sub questions
   {
@@ -571,7 +571,7 @@ export const questions_dataset = [
     options: ['Yes', 'No'],
     required: false,
     tip: 'Data altered to ensure higher levels of privacy',
-    example_ans: example.personalInfoRemoved,
+    example_ans: EXAMPLE.personalInfoRemoved,
   },
   {
     string:
@@ -581,7 +581,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Description of privacy procedures',
-    example_ans: example.privacyProcedure,
+    example_ans: EXAMPLE.privacyProcedure,
   },
   {
     string:
@@ -591,7 +591,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Describe any warnings about the dataset',
-    example_ans: example.offensiveContent,
+    example_ans: EXAMPLE.offensiveContent,
   },
   {
     string: 'Which fields have explicit and implicit relationships?',
@@ -600,7 +600,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: '',
-    example_ans: example.fieldsRelationship,
+    example_ans: EXAMPLE.fieldsRelationship,
   },
   {
     string:
@@ -610,7 +610,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'If instance number will change due to updates, include “+”',
-    example_ans: example.numInstances,
+    example_ans: EXAMPLE.numInstances,
   },
   {
     string:
@@ -620,7 +620,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'List any representations',
-    example_ans: example.instances,
+    example_ans: EXAMPLE.instances,
   },
   {
     string:
@@ -630,7 +630,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Provide any interactions between instances',
-    example_ans: example.typeInstances,
+    example_ans: EXAMPLE.typeInstances,
   },
   {
     string:
@@ -640,7 +640,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'State if sample size or larger dataset.',
-    example_ans: example.completeness,
+    example_ans: EXAMPLE.completeness,
   },
   {
     string:
@@ -651,7 +651,7 @@ export const questions_dataset = [
     required: false,
     tip:
       'Were missing values filled? Was categorical data encoded? Was the dataset split or was there feature scaling?',
-    example_ans: example.preprocessing,
+    example_ans: EXAMPLE.preprocessing,
   },
   {
     string:
@@ -661,7 +661,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Yes/No, link raw data if possible ',
-    example_ans: example.rawData,
+    example_ans: EXAMPLE.rawData,
   },
   {
     string: 'Is your dataset a sample?',
@@ -670,7 +670,7 @@ export const questions_dataset = [
     options: ['Yes', 'No', 'N/A'],
     required: false,
     tip: 'Describe sampling strategy',
-    example_ans: example.sample,
+    example_ans: EXAMPLE.sample,
   },
   {
     string:
@@ -680,7 +680,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Describe sampling strategy',
-    example_ans: example.sampleStrategy,
+    example_ans: EXAMPLE.sampleStrategy,
   },
   {
     string:
@@ -688,8 +688,12 @@ export const questions_dataset = [
     val: 'populationDataSource',
     type: 'multiple-type',
     options: [
-      'Population Data Source',
-      ' Sample truly represent the larger set: (Describe why not if applicable)',
+      { name: 'populationDataSource', label: 'Population Data Source' },
+      {
+        name: 'representLargerSet',
+        label:
+          'Sample truly represent the larger set: (Describe why not if applicable)',
+      },
     ],
     required: false,
     tip: 'Link population data source if applicable ',
@@ -703,17 +707,17 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Yes, No, N/A and recommended split',
-    example_ans: example.recommendedSplit,
+    example_ans: EXAMPLE.recommendedSplit,
   },
   {
     string:
       'Is data used in the training or implementation of this system handled with care?',
     val: 'handledCarefully',
     type: 'select',
-    options: ['Yes, No', 'N/A'],
+    options: ['Yes', 'No', 'N/A'],
     required: false,
     tip: ['Yes', 'No', 'N/A'],
-    example_ans: 'Yes, No , N/A',
+    example_ans: 'N/A',
   },
   {
     string:
@@ -723,7 +727,7 @@ export const questions_dataset = [
     options: ['Yes', 'No', 'N/A'],
     required: false,
     tip: 'Yes, No, N/A',
-    example_ans: example.accurateRepresentation,
+    example_ans: EXAMPLE.accurateRepresentation,
   },
   {
     string: 'Is data being used to train the system raw or processed?',
@@ -732,7 +736,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'If data is trained, please answer',
-    example_ans: example.rawOrProcessed,
+    example_ans: EXAMPLE.rawOrProcessed,
   },
   {
     string: 'Any assessment procedure for protection against data drift?',
@@ -741,7 +745,7 @@ export const questions_dataset = [
     options: null,
     required: false,
     tip: 'Data drift is the sum of data changes',
-    example_ans: example.dataDrift,
+    example_ans: EXAMPLE.dataDrift,
   },
   {
     string: 'Has the data been reused?',
@@ -767,7 +771,7 @@ export const questions_dataset = [
     required: false,
     tip:
       'Stages include: Generate Schema, Create Dataset, Populate Dataset, Validate Dataset, Update Dataset, Annihilate Dataset',
-    example_ans: example.lifecycleState,
+    example_ans: EXAMPLE.lifecycleState,
   },
   {
     string:
@@ -778,7 +782,7 @@ export const questions_dataset = [
     required: false,
     tip:
       'Some examples could be erroneous attribute values, missing or unknown attribute values',
-    example_ans: example.noiseDescription,
+    example_ans: EXAMPLE.noiseDescription,
   },
   {
     string:
@@ -786,10 +790,24 @@ export const questions_dataset = [
     val: 'dataDependency',
     type: 'multiple-type',
     options: [
-      'Description if data self-contained or dependent on upstream resources',
-      'Any guarantee that the data will exist and remain constant over time',
-      'Official archival versions of the complete dataset',
-      'Description on restrictions associated with external resources',
+      {
+        name: 'dataContainment',
+        label:
+          'Description if data self-contained or dependent on upstream resources',
+      },
+      {
+        name: 'dataConsistent',
+        label:
+          'Any guarantee that the data will exist and remain constant over time',
+      },
+      {
+        name: 'archivalVersions',
+        label: 'Official archival versions of the complete dataset',
+      },
+      {
+        name: 'restrictions',
+        label: 'Description on restrictions associated with external resources',
+      },
     ],
     required: false,
     tip: '',
@@ -806,7 +824,7 @@ export const questions_dataset = [
   // }
 ];
 
-export const questions_model = [
+export const QUESTIONS_MODEL = [
   {
     string: 'What is the model type?',
     val: 'modelType',
@@ -814,7 +832,7 @@ export const questions_model = [
     options: null,
     required: true,
     tip: 'Examples can include regression, neural net, random forest etc.',
-    example_ans: example.modelType,
+    example_ans: EXAMPLE.modelType,
   },
   {
     string: 'What are the model inputs?',
@@ -823,7 +841,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'Describe any input data',
-    example_ans: example.modelInputs,
+    example_ans: EXAMPLE.modelInputs,
   },
   {
     string: 'What are the model outputs?',
@@ -832,7 +850,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'List any outputs',
-    example_ans: example.modelOutputs,
+    example_ans: EXAMPLE.modelOutputs,
   },
   {
     string: 'What are the limitations of the model?',
@@ -841,7 +859,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'List any tradeoffs',
-    example_ans: example.modelTradeOffs,
+    example_ans: EXAMPLE.modelTradeOffs,
   },
   {
     string: 'What are the model hyperparameters?',
@@ -851,7 +869,7 @@ export const questions_model = [
     required: false,
     tip:
       'Learning Rate, Number of Epochs, Number of branches in decision tree, number of clusters in clustering algorithm etc.',
-    example_ans: example.hyperparameters,
+    example_ans: EXAMPLE.hyperparameters,
   },
   {
     string: 'What is the model architecture?',
@@ -860,7 +878,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: '# of layers, layer types',
-    example_ans: example.modelArchitecture,
+    example_ans: EXAMPLE.modelArchitecture,
   },
   {
     string: 'Is this model used for classification or regression?',
@@ -869,7 +887,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'Classification or Regression task',
-    example_ans: example.modelTask,
+    example_ans: EXAMPLE.modelTask,
   },
   {
     string: 'What type of learning is this model?',
@@ -878,7 +896,7 @@ export const questions_model = [
     options: ['Unsupervised, Supervised', 'Reinforcement'],
     required: false,
     tip: 'Unsupervised, Supervised, or Reinforcement Learning',
-    example_ans: example.learningType,
+    example_ans: EXAMPLE.learningType,
   },
   {
     string: 'How many parameters are there?',
@@ -905,7 +923,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'Examples: PyTorch, TensorFlow etc.',
-    example_ans: example.framework,
+    example_ans: EXAMPLE.framework,
   },
   {
     string: 'What are model dependencies?',
@@ -914,7 +932,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'List any libraries needed',
-    example_ans: example.modelDependencies,
+    example_ans: EXAMPLE.modelDependencies,
   },
   {
     string: ' What are hardware requirements?',
@@ -923,7 +941,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'Number of GPUs',
-    example_ans: example.hardwareRequirements,
+    example_ans: EXAMPLE.hardwareRequirements,
   },
   {
     string: 'What are other pretrained models?',
@@ -932,7 +950,7 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'Link any pre-trained models',
-    example_ans: example.pretrainedModels,
+    example_ans: EXAMPLE.pretrainedModels,
   },
   {
     string: 'What are the model metrics?',
@@ -941,6 +959,6 @@ export const questions_model = [
     options: null,
     required: false,
     tip: 'List any model metrics such as F1 score, accuracy etc.',
-    example_ans: example.modelMetrics,
+    example_ans: EXAMPLE.modelMetrics,
   },
 ];

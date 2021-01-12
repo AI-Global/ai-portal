@@ -127,17 +127,15 @@ function FormQuestion(props) {
         </Form.Item>
       )}
       {props.question.type === 'multiple-type' && (
-        <Form.Item
-          name={props.question.val}
-          label={props.question.string}
-          rules={[{ required: props.question.required }]}
-        >
+        <Form.Item label={props.question.string}>
           <Space direction="vertical" size="middle">
             {props.question.options.map((option) => (
-              <Input
-                placeholder={option}
-                style={{ width: '600px', textAlign: 'left' }}
-              />
+              <Form.Item name={option.name}>
+                <Input
+                  placeholder={option.label}
+                  style={{ width: '600px', textAlign: 'left' }}
+                />
+              </Form.Item>
             ))}
           </Space>
         </Form.Item>
