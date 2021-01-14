@@ -30,6 +30,7 @@ import {
   Switch,
   Spin,
   Modal,
+  Upload,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -74,4 +75,5 @@ export {
   Switch,
   Spin,
   Modal,
+  Upload,
 };
