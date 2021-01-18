@@ -61,3 +61,32 @@ exports.execUpdateQuery = async (
     .exec();
   return objUpdated;
 };
+
+exports.execUpdateSetManyToMany = async (
+  primaryModel,
+  secondaryKeyOfPrimary,
+  primaryObj,
+  secondaryModel,
+  primaryKeyOfSecondary,
+  secondaryObjects
+) => {
+  let updatedPrimaryObj = await primaryModel.findByIdAndUpdate(
+    primaryObj._id,
+    { [primaryKeyOfSecondary]: secondaryObjects },
+    { new: true, useFindAndModify: false }
+  );
+  await secondaryModel.update(
+    {},
+    { $pull: { [secondaryKeyOfPrimary]: primaryObj._id } }
+  );
+  await Promise.all(
+    secondaryObjects.map((sObj) =>
+      secondaryModel.findByIdAndUpdate(
+        sObj._id,
+        { $addToSet: { [secondaryKeyOfPrimary]: primaryObj._id } },
+        { new: true, useFindAndModify: false }
+      )
+    )
+  );
+  return updatedPrimaryObj;
+};

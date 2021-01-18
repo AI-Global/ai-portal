@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Resource = mongoose.model('Resource');
 const Organization = mongoose.model('Organization');
+const Topic = mongoose.model('Topic');
 const queryUtil = require('./query.util');
 
 exports.Resource = Resource;
@@ -33,17 +34,36 @@ exports.search = async (query, fields) => {
 };
 
 exports.create = async (params) => {
-  let resource = new Resource(params);
+  let resource = new Resource({});
   await resource.save();
+  resource = exports.update(resource, params);
   return resource;
 };
 
-exports.update = async (resource, params) => {
-  let { topics, files, organizations, _id, __v, ...cleanParams } = params;
-  return await Resource.update(
-    { _id: resource._id },
-    { $set: cleanParams }
-  ).exec();
+exports.update = async (resource, rawParams) => {
+  let result = await queryUtil.execUpdateQuery(
+    Resource,
+    {
+      setParams: [
+        'name',
+        'desc',
+        'type',
+        'path',
+        'downloadURL',
+        'modifiedDate',
+        'trustIndexCategories',
+        'keywords',
+        'creator',
+      ],
+      setRefFuncs: {
+        topics: exports.setTopics,
+        organizations: exports.setOrganizations,
+      },
+    },
+    resource,
+    rawParams
+  );
+  return result;
 };
 
 exports.toJSON = (resource) => {
@@ -74,4 +94,26 @@ exports.addOrganization = async (resource, org) => {
     { new: true, useFindAndModify: false }
   );
   return updatedResource;
+};
+
+exports.setTopics = async (resource, topics) => {
+  return await queryUtil.execUpdateSetManyToMany(
+    Resource,
+    'resources',
+    resource,
+    Topic,
+    'topics',
+    topics
+  );
+};
+
+exports.setOrganizations = async (resource, orgs) => {
+  return await queryUtil.execUpdateSetManyToMany(
+    Resource,
+    'resources',
+    resource,
+    Organization,
+    'organizations',
+    orgs
+  );
 };

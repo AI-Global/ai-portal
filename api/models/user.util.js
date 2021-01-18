@@ -73,22 +73,14 @@ exports.update = async (user, rawParams) => {
 };
 
 exports.setOrganizations = async (user, orgs) => {
-  let updatedUser = await User.findByIdAndUpdate(
-    user._id,
-    { organizations: orgs },
-    { new: true, useFindAndModify: false }
+  return await queryUtil.execUpdateSetManyToMany(
+    User,
+    'users',
+    user,
+    Organization,
+    'organizations',
+    orgs
   );
-  await Organization.update({}, { $pull: { users: user._id } });
-  await Promise.all(
-    orgs.map((org) =>
-      Organization.findByIdAndUpdate(
-        org._id,
-        { $addToSet: { users: user._id } },
-        { new: true, useFindAndModify: false }
-      )
-    )
-  );
-  return updatedUser;
 };
 
 exports.getByUsernameOrEmail = async (userOrEmail) => {
