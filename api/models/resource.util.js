@@ -1,18 +1,35 @@
 const mongoose = require('mongoose');
 const Resource = mongoose.model('Resource');
 const Organization = mongoose.model('Organization');
+const queryUtil = require('./query.util');
 
 exports.Resource = Resource;
 
 let populate = (resourceQuery) => {
   return resourceQuery
-    .populate('organizations', '-_id -__v -organizations')
-    .populate('topics', '-_id -__v -topics')
-    .populate('files', '-_id -__v -files');
+    .populate('organizations', '-__v -organizations')
+    .populate('topics', '-__v -topics')
+    .populate('files', '-__v -files');
 };
 
 exports.search = async (query, fields) => {
-  return await populate(Resource.find());
+  if (fields.organizationType) {
+    let orgs = await Organization.find({
+      type: fields.organizationType,
+    }).select('id');
+    fields.organizations = orgs.map((org) => org._id).join(',');
+  }
+  let result = queryUtil.searchQuery(
+    Resource,
+    {
+      queryFields: ['name', 'desc'],
+      anyFields: ['topics', 'organizations', 'type', 'path'],
+      sorts: { byNameAsc: ['name', 1], byUploadDateAsc: ['uploadDate', 1] },
+    },
+    query,
+    fields
+  );
+  return await populate(result);
 };
 
 exports.create = async (params) => {
