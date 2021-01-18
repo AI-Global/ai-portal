@@ -122,7 +122,7 @@ export default function ManageResourceModal({
                 setEditedResource({
                   ...editedResource,
                   topics: newTopics.map((topicId) => {
-                    return topics.find((o) => o._id == topicId);
+                    return topics.find((o) => o._id === topicId);
                   }),
                 });
               }}
@@ -142,7 +142,7 @@ export default function ManageResourceModal({
                 setEditedResource({
                   ...editedResource,
                   organizations: newOrgs.map((orgId) => {
-                    return organizations.find((o) => o._id == orgId);
+                    return organizations.find((o) => o._id === orgId);
                   }),
                 });
               }}
