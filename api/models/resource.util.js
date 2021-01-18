@@ -57,7 +57,7 @@ exports.getById = async (id) => {
 exports.addTopic = async (resource, tag) => {
   return await Resource.findByIdAndUpdate(
     resource._id,
-    { $push: { topics: tag._id } },
+    { $addToSet: { topics: tag._id } },
     { new: true, useFindAndModify: false }
   );
 };
@@ -65,12 +65,12 @@ exports.addTopic = async (resource, tag) => {
 exports.addOrganization = async (resource, org) => {
   let updatedResource = await Resource.findByIdAndUpdate(
     resource._id,
-    { $push: { organizations: org._id } },
+    { $addToSet: { organizations: org._id } },
     { new: true, useFindAndModify: false }
   );
   await Organization.findByIdAndUpdate(
     org._id,
-    { $push: { resources: resource._id } },
+    { $addToSet: { resources: resource._id } },
     { new: true, useFindAndModify: false }
   );
   return updatedResource;

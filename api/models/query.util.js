@@ -34,3 +34,30 @@ exports.searchQuery = (
   }
   return model.find(findOpts).sort(sort);
 };
+
+exports.execUpdateQuery = async (
+  model,
+  { setParams, setRefFuncs },
+  object,
+  params
+) => {
+  let updateParams = {};
+  for (let param of setParams) {
+    if (param in params) {
+      updateParams[param] = params[param];
+    }
+  }
+  for (let param in setRefFuncs) {
+    if (param in params) {
+      let refObjs = params[param];
+      if (refObjs.length > 0 && typeof refObjs[0] === 'string') {
+        refObjs = refObjs.map((refId) => ({ _id: refId }));
+      }
+      object = await setRefFuncs[param](object, refObjs);
+    }
+  }
+  let objUpdated = await model
+    .update({ _id: object._id }, { $set: updateParams }, { new: true })
+    .exec();
+  return objUpdated;
+};
