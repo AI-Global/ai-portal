@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Header, Search, Affix } from '../ant';
+import { Header, Affix } from '../ant';
 
 function FormHeader() {
   return (
