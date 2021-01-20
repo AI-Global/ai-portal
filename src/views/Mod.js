@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Content, Row, Col, Card, Statistic, Tooltip } from '../ant';
+import {
+  Layout,
+  Content,
+  Row,
+  Col,
+  Card,
+  Statistic,
+  Tooltip,
+  Breadcrumb,
+  Menu,
+} from '../ant';
 
 import {
   QuestionCircleTwoTone,
@@ -54,6 +64,21 @@ function Mod() {
   }, [api]);
   let dashRef = useRef(null);
   let resourceRef = useRef(null);
+
+  const breadcrumb_menu = (
+    <Menu>
+      <Menu.Item>
+        <a href="/resources">Resources</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href="/organizations">Organizations</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href="/feedback">Suggestions</a>
+      </Menu.Item>
+      <Menu.Item></Menu.Item>
+    </Menu>
+  );
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <Row justify="start" align="middle">
@@ -62,7 +87,27 @@ function Mod() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={17}></Col>
+        <Col span={4}>
+          <Breadcrumb
+            style={{
+              paddingTop: '40px',
+              paddingLeft: '80px',
+            }}
+          >
+            <Breadcrumb.Item>
+              <a href="/" style={{ fontSize: '16px' }}>
+                Home
+              </a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item
+              style={{ fontSize: '16px' }}
+              overlay={breadcrumb_menu}
+            >
+              Mod
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
+        <Col span={13}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>

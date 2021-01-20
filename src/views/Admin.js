@@ -11,6 +11,8 @@ import {
   Statistic,
   Tooltip,
   Button,
+  Breadcrumb,
+  Menu,
 } from '../ant';
 import {
   QuestionCircleTwoTone,
@@ -160,6 +162,20 @@ function Admin() {
     resourceRef = useRef(null),
     userRef = useRef(null);
 
+  const breadcrumb_menu = (
+    <Menu>
+      <Menu.Item>
+        <a href="/resources">Resources</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href="/organizations">Organizations</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href="/feedback">Suggestions</a>
+      </Menu.Item>
+      <Menu.Item></Menu.Item>
+    </Menu>
+  );
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <Row justify="start" align="middle">
@@ -168,7 +184,27 @@ function Admin() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={17}></Col>
+        <Col span={4}>
+          <Breadcrumb
+            style={{
+              paddingTop: '40px',
+              paddingLeft: '80px',
+            }}
+          >
+            <Breadcrumb.Item>
+              <a href="/" style={{ fontSize: '16px' }}>
+                Home
+              </a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item
+              style={{ fontSize: '16px' }}
+              overlay={breadcrumb_menu}
+            >
+              Admin
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
+        <Col span={13}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>
