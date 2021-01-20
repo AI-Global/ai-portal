@@ -65,7 +65,7 @@ function Mod() {
     if (user === null || (user && user.role !== 'mod')) {
       history.push('/');
     }
-  }, [user]);
+  }, [user, history]);
   useEffect(() => {
     api.get('/api/users').then(setUsers);
     api.get('/api/resources?pending=true').then(setPendingResources);

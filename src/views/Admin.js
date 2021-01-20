@@ -159,7 +159,7 @@ function Admin() {
     if (user === null || (user && user.role !== 'admin')) {
       history.push('/');
     }
-  }, [user]);
+  }, [user, history]);
 
   useEffect(() => {
     api.get('/api/users').then(setUsers);

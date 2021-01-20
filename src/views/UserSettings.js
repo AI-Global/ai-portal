@@ -222,7 +222,7 @@ function UserSettings() {
     if (user === null) {
       history.push('/');
     }
-  }, [user]);
+  }, [user, history]);
 
   let dashRef = useRef(null),
     resourceRef = useRef(null),
