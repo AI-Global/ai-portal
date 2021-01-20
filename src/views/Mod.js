@@ -21,6 +21,7 @@ import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
 import { useAppEnv } from './../env';
+import { useHistory } from 'react-router';
 
 function Dashboard({ users, pendingResources }) {
   return (
@@ -55,9 +56,16 @@ function Dashboard({ users, pendingResources }) {
 }
 
 function Mod() {
-  let { api } = useAppEnv();
+  let { api, user } = useAppEnv();
   let [users, setUsers] = useState([]);
   let [pendingResources, setPendingResources] = useState([]);
+  let history = useHistory();
+
+  useEffect(() => {
+    if (user === null || (user && user.role !== 'mod')) {
+      history.push('/');
+    }
+  }, [user]);
   useEffect(() => {
     api.get('/api/users').then(setUsers);
     api.get('/api/resources?pending=true').then(setPendingResources);
@@ -87,7 +95,7 @@ function Mod() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={4}>
+        <Col span={5}>
           <Breadcrumb
             style={{
               paddingTop: '40px',
@@ -103,11 +111,12 @@ function Mod() {
               style={{ fontSize: '16px' }}
               overlay={breadcrumb_menu}
             >
-              Mod
+              Account
             </Breadcrumb.Item>
+            <Breadcrumb.Item>Mod</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
-        <Col span={13}></Col>
+        <Col span={12}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>

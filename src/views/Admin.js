@@ -25,6 +25,7 @@ import LoginButton from '../components/LoginButton';
 import Sidebar from '../components/Sidebar';
 import ResourceTable from '../components/ResourceTable';
 import { useAppEnv } from './../env';
+import { useHistory } from 'react-router';
 import ManageUserModal from './../components/ManageUserModal';
 
 function Dashboard({ users, pendingResources }) {
@@ -150,9 +151,16 @@ function ManageUsersTable({ users }) {
 }
 
 function Admin() {
-  let { api } = useAppEnv();
+  let { api, user } = useAppEnv();
   let [users, setUsers] = useState([]);
   let [pendingResources, setPendingResources] = useState([]);
+  let history = useHistory();
+  useEffect(() => {
+    if (user === null || (user && user.role !== 'admin')) {
+      history.push('/');
+    }
+  }, [user]);
+
   useEffect(() => {
     api.get('/api/users').then(setUsers);
     api.get('/api/resources?pending=true').then(setPendingResources);
@@ -184,7 +192,7 @@ function Admin() {
             <img alt="logo" src="/logo.png" width={'160px'} />
           </a>
         </Col>
-        <Col span={4}>
+        <Col span={5}>
           <Breadcrumb
             style={{
               paddingTop: '40px',
@@ -200,11 +208,12 @@ function Admin() {
               style={{ fontSize: '16px' }}
               overlay={breadcrumb_menu}
             >
-              Admin
+              Account
             </Breadcrumb.Item>
+            <Breadcrumb.Item>Admin</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
-        <Col span={13}></Col>
+        <Col span={12}></Col>
         <Col span={4}>
           <LoginButton />
         </Col>
