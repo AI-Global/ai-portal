@@ -55,3 +55,7 @@ exports.getResources = async (org) => {
   );
   return resources;
 };
+
+exports.delete = async (id) => {
+  return await Organization.deleteOne(id);
+};

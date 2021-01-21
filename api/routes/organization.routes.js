@@ -33,6 +33,11 @@ module.exports = (app) => {
   });
 
   app.delete('/api/organizations/:_id', async (req, res) => {
-    return res.json({});
+    try {
+      let result = await organizationUtil.delete(req.params);
+      return res.json(result);
+    } catch (err) {
+      return res.json({ errors: [err] });
+    }
   });
 };

@@ -20,3 +20,7 @@ exports.toJSON = async (topic) => {
 exports.getByName = async (name) => {
   return await Topic.findOne({ name: name });
 };
+
+exports.delete = async (id) => {
+  return await Topic.deleteOne(id);
+};
