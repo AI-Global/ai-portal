@@ -6,7 +6,6 @@ import {
   Row,
   Col,
   Card,
-  Tooltip,
   Space,
   Tag,
   Modal,
@@ -15,8 +14,15 @@ import {
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
-import { notification } from 'antd';
-import { DatabaseTwoTone, QuestionCircleOutlined } from '@ant-design/icons';
+import Banner from '../components/Banner';
+import FAQ from '../components/Faq';
+import { notification, BackTop } from 'antd';
+import {
+  DatabaseTwoTone,
+  RightCircleOutlined,
+  QuestionCircleOutlined,
+  UpCircleOutlined,
+} from '@ant-design/icons';
 
 let TEMP_FRONTEND_ITEMS = [
   {
@@ -91,45 +97,51 @@ function Landing() {
   let [query, setQuery] = React.useState('');
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
-      <a href="/" style={{ position: 'fixed' }}>
-        <img alt="logo" src="/logo.png" width={'160px'} />
-      </a>
-      <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
+      <Banner
+        message="Welcome to the Community Portal Beta!"
+        secondary="Learn more"
+        link="/faq"
+      />
+      <div style={{ position: 'absolute', top: '60px', right: '20px' }}>
         <LoginButton />
       </div>
       <Content style={{ padding: '0 50px' }}>
-        <Row justify="center" style={{ marginTop: '4rem' }}>
+        <BackTop>
+          <UpCircleOutlined style={{ fontSize: '3em', color: '#1890ff' }} />
+        </BackTop>
+        <Row justify="center" style={{ marginTop: '5rem' }}>
           <Col span={12} style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '2rem' }}>
+            <a href="/">
+              <img alt="logo" src="/demo/aiglobal-other.png" width={'180px'} />
+            </a>
+            <h1 style={{ fontSize: '2rem', marginTop: '5px' }}>
               Responsible AI Community Portal
             </h1>
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'flex-start',
+                alignItems: 'center',
               }}
             >
-              <Tooltip
-                placement="bottom"
-                title="Search for relevant resources here"
-              >
-                <Search
-                  placeholder="Responsible AI Design Assistant"
-                  enterButton
-                  size="large"
-                  onChange={(e) => setQuery(e.target.value)}
-                  onSearch={() => history.push('/resources?q=' + query)}
-                  style={{ marginBottom: '5px' }}
-                />
-              </Tooltip>
-              <a style={{ fontSize: '1.2em' }} href="/faq">
-                <QuestionCircleOutlined /> Learn More About the Portal
+              <Search
+                placeholder="Search for curated resources including datasets, toolkits, and more"
+                enterButton
+                size="large"
+                onChange={(e) => setQuery(e.target.value)}
+                onSearch={() => history.push('/resources?q=' + query)}
+                style={{
+                  marginBottom: '5px',
+                }}
+              />
+              <a style={{ fontSize: '1.2em' }} href="/resources?q=">
+                Explore the resources&nbsp;
+                <RightCircleOutlined />
               </a>
             </div>
           </Col>
         </Row>
-        <Row justify="center" style={{ marginTop: '20px' }}>
+        <Row justify="center" style={{ marginTop: '1rem' }}>
           <Col>
             <Space style={{ width: '100%' }}>
               <div
@@ -242,12 +254,40 @@ function Landing() {
             </Space>
           </Col>
         </Row>
-        <Row justify="center" style={{ marginTop: '4rem' }} gutter={[24, 16]}>
+        <Row justify="center" style={{ marginTop: '10rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <p style={{ fontSize: '1.5em', fontWeight: 'bold' }}>
+              Recommended Resources
+            </p>
+          </div>
+        </Row>
+        <Row justify="center" gutter={[24, 16]}>
           {TEMP_FRONTEND_ITEMS.map((feat) => (
             <Col span={4}>
               <FeatureCard feature={feat} />
             </Col>
           ))}
+        </Row>
+        <Row justify="center" style={{ marginTop: '8rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <p style={{ fontSize: '1.5em', fontWeight: 'bold' }}>
+              Frequently Asked Questions
+            </p>
+          </div>
+        </Row>
+        <Row justify="center">
+          <Col span={14} style={{ textAlign: 'center' }}>
+            <FAQ abridged={true} />
+          </Col>
+        </Row>
+        <Row
+          justify="center"
+          style={{ marginTop: '10px', marginBottom: '4rem' }}
+        >
+          <a style={{ fontSize: '1.2em' }} href="/faq">
+            <QuestionCircleOutlined />
+            &nbsp;Learn more
+          </a>
         </Row>
         <FirstTime />
       </Content>
@@ -265,11 +305,12 @@ function FirstTime() {
     setVisited(true);
   };
 
+  const [isModalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     setLSHasVisited();
   });
 
-  const [isModalVisible, setModalVisible] = useState(false);
   const message = (
     <p style={{ fontWeight: 'bold', marginBottom: '0' }}>First Time?</p>
   );
@@ -283,6 +324,7 @@ function FirstTime() {
         size="small"
         onClick={() => {
           setModalVisible(true);
+          setLSHasVisited();
         }}
       >
         Explore
