@@ -25,6 +25,7 @@ module.exports.RESOURCE_TYPES = [
   'Working Groups',
   'Workshop',
   'Dataset',
+  'Other',
 ];
 module.exports.RESOURCE_PATHS = [
   'Designer Path',
@@ -32,19 +33,32 @@ module.exports.RESOURCE_PATHS = [
   'Policymaker Path',
   'Risk Manager Path',
   'Explorer Path',
+  'Other',
 ];
 module.exports.ORG_TYPES = [
   'Industry',
   'Academia',
   'Government',
   'Civil Society',
+  'Other',
 ];
 
 module.exports.TRUST_INDEX_CATEGORIES = [
   'Explainability & Interpretability',
   'Data Quality',
   'Bias & Fairness',
-  'Accountability, Robustness',
+  'Accountability',
+  'Robustness',
+  'Other',
+];
+
+module.exports.AI_SYSTEM_TYPES = [
+  'Intelligent Process Automation',
+  'Image and Object Recognition',
+  'Text and Speech Analysis',
+  'Advanced Data Analytics',
+  'NLP/ Content Generation',
+  'Other',
 ];
 module.exports.FILE_TYPES = [
   { name: 'DOCX', ext: 'doc', app: 'Microsoft Word' },

@@ -117,3 +117,7 @@ exports.setOrganizations = async (resource, orgs) => {
     orgs
   );
 };
+
+exports.delete = async (id) => {
+  return await Resource.deleteOne(id);
+};

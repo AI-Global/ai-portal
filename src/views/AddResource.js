@@ -16,6 +16,7 @@ import {
 } from '../ant';
 import Footer from '../components/Footer';
 import FormQuestion from '../components/FormQuestion';
+import { useAppEnv } from './../env';
 
 import {
   QUESTIONS_CORE1,
@@ -48,6 +49,7 @@ let steps = [
 ];
 
 function AddResource() {
+  let { api } = useAppEnv();
   let topRef = useRef(null);
   const [form] = Form.useForm();
   const [current, setCurrent] = React.useState(0);
@@ -80,8 +82,109 @@ function AddResource() {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const submit = (formVal) => {
+    console.log(formVal);
+    // TODO: need to deal with adding an organization (create schema)
+    //TODO:if it's not model and dataset (or an owner uploading), those fields will be blank
+     let result = await api.post('/api/resources', {
+      name: formVal.name,
+      desc: formVal.desc,
+      type: formVal.type,
+      path: formVal.desc,
+      keywords: formVal.desc,
+      uploadDate: formVal.desc,
+      creationDate: formVal.desc,
+      modifiedDate: formVal.desc,
+      licenseName: formVal.desc,
+      downloadURL: formVal.desc,
+      technical: formVal.desc,
+      trustIndexCategories: formVal.desc,
+      fundedBy: formVal.desc,
+      creator: formVal.desc,
+      dataDictLink: formVal.desc,
+      sensitiveData: formVal.desc,
+      qualityReview: formVal.desc,
+      ethicsReview: formVal.desc,
+      usage: formVal.desc,
+      isConfidential: formVal.desc,
+      offensiveContent: formVal.desc,
+      numInstances: formVal.desc,
+      label: formVal.desc,
+      rawData: formVal.desc,
+      personalInfoRemoved: formVal.desc,
+      privacyProcedure:formVal,
+      individualsIdentified: formVal,
+      noiseDescription:formVal,
+      externalRestrictions: formVal,
+      aiSystemTypes: formVal,
+      version: formVal,
+      updateFrequency: formVal,
+      unintendedUse: formVal,
+      ownerEmail: formVal,
+      location: formVal,
+      missingInfo: formVal,
+      audience: formVal,
+      removalRequest: formVal,
+      dataset: {
+        collectorOwnerRelation: formVal,
+        collectionProcess: formVal,
+        infoCollected: formVal,
+        accessPermissions: formVal,
+        tasks: formVal,
+        populationDemographics: formVal,
+        collectorOwnerRelation: formVal,
+        fieldsRelationship:formVal ,
+        instanceRepresentation: formVal,
+        multipleInstanceTypes: formVal,
+        completeness: formVal,
+        preprocessing: formVal,
+        isSample: formVal,
+        sampleStrategy: formVal,
+        carefulHandling: formVal,
+        rawOrProcessed: formVal,
+        driftProtection: formVal,
+        reusedOrReinterpreted: formVal,
+        lifeCycleState: formVal,
+        selfContainmen: formVal,
+        stabilityOverTime: formVal,
+        archivalVersions: formVal,
+        externalResourcesRestrictions: formVal,
+      },
+      model: {
+        modelType: formVal,
+        inputs: formVal,
+        outputs: formVal,
+        limitations: formVal,
+        hyperparameters: formVal,
+        architecture:formVal,
+        taskType: formVal,
+        learningType: formVal,
+    
+        numParameters: formVal,
+        attributes:formVal,
+        framework: formVal,
+        libraryDependencies: formVal,
+        hardware: formVal,
+        otherPretrainedModels: formVal,
+        metrics: formVal,
+      },
+
+    });
+    // if (result.errors) {
+    //   for (let msg of result.errors) {
+    //     notification['error']({
+    //       message: msg.msg,
+    //     });
+    //   }
+    //   return;
+    // }
+    // message.success('Form successfully submitted');
+
+    // history.push('/resources');
+  };
+
   //next page
-  const next = (values) => {
+  const next = (formVal) => {
     updatePages();
     console.log(JSON.stringify(form.getFieldValue()));
     if (current === steps.length - 1) {
@@ -90,6 +193,7 @@ function AddResource() {
       window.gtag('event', 'resource_form_submit', {
         event_category: 'upload_resource',
       });
+      submit(formVal);
     } else {
       setCurrent(current + 1);
     }

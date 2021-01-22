@@ -32,6 +32,11 @@ module.exports = (app) => {
   });
 
   app.delete('/api/resources/:_id', async (req, res) => {
-    return res.json({});
+    try {
+      let result = await resourceUtil.delete(req.params);
+      return res.json(result);
+    } catch (err) {
+      return res.json({ errors: [err] });
+    }
   });
 };
