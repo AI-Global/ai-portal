@@ -88,10 +88,12 @@ exports.execUpdateSetManyToMany = async (
     { [primaryKeyOfSecondary]: secondaryObjects },
     { new: true, useFindAndModify: false }
   );
-  await secondaryModel.updateMany(
-    {},
-    { $pull: { [secondaryKeyOfPrimary]: primaryObj._id } }
-  );
+  if (secondaryKeyOfPrimary) {
+    await secondaryModel.updateMany(
+      {},
+      { $pull: { [secondaryKeyOfPrimary]: primaryObj._id } }
+    );
+  }
   await Promise.all(
     secondaryObjects.map((sObj) =>
       secondaryModel.findByIdAndUpdate(
@@ -102,4 +104,31 @@ exports.execUpdateSetManyToMany = async (
     )
   );
   return updatedPrimaryObj;
+};
+
+exports.execUpdateSetManyToOne = async (
+  oneModel,
+  manyKeyOfOne,
+  oneObj,
+  manyModel,
+  oneKeyOfMany,
+  manyObjs
+) => {
+  if (manyKeyOfOne) {
+    await Promise.all(
+      manyObjs.map(async (manyObj) => {
+        await manyModel.updateOne(
+          { _id: manyObj._id },
+          { $set: { [manyKeyOfOne]: oneObj._id } },
+          { new: true }
+        );
+      })
+    );
+  }
+  let updatedOneModel = await oneModel.findByIdAndUpdate(
+    oneObj._id,
+    { $set: { [oneKeyOfMany]: manyObjs.map((fl) => fl._id) } },
+    { new: true, useFindAndModify: false }
+  );
+  return updatedOneModel;
 };

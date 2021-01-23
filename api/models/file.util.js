@@ -18,11 +18,3 @@ exports.createFromAWSUpload = async (awsUploadParams) => {
   await file.save();
   return file;
 };
-
-exports.setResource = async (file, resource) => {
-  await File.updateOne(
-    { _id: file._id },
-    { $set: { resource: resource._id } },
-    { new: true }
-  );
-};

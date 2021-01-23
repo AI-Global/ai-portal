@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Resource = mongoose.model('Resource');
 const Organization = mongoose.model('Organization');
 const Topic = mongoose.model('Topic');
+const File = mongoose.model('File');
 const fileUtil = require('./file.util');
 const queryUtil = require('./query.util');
 
@@ -124,23 +125,20 @@ exports.addOrganization = async (resource, org) => {
 };
 
 exports.setFiles = async (resource, files) => {
-  await Promise.all(
-    files.map(async (file) => {
-      return await fileUtil.setResource(file, resource);
-    })
+  return await queryUtil.execUpdateSetManyToOne(
+    Resource,
+    'resource',
+    resource,
+    File,
+    'files',
+    files
   );
-  let updatedResource = await Resource.findByIdAndUpdate(
-    resource._id,
-    { $set: { files: files.map((fl) => fl._id) } },
-    { new: true, useFindAndModify: false }
-  );
-  return updatedResource;
 };
 
 exports.setTopics = async (resource, topics) => {
   return await queryUtil.execUpdateSetManyToMany(
     Resource,
-    'resources',
+    null,
     resource,
     Topic,
     'topics',

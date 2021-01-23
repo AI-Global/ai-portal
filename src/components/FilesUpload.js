@@ -74,6 +74,7 @@ function FileUpload({ files, setFiles }) {
         .map((file) => ({
           uid: file._id,
           name: file.name,
+          url: file.url,
           status: 'done',
         }))}
       onChange={({ fileList }) => {
