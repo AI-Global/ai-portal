@@ -109,13 +109,13 @@ function Landing() {
         <BackTop>
           <UpCircleOutlined style={{ fontSize: '3em', color: '#1890ff' }} />
         </BackTop>
-        <Row justify="center" style={{ marginTop: '5rem' }}>
+        <Row justify="center" style={{ marginTop: '7rem' }}>
           <Col span={12} style={{ textAlign: 'center' }}>
             <a href="/">
               <img alt="logo" src="/demo/aiglobal-other.png" width={'180px'} />
             </a>
             <h1 style={{ fontSize: '2rem', marginTop: '5px' }}>
-              Responsible AI Community Portal
+              Responsible AI Community Portal Beta
             </h1>
             <div
               style={{
@@ -125,7 +125,7 @@ function Landing() {
               }}
             >
               <Search
-                placeholder="Search for curated resources including datasets, toolkits, and more"
+                placeholder="Search for featured resources including datasets, toolkits, and more"
                 enterButton
                 size="large"
                 onChange={(e) => setQuery(e.target.value)}
@@ -304,8 +304,7 @@ function FirstTime() {
     localStorage.setItem('raiportal:visited', true);
     setVisited(true);
   };
-
-  const [isModalVisible, setModalVisible] = useState(false);
+  let history = useHistory();
 
   useEffect(() => {
     setLSHasVisited();
@@ -323,8 +322,8 @@ function FirstTime() {
         type="primary"
         size="small"
         onClick={() => {
-          setModalVisible(true);
           setLSHasVisited();
+          history.push('/faq');
         }}
       >
         Explore
@@ -344,53 +343,7 @@ function FirstTime() {
     });
   };
 
-  return (
-    <>
-      {!hasVisited && openNotification()}
-      <Modal
-        title={
-          <p style={{ marginBottom: '0', fontSize: '1.2em' }}>
-            <DatabaseTwoTone /> Welcome to the Portal!
-          </p>
-        }
-        visible={isModalVisible}
-        onCancel={() => setModalVisible(false)}
-        footer={[<Button onClick={() => setModalVisible(false)}>Close</Button>]}
-        centered
-        width={700}
-      >
-        <p style={{ fontWeight: 'bold', marginBottom: '2px' }}>
-          What is the Responsible AI Community Portal?
-        </p>
-        <p style={{ marginBottom: '15px' }}>
-          The Responsible AI Community Portal is a curated repository of
-          reports, standards, models, government policies, datasets, and
-          open-source software designed to support Responsible AI development.
-          If you'd like to learn more, watch the demo below or{' '}
-          <a href="/faq">click here for our FAQ</a>.
-        </p>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <p style={{ fontWeight: 'bold' }}>Video Demonstration</p>
-          <iframe
-            title="ex"
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/eaEMSKzqGAg"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </Modal>
-    </>
-  );
+  return <>{!hasVisited && openNotification()}</>;
 }
 
 function FeatureCard({ feature }) {
