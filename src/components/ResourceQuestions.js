@@ -248,7 +248,7 @@ export const QUESTIONS_CORE1 = [
   },
   {
     string: 'Which AI System type does the resource align with?',
-    val: 'ai-system-type',
+    val: 'aiSystemType',
     type: 'multiple',
     options: [
       'Intelligent Process Automation',
@@ -350,7 +350,7 @@ export const QUESTIONS_CORE2 = [
   },
   {
     string: 'What should this resource not be used for?',
-    val: 'unrelated-tasks',
+    val: 'unrelatedTasks',
     type: 'text-area',
     options: null,
     required: false,
@@ -645,7 +645,7 @@ export const QUESTIONS_DATASET = [
   {
     string:
       'Was any preprocessing/cleaning/labeling of the data done? If so, please provide a description.',
-    val: 'preprocessing',
+    val: 'labels',
     type: 'type',
     options: null,
     required: false,
@@ -669,7 +669,7 @@ export const QUESTIONS_DATASET = [
     type: 'select',
     options: ['Yes', 'No', 'N/A'],
     required: false,
-    tip: 'Describe sampling strategy',
+    tip: '',
     example_ans: EXAMPLE.sample,
   },
   {
@@ -813,15 +813,6 @@ export const QUESTIONS_DATASET = [
     tip: '',
     example_ans: '',
   },
-  // {
-  //   string: ,
-  //   val: ,
-  //   type: ,
-  //   options: null ,
-  //   required: false,
-  //   tip: ,
-  //   example_ans:
-  // }
 ];
 
 export const QUESTIONS_MODEL = [
