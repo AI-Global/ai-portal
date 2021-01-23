@@ -61,7 +61,7 @@ const ResourceSchema = new Schema({
     instanceRepresentation: { type: String, default: '' },
     multipleInstanceTypes: { type: String, default: '' },
     completeness: { type: String, default: '' },
-    isSample: { type: Boolean, default: '' },
+    isSample: { type: String, default: '' },
     sampleStrategy: { type: String, default: '' },
     populationDataSource: { type: String, default: '' },
     sampleCoverage: { type: String, default: '' },

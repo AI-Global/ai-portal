@@ -13,6 +13,7 @@ import {
   Affix,
   Breadcrumb,
   Menu,
+  notification,
 } from '../ant';
 import Footer from '../components/Footer';
 import FormQuestion from '../components/FormQuestion';
@@ -83,9 +84,17 @@ function AddResource() {
   };
 
   let submit = async (formVal) => {
-    console.log(formVal);
+    console.log('form answers', JSON.stringify(formVal));
     // TODO: need to deal with adding an organization (create schema)
     //TODO:if it's not model and dataset (or an owner uploading), those fields will be blank
+    var isTechnical =
+      formVal.formats.includes('Algorithm') ||
+      formVal.formats.includes('API') ||
+      formVal.formats.includes('Framework') ||
+      formVal.formats.includes('Framework') ||
+      formVal.formats.includes('Library') ||
+      formVal.formats.includes('Software');
+
     let result = await api.post('/api/resources', {
       name: formVal.name,
       desc: formVal.desc,
@@ -96,7 +105,7 @@ function AddResource() {
       modifiedDate: formVal.modifiedDate,
       licenseName: formVal.licenseName,
       downloadURL: formVal.url,
-      technical: formVal.desc, //TODO: HOW TO DECIDE THAT?
+      technical: isTechnical, //TODO: HOW TO DECIDE THAT?
       trustIndexCategories: formVal.trust_index,
       fundedBy: formVal.fundedBy,
       creator: formVal.creators,
@@ -105,7 +114,8 @@ function AddResource() {
       qualityReview: formVal.qualityReview,
       ethicsReview: formVal.ethicsReview,
       usage: formVal.purpose,
-      isConfidential: formVal.isConfidential,
+      isConfidential:
+        formVal.isConfidential === '' ? null : formVal.isConfidential,
       offensiveContent: formVal.offensiveContent,
       numInstances: formVal.numInstances,
       label: formVal.labels,
@@ -171,30 +181,29 @@ function AddResource() {
         metrics: formVal.modelMetrics,
       },
     });
-    // if (result.errors) {
-    //   for (let msg of result.errors) {
-    //     notification['error']({
-    //       message: msg.msg,
-    //     });
-    //   }
-    //   return;
-    // }
-    // message.success('Form successfully submitted');
 
+    if (result.errors) {
+      for (let msg of result.errors) {
+        console.log(msg);
+        notification['error']({
+          message: msg.msg,
+        });
+      }
+      return;
+    } else {
+      message.success('Form successfully submitted');
+    }
     // history.push('/resources');
   };
 
   //next page
   const next = (formVal) => {
     updatePages();
-    console.log(JSON.stringify(form.getFieldValue()));
     if (current === steps.length - 1) {
-      message.success('Form completed!');
-      console.log('answers are ', JSON.stringify(form.getFieldValue()));
-      window.gtag('event', 'resource_form_submit', {
-        event_category: 'upload_resource',
-      });
-      submit(formVal);
+      // window.gtag('event', 'resource_form_submit', {
+      //   event_category: 'upload_resource',
+      // });
+      submit(form.getFieldValue());
     } else {
       setCurrent(current + 1);
     }

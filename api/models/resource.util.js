@@ -34,7 +34,7 @@ exports.search = async (query, fields) => {
 };
 
 exports.create = async (params) => {
-  let resource = new Resource({});
+  let resource = new Resource(params);
   await resource.save();
   resource = exports.update(resource, params);
   return resource;
