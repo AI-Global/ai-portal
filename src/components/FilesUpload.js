@@ -78,12 +78,12 @@ function FileUpload({ files, setFiles }) {
         }))}
       onChange={({ fileList }) => {
         if (!fileList) return;
-        let uploadedFiles = fileList.filter((file) => file.status == 'done');
+        let uploadedFiles = fileList.filter((file) => file.status === 'done');
         let newFiles = uploadedFiles.map((uf) => {
           if (uf.justUploaded) {
             return { name: uf.name, awsStoragePath: uf.awsStoragePath };
           } else {
-            return files.find((fl) => fl._id == uf.uid);
+            return files.find((fl) => fl._id === uf.uid);
           }
         });
         setFiles(newFiles);

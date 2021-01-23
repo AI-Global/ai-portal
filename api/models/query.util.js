@@ -1,9 +1,12 @@
 exports.searchQuery = (
   model,
-  { queryFields, anyFields, sorts },
+  { queryFields, anyFields, exactFields, sorts },
   query,
   fields
 ) => {
+  queryFields = queryFields || [];
+  anyFields = anyFields || [];
+  exactFields = exactFields || [];
   let searchSpecs = [];
   if (query) {
     searchSpecs.push({
@@ -14,11 +17,19 @@ exports.searchQuery = (
   }
   for (let field of anyFields) {
     let val = fields[field];
-    if (!val) {
+    if (typeof val === 'undefined') {
       continue;
     }
-    val = val.trim().split(',');
+    val = typeof val === 'string' ? val.trim().split(',') : val;
     searchSpecs.push({ [field]: { $in: val } });
+  }
+  for (let field of exactFields) {
+    let val = fields[field];
+    if (typeof val === 'undefined') {
+      continue;
+    }
+    val = typeof val === 'string' ? val.trim().split(',') : val;
+    searchSpecs.push({ [field]: val });
   }
   let findOpts = {};
   if (searchSpecs.length > 0) {

@@ -21,11 +21,15 @@ exports.search = async (query, fields) => {
     }).select('id');
     fields.organizations = orgs.map((org) => org._id).join(',');
   }
+  if (fields.approved) {
+    fields.reviewsRemaining = [];
+  }
   let result = queryUtil.searchQuery(
     Resource,
     {
       queryFields: ['name', 'desc'],
       anyFields: ['topics', 'organizations', 'type', 'path'],
+      exactFields: ['reviewsRemaining'],
       sorts: { byUploadDateAsc: ['uploadDate', 1], byNameAsc: ['name', 1] },
     },
     query,
@@ -65,6 +69,7 @@ exports.update = async (resource, rawParams) => {
         'trustIndexCategories',
         'keywords',
         'creator',
+        'reviewsRemaining',
       ],
       setRefFuncs: {
         topics: exports.setTopics,
@@ -84,6 +89,12 @@ exports.toJSON = (resource) => {
 
 exports.getById = async (id) => {
   return await populate(Resource.findById(id));
+};
+
+exports.getAllPending = async (id) => {
+  return await populate(
+    Resource.find({ reviewsRemaining: { $exists: true, $not: { $size: 0 } } })
+  );
 };
 
 exports.delete = async (resource) => {
