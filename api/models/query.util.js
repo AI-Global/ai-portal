@@ -56,9 +56,11 @@ exports.execUpdateQuery = async (
       object = await setRefFuncs[param](object, refObjs);
     }
   }
-  let objUpdated = await model
-    .update({ _id: object._id }, { $set: updateParams }, { new: true })
-    .exec();
+  let objUpdated = await model.updateOne(
+    { _id: object._id },
+    { $set: updateParams },
+    { new: true }
+  );
   return objUpdated;
 };
 
@@ -75,7 +77,7 @@ exports.execUpdateSetManyToMany = async (
     { [primaryKeyOfSecondary]: secondaryObjects },
     { new: true, useFindAndModify: false }
   );
-  await secondaryModel.update(
+  await secondaryModel.updateMany(
     {},
     { $pull: { [secondaryKeyOfPrimary]: primaryObj._id } }
   );

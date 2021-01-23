@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, DatePicker, Form, Input, Modal, Select, Upload } from '../ant';
-import { UploadOutlined } from '@ant-design/icons';
 import { useAppEnv } from './../env';
 import moment from 'moment';
+import FileUpload from './FilesUpload';
 export default function ManageResourceModal({
   resource,
   modalVisible,
@@ -26,27 +26,6 @@ export default function ManageResourceModal({
       .get('/api/organizations')
       .then((organizations) => setOrganizations(organizations));
   }, [api]);
-
-  const FILE_UPLOAD_PROPS = {
-    onChange({ file, fileList }) {
-      setEditedResource({ ...editedResource, files: fileList });
-    },
-    defaultFileList: [
-      {
-        uid: 'Testing 1',
-        name: 'xxx.png',
-        status: 'done',
-        response: 'Server Error 500',
-        url: 'http://www.baidu.com/xxx.png',
-      },
-      {
-        uid: 'Testing 2',
-        name: 'yyy.png',
-        status: 'done',
-        url: 'http://www.baidu.com/yyy.png',
-      },
-    ],
-  };
 
   let unsavedEdit = JSON.stringify(resource) !== JSON.stringify(editedResource);
   let saveChanges = () => {
@@ -199,10 +178,12 @@ export default function ManageResourceModal({
             />
           </Form.Item>
           <Form.Item label="Files">
-            <Upload {...FILE_UPLOAD_PROPS}>
-              <Button icon={<UploadOutlined />}>Upload Files</Button>
-            </Upload>
-            ,
+            <FileUpload
+              files={editedResource.files}
+              setFiles={(files) =>
+                setEditedResource({ ...editedResource, files: files })
+              }
+            />
           </Form.Item>
           <Form.Item label="Keywords">
             <Select

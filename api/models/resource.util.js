@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Resource = mongoose.model('Resource');
 const Organization = mongoose.model('Organization');
 const Topic = mongoose.model('Topic');
+const fileUtil = require('./file.util');
 const queryUtil = require('./query.util');
 
 exports.Resource = Resource;
@@ -41,6 +42,16 @@ exports.create = async (params) => {
 };
 
 exports.update = async (resource, rawParams) => {
+  if (rawParams.files?.length && typeof rawParams.files[0] === 'object') {
+    rawParams.files = await Promise.all(
+      rawParams.files.map(async (fl) => {
+        if (fl.awsStoragePath) {
+          return await fileUtil.createFromAWSUpload(fl);
+        }
+        return fl;
+      })
+    );
+  }
   let result = await queryUtil.execUpdateQuery(
     Resource,
     {
@@ -58,6 +69,7 @@ exports.update = async (resource, rawParams) => {
       setRefFuncs: {
         topics: exports.setTopics,
         organizations: exports.setOrganizations,
+        files: exports.setFiles,
       },
     },
     resource,
@@ -95,6 +107,20 @@ exports.addOrganization = async (resource, org) => {
   await Organization.findByIdAndUpdate(
     org._id,
     { $addToSet: { resources: resource._id } },
+    { new: true, useFindAndModify: false }
+  );
+  return updatedResource;
+};
+
+exports.setFiles = async (resource, files) => {
+  await Promise.all(
+    files.map(async (file) => {
+      return await fileUtil.setResource(file, resource);
+    })
+  );
+  let updatedResource = await Resource.findByIdAndUpdate(
+    resource._id,
+    { $set: { files: files.map((fl) => fl._id) } },
     { new: true, useFindAndModify: false }
   );
   return updatedResource;
