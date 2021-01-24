@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Layout,
-  Content,
-  Search,
-  Row,
-  Col,
-  Card,
-  Space,
-  Tag,
-  Modal,
-  Button,
-} from '../ant';
+import { Layout, Content, Search, Row, Col, Card, Button } from '../ant';
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
 import LoginButton from '../components/LoginButton';
@@ -18,7 +7,6 @@ import Banner from '../components/Banner';
 import FAQ from '../components/Faq';
 import { notification, BackTop } from 'antd';
 import {
-  DatabaseTwoTone,
   RightCircleOutlined,
   QuestionCircleOutlined,
   UpCircleOutlined,
@@ -41,54 +29,6 @@ let TEMP_FRONTEND_ITEMS = [
     name: 'Data Nutrition Project',
     logoURL: '/demo/nutrition-logo.png',
     description: 'A nutrition label for datasets',
-  },
-];
-
-let TEMP_TAGS = [
-  {
-    name: 'banking',
-    color: '#42D3D4',
-    type: 'topic',
-  },
-  {
-    name: 'health',
-    color: '#42D3D4',
-    type: 'topic',
-  },
-  {
-    name: 'education',
-    color: '#42D3D4',
-    type: 'topic',
-  },
-  {
-    name: 'explorer',
-    color: '#097AE8',
-    type: 'path',
-  },
-  {
-    name: 'developer',
-    color: '#097AE8',
-    type: 'path',
-  },
-  {
-    name: 'designer',
-    color: '#097AE8',
-    type: 'path',
-  },
-  {
-    name: 'algorithm',
-    color: '#00CDFF',
-    type: 'type',
-  },
-  {
-    name: 'library',
-    color: '#00CDFF',
-    type: 'type',
-  },
-  {
-    name: 'toolkit',
-    color: '#00CDFF',
-    type: 'type',
   },
 ];
 
@@ -141,136 +81,49 @@ function Landing() {
             </div>
           </Col>
         </Row>
-        <Row justify="center" style={{ marginTop: '1rem' }}>
-          <Col>
-            <Space style={{ width: '100%' }}>
-              <div
-                style={{
-                  borderRight: '1px solid #cdcdcd',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <p style={{ marginBottom: '5px', fontWeight: 'bold' }}>
-                  Filter by Topics
-                </p>
-                <Space>
-                  {TEMP_TAGS.slice(0, 3).map((tag) => (
-                    <Tag
-                      style={{
-                        color: 'white',
-                        fontWeight: 'bold',
-                        fontSize: '0.9em',
-                        padding: '5px',
-                      }}
-                      color={tag.color}
-                      key={tag.name}
-                    >
-                      <a
-                        href="/"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          history.push('/resources?q=' + tag.name);
-                        }}
-                      >
-                        {tag.name.toUpperCase()}
-                      </a>
-                    </Tag>
-                  ))}
-                </Space>
-              </div>
-              <div
-                style={{
-                  borderRight: '1px solid #cdcdcd',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <p style={{ marginBottom: '5px', fontWeight: 'bold' }}>
-                  Filter by Path
-                </p>
-                <Space>
-                  {TEMP_TAGS.slice(3, 6).map((tag) => (
-                    <Tag
-                      style={{
-                        color: 'white',
-                        fontWeight: 'bold',
-                        fontSize: '0.9em',
-                        padding: '5px',
-                      }}
-                      color={tag.color}
-                      key={tag.name}
-                    >
-                      <a
-                        href="/"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          history.push('/resources?q=' + tag.name);
-                        }}
-                      >
-                        {tag.name.toUpperCase()}
-                      </a>
-                    </Tag>
-                  ))}
-                </Space>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <p style={{ marginBottom: '5px', fontWeight: 'bold' }}>
-                  Filter by Type
-                </p>
-                <Space>
-                  {TEMP_TAGS.slice(6, TEMP_TAGS.length).map((tag) => (
-                    <Tag
-                      style={{
-                        color: 'white',
-                        fontWeight: 'bold',
-                        fontSize: '0.9em',
-                        padding: '5px',
-                      }}
-                      color={tag.color}
-                      key={tag.name}
-                    >
-                      <a
-                        href="/"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          history.push('/resources?q=' + tag.name);
-                        }}
-                      >
-                        {tag.name.toUpperCase()}
-                      </a>
-                    </Tag>
-                  ))}
-                </Space>
-              </div>
-            </Space>
-          </Col>
-        </Row>
-        <Row justify="center" style={{ marginTop: '10rem' }}>
+        <Row justify="center" style={{ marginTop: '4rem', marginBottom: '0' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <p style={{ fontSize: '1.5em', fontWeight: 'bold' }}>
-              Recommended Resources
+            <p
+              style={{
+                fontSize: '2.5em',
+                fontWeight: 'bold',
+                color: 'black',
+                marginBottom: '0',
+              }}
+            >
+              Looking for resources?{' '}
+              <span style={{ color: '#1890ff' }}>
+                You came to the right place.
+              </span>
             </p>
           </div>
         </Row>
-        <Row justify="center" gutter={[24, 16]}>
-          {TEMP_FRONTEND_ITEMS.map((feat) => (
-            <Col span={4}>
-              <FeatureCard feature={feat} />
-            </Col>
-          ))}
+        <Row justify="center">
+          <Col span={15}>
+            <p style={{ fontSize: '1.4em', textAlign: 'center' }}>
+              On the Community Portal, you can find{' '}
+              <strong>selected research, datasets, toolkits, and more</strong>{' '}
+              to help you learn more about <strong>Responsible AI</strong> and
+              apply it in you work. Start searching or explore our resources
+              above!
+              {/* Whether you're an experienced practitioner
+              or learning about AI for the first time, we have resources for
+              you! */}
+            </p>
+          </Col>
         </Row>
-        <Row justify="center" style={{ marginTop: '8rem' }}>
+        <Row justify="center">
+          <a
+            style={{ color: 'gray', fontSize: '1.3em', fontWeight: 'bolder' }}
+            href="/faq"
+          >
+            Unsure of where to start? Click to learn more{' '}
+            <RightCircleOutlined />
+          </a>
+        </Row>
+        <Row justify="center" style={{ marginTop: '10rem' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <p style={{ fontSize: '1.5em', fontWeight: 'bold' }}>
+            <p style={{ fontSize: '2em', fontWeight: 'bold', color: 'black' }}>
               Frequently Asked Questions
             </p>
           </div>
@@ -287,6 +140,29 @@ function Landing() {
           <a style={{ fontSize: '1.2em' }} href="/faq">
             <QuestionCircleOutlined />
             &nbsp;Learn more
+          </a>
+        </Row>
+        <Row justify="center" style={{ marginTop: '10rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <p style={{ fontSize: '2em', fontWeight: 'bold', color: 'black' }}>
+              Recommended Resources
+            </p>
+          </div>
+        </Row>
+        <Row justify="center" gutter={[24, 16]}>
+          {TEMP_FRONTEND_ITEMS.map((feat) => (
+            <Col span={4}>
+              <FeatureCard feature={feat} />
+            </Col>
+          ))}
+        </Row>
+        <Row
+          justify="center"
+          style={{ marginTop: '10px', marginBottom: '4rem' }}
+        >
+          <a style={{ fontSize: '1.2em' }} href="/resources?q=">
+            Explore&nbsp;
+            <RightCircleOutlined />
           </a>
         </Row>
         <FirstTime />
@@ -356,12 +232,14 @@ function FeatureCard({ feature }) {
       style={{
         height: '100%',
         margin: 'auto',
+        borderWidth: '5px',
+        borderRadius: '10px',
       }}
       cover={
         <img
           alt="alt"
           src={feature.logoURL}
-          style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+          style={{ height: '50%', objectFit: 'cover' }}
         />
       }
     >

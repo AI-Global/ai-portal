@@ -90,11 +90,13 @@ function Faq() {
                 textAlign: 'start',
               }}
             >
-              The Responsible AI Community Portal is a curated repository of
-              reports, standards, models, government policies, datasets, and
-              open-source software designed to support Responsible AI
-              development. If you'd like to learn more, watch the demo below or
-              explore our FAQ.
+              The Responsible AI Community Portal is a{' '}
+              <strong>
+                selected repository of reports, standards, models, government
+                policies, datasets, and open-source software
+              </strong>{' '}
+              designed to support Responsible AI development. If you'd like to
+              learn more, watch the demo below or explore our FAQ.
             </p>
             <p style={{ fontWeight: 'bold', fontSize: '1.4em' }}>
               Video Demonstration
