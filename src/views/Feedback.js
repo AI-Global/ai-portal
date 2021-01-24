@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
   Input,
+  notification,
   Header,
   Affix,
   Menu,
@@ -18,13 +19,13 @@ import MultiSelectField from '../components/FormMultiSelectField';
 import FormField from '../components/FormField';
 import LoginButton from '../components/LoginButton';
 import { useHistory } from 'react-router';
+import { useAppEnv } from './../env';
+
 const { TextArea } = Input;
 
 const { Title } = Typography;
 
 export default function Feedback(props) {
-  let onSubmit = async (values) => {};
-  let onFail = (values) => {};
   let history = useHistory();
   let updateSearch = (query) => {
     let segments = [];
@@ -35,6 +36,19 @@ export default function Feedback(props) {
       event_category: 'search',
     });
     history.push(url);
+  };
+
+  let { api } = useAppEnv();
+  let onSubmit = async (values) => {
+    await api.post('/api/feedback/submit', values);
+    notification.info({ message: 'Sent!' });
+  };
+  let onFail = (values) => {
+    for (let err of values.errorFields) {
+      notification.error({
+        message: err.errors[0],
+      });
+    }
   };
 
   return (

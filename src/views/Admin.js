@@ -225,8 +225,8 @@ function Admin() {
 
   useEffect(() => {
     api.get('/api/users').then(setUsers);
-    api.get('/api/resources?pending=true').then(setPendingResources);
     api.get('/api/topics').then(setTopics);
+    api.get('/api/resources/all/pendingReview').then(setPendingResources);
   }, [api]);
 
   let dashRef = useRef(null),
