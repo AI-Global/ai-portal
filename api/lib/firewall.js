@@ -50,8 +50,8 @@ let protect = (method, app, endpoint, endpointHandler, rules, ownerTest) => {
         return endpointHandler(req, res);
       }
     }
-    console.log('!?! FIREWALL ACCESS DENIED !?!');
     console.log(
+      '!?! FIREWALL ACCESS DENIED !?!',
       'request =',
       keys,
       'rules =',
@@ -68,7 +68,7 @@ let protect = (method, app, endpoint, endpointHandler, rules, ownerTest) => {
 module.exports = (app) => {
   let firewalledApp = {};
   for (let method of ['get', 'put', 'post', 'delete', 'patch']) {
-    if (process.env.DISABLE_FIREWALL) {
+    if (process.env.DISABLE_FIREWALL == 'true') {
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       console.log('!!!!! WARNING FIREWALL DISABLED !!!!!');
       console.log('!!!!!  ALL REQUEST ARE ALLOWED  !!!!!');

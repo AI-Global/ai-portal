@@ -56,12 +56,16 @@ module.exports = (app) => {
     { public: ['username', 'token', 'password'] }
   );
 
-  firewall.post('/api/auth/verify/email', async (req, res) => {
-    const { username, token } = req.body;
-    let user = await userUtil.getByUsernameOrEmail(username);
-    let verified = await userUtil.verifyEmail(user, token);
-    return res.json({ verified: verified });
-  });
+  firewall.post(
+    '/api/auth/verify/email',
+    async (req, res) => {
+      const { username, token } = req.body;
+      let user = await userUtil.getByUsernameOrEmail(username);
+      let verified = await userUtil.verifyEmail(user, token);
+      return res.json({ verified: verified });
+    },
+    { public: ['username', 'token'] }
+  );
 
   firewall.post(
     '/api/users',
@@ -100,10 +104,15 @@ module.exports = (app) => {
     { mod: [] }
   );
 
-  firewall.get('/api/users/:_id', async (req, res) => {
-    let user = await userUtil.getById(req.params);
-    return res.json(userUtil.toJSON(user));
-  });
+  firewall.get(
+    '/api/users/:_id',
+    async (req, res) => {
+      let user = await userUtil.getById(req.params);
+      return res.json(userUtil.toJSON(user));
+    },
+    { owner: ['_id'], mod: ['_id'] },
+    usersSame
+  );
 
   firewall.put(
     '/api/users/:_id',
@@ -117,10 +126,17 @@ module.exports = (app) => {
     }
   );
 
-  firewall.delete('/api/users/:_id', async (req, res) => {
-    await userUtil.delete(await userUtil.getById(req.params));
-    return res.json({});
-  });
+  firewall.delete(
+    '/api/users/:_id',
+    async (req, res) => {
+      await userUtil.delete(await userUtil.getById(req.params));
+      return res.json({});
+    },
+    {
+      owner: ['_id'],
+    },
+    usersSame
+  );
 
   firewall.get(
     '/api/users/:_id/resources',

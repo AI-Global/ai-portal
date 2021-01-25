@@ -23,10 +23,15 @@ module.exports = (app) => {
     { public: ['_id'] }
   );
 
-  firewall.put('/api/organizations/:_id', async (req, res) => {
-    await organizationUtil.update(req.params, req.body);
-    res.json({});
-  });
+  firewall.put(
+    '/api/organizations/:_id',
+    async (req, res) => {
+      await organizationUtil.update(req.params, req.body);
+      res.json({});
+    },
+    { owner: ['_id', 'fillme'], mod: ['_id', 'fillme'] },
+    userPartOfOrg
+  );
 
   firewall.get(
     '/api/organizations/:_id/resources',
@@ -37,17 +42,31 @@ module.exports = (app) => {
     { public: ['_id'] }
   );
 
-  firewall.post('/api/organizations', async (req, res) => {
-    try {
-      let newOrganization = await organizationUtil.create(req.body);
-      return res.json(organizationUtil.toJSON(newOrganization));
-    } catch (err) {
-      res.json({ errors: [{ msg: '' + err }] });
-    }
-  });
+  firewall.post(
+    '/api/organizations',
+    async (req, res) => {
+      try {
+        let newOrganization = await organizationUtil.create(req.body);
+        return res.json(organizationUtil.toJSON(newOrganization));
+      } catch (err) {
+        res.json({ errors: [{ msg: '' + err }] });
+      }
+    },
+    { mod: ['fillme'] }
+  );
 
-  firewall.delete('/api/organizations/:_id', async (req, res) => {
-    await organizationUtil.delete(await organizationUtil.getById(req.params));
-    return res.json({});
-  });
+  firewall.delete(
+    '/api/organizations/:_id',
+    async (req, res) => {
+      await organizationUtil.delete(await organizationUtil.getById(req.params));
+      return res.json({});
+    },
+    { mod: ['_id'], owner: ['_id'] },
+    userPartOfOrg
+  );
+};
+
+let userPartOfOrg = async (user, fields) => {
+  console.log('WARNING: TODO userPartOfOrg(...)');
+  return true;
 };

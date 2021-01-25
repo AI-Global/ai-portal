@@ -48,22 +48,41 @@ module.exports = (app) => {
     { mod: [] }
   );
 
-  firewall.post('/api/resources', async (req, res) => {
-    try {
-      let newResource = await resourceUtil.create(req.body);
-      return res.json(resourceUtil.toJSON(newResource));
-    } catch (err) {
-      res.json({ errors: [{ msg: '' + err }] });
-    }
-  });
+  firewall.post(
+    '/api/resources',
+    async (req, res) => {
+      try {
+        let newResource = await resourceUtil.create(req.body);
+        return res.json(resourceUtil.toJSON(newResource));
+      } catch (err) {
+        res.json({ errors: [{ msg: '' + err }] });
+      }
+    },
+    { user: ['fillme'] }
+  );
 
-  firewall.put('/api/resources/:_id', async (req, res) => {
-    await resourceUtil.update(req.params, req.body);
-    res.json({});
-  });
+  firewall.put(
+    '/api/resources/:_id',
+    async (req, res) => {
+      await resourceUtil.update(req.params, req.body);
+      res.json({});
+    },
+    { owner: ['_id', 'fillme'], mod: ['_id', 'fillme'] },
+    userIsResourceOwner
+  );
 
-  firewall.delete('/api/resources/:_id', async (req, res) => {
-    await resourceUtil.delete(await resourceUtil.getById(req.params));
-    return res.json({});
-  });
+  firewall.delete(
+    '/api/resources/:_id',
+    async (req, res) => {
+      await resourceUtil.delete(await resourceUtil.getById(req.params));
+      return res.json({});
+    },
+    { owner: ['_id'], mod: ['_id'] },
+    userIsResourceOwner
+  );
+};
+
+let userIsResourceOwner = async (user, fields) => {
+  let resource = await resourceUtil.getById(fields._id);
+  return resource.user._id == user._id;
 };
