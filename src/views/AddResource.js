@@ -67,7 +67,7 @@ function AddResource() {
         setLoading(false);
       });
     });
-  }, [api, steps]);
+  }, [api]);
 
   let topRef = useRef(null);
   const [form] = Form.useForm();
@@ -137,9 +137,9 @@ function AddResource() {
       ethicsReview: formVal.ethicsReview,
       usage: formVal.purpose,
       isConfidential:
-        formVal.isConfidential === '' || formVal.isConfidential === undefined
-          ? null
-          : formVal.isConfidential,
+        formVal.isConfidential == true || formVal.isConfidential == false
+          ? formVal.isConfidential
+          : false,
       offensiveContent: formVal.offensiveContent,
       numInstances: formVal.numInstances,
       label: formVal.labels,
@@ -207,6 +207,8 @@ function AddResource() {
         otherPretrainedModels: formVal.pretrainModels,
         metrics: formVal.modelMetrics,
       },
+      topics: formVal.topics,
+      organizations: formVal.organizations,
     });
 
     if (result.errors) {
