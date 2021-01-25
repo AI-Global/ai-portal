@@ -134,7 +134,7 @@ export function getQuestionsCore1(topics, orgs) {
         { name: 'Assessment', label: 'Assessment' },
         { name: 'Benchmark', label: 'Benchmark' },
         { name: 'Best Practices', label: 'Best Practices' },
-        { name: 'Datasets', label: 'Datasets' },
+        { name: 'Dataset', label: 'Dataset' },
         { name: 'Design Tool', label: 'Design Tool' },
         { name: 'Education Tool', label: 'Education Tool' },
         { name: 'Framework', label: 'Framework' },

@@ -15,6 +15,7 @@ import {
   Menu,
   notification,
   Spin,
+  Modal,
 } from '../ant';
 import Footer from '../components/Footer';
 import FormQuestion from '../components/FormQuestion';
@@ -48,11 +49,13 @@ let modelPage = {
 
 let steps = [];
 function AddResource() {
-  let { api, enums } = useAppEnv();
+  let { api, enums, user } = useAppEnv();
   let history = useHistory();
   let [topics, setTopics] = useState([]);
   let [orgs, setOrgs] = useState([]);
   let [loading, setLoading] = useState(true);
+  let [modalVisible, setModalVisible] = useState(!user);
+
   console.log('num pages', steps.length);
   console.log('loading', loading);
   useEffect(() => {
@@ -66,8 +69,8 @@ function AddResource() {
             title: 'Core 1',
             content: getQuestionsCore1(topics, orgs),
           });
-          setLoading(false);
         }
+        setLoading(false);
       });
     });
   }, [api]);
@@ -107,10 +110,6 @@ function AddResource() {
 
   let submit = async (formVal) => {
     console.log('form answers', JSON.stringify(formVal));
-    // TODO: need to deal with adding an organization (create schema)
-    //TODO:if it's not model and dataset (or an owner uploading), those fields will be blank
-    console.log('sample', formVal.sample);
-    console.log('issample', formVal.sample === undefined);
 
     var isTechnical =
       formVal.formats.includes('Algorithm') ||
@@ -222,21 +221,27 @@ function AddResource() {
           message: msg.msg,
         });
       }
+      steps = [];
+
       return;
     } else {
       message.success('Form successfully submitted');
+      steps = [];
     }
-    steps = [];
     history.push('/resources');
   };
 
   //next page
   const next = (formVal) => {
+    if (!user) {
+      //must login to upload a resource
+      setModalVisible(true);
+    }
     updatePages();
     if (current === steps.length - 1) {
-      // window.gtag('event', 'resource_form_submit', {
-      //   event_category: 'upload_resource',
-      // });
+      window.gtag('event', 'resource_form_submit', {
+        event_category: 'upload_resource',
+      });
       submit(form.getFieldValue());
     } else {
       console.log('next page', current + 1);
@@ -265,6 +270,18 @@ function AddResource() {
 
   return (
     <Layout>
+      <Modal
+        title="Log In"
+        centered
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={[]}
+        width={300}
+      >
+        Interested in uploading a resource? <br />
+        Click here to
+        <a href="/login"> create an account or log in</a>
+      </Modal>
       <Affix offsetTop={0}>
         <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
           <a href="/">

@@ -10,6 +10,7 @@ module.exports.RESOURCE_TYPES = [
   'Benchmark',
   'Best Practices',
   'Datasets',
+  'Dataset',
   'Design Tool',
   'Education Tool',
   'Framework',
