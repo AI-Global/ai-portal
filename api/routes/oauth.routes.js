@@ -10,11 +10,13 @@ const SUPPORTED_CLIENTS = [
 ];
 
 module.exports = (app) => {
-  app.get('/api/oauth/clients/:cid', async (req, res) => {
+  const firewall = require('../lib/firewall')(app);
+
+  firewall.get('/api/oauth/clients/:cid', async (req, res) => {
     res.json(SUPPORTED_CLIENTS.find((c) => c.id == req.params.cid));
   });
 
-  app.post('/api/oauth/authcode', async (req, res) => {
+  firewall.post('/api/oauth/authcode', async (req, res) => {
     let user = await req.getUser();
     let {
       client_id,
@@ -46,7 +48,7 @@ module.exports = (app) => {
     });
   });
 
-  app.post('/api/oauth/token', async (req, res) => {
+  firewall.post('/api/oauth/token', async (req, res) => {
     let { grant_type, code, redirect_uri, client_id, code_verifier } = req.body;
     let client = SUPPORTED_CLIENTS.find((c) => c.id == client_id);
     let decodedCode = req.jwtDecode(code);

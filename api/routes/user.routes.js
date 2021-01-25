@@ -2,7 +2,9 @@ const userUtil = require('../models/user.util');
 const enums = require('../models/enums');
 
 module.exports = (app) => {
-  app.post('/api/auth/login', async (req, res) => {
+  const firewall = require('../lib/firewall')(app);
+
+  firewall.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
     let user = await userUtil.getByUsernameOrEmail(username);
     if (!user || !userUtil.comparePassword(user, password)) {
@@ -15,7 +17,7 @@ module.exports = (app) => {
     });
   });
 
-  app.get('/api/context', async (req, res) => {
+  firewall.get('/api/context', async (req, res) => {
     let user = await req.getUser();
     let ctx = { enums: enums };
     if (user) {
@@ -24,7 +26,7 @@ module.exports = (app) => {
     return res.json(ctx);
   });
 
-  app.post('/api/auth/reset/password', async (req, res) => {
+  firewall.post('/api/auth/reset/password', async (req, res) => {
     // avoid timing attacks
     setTimeout(() => res.json({ done: true }), 1000);
     let { username, token, password } = req.body;
@@ -42,14 +44,14 @@ module.exports = (app) => {
     return;
   });
 
-  app.post('/api/auth/verify/email', async (req, res) => {
+  firewall.post('/api/auth/verify/email', async (req, res) => {
     const { username, token } = req.body;
     let user = await userUtil.getByUsernameOrEmail(username);
     let verified = await userUtil.verifyEmail(user, token);
     return res.json({ verified: verified });
   });
 
-  app.post('/api/users', async (req, res) => {
+  firewall.post('/api/users', async (req, res) => {
     const { name, username, email, password, confirmPassword } = req.body;
     let errors = [];
     if (!name || !email || !password || !confirmPassword || !username) {
@@ -73,31 +75,31 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/api/users', async (req, res) => {
+  firewall.get('/api/users', async (req, res) => {
     let users = await userUtil.getAll();
     return res.json(users);
   });
 
-  app.get('/api/users/:_id', async (req, res) => {
+  firewall.get('/api/users/:_id', async (req, res) => {
     let user = await userUtil.getById(req.params);
     return res.json(userUtil.toJSON(user));
   });
 
-  app.put('/api/users/:_id', async (req, res) => {
+  firewall.put('/api/users/:_id', async (req, res) => {
     await userUtil.update(req.params, req.body);
     return res.json(Object.assign({}, req.params, req.body));
   });
 
-  app.delete('/api/users/:_id', async (req, res) => {
+  firewall.delete('/api/users/:_id', async (req, res) => {
     await userUtil.delete(await userUtil.getById(req.params));
     return res.json({});
   });
 
-  app.get('/api/users/:_id/resources', async (req, res) => {
+  firewall.get('/api/users/:_id/resources', async (req, res) => {
     return res.json([]);
   });
 
-  app.get('/api/users/:_id/organizations', async (req, res) => {
+  firewall.get('/api/users/:_id/organizations', async (req, res) => {
     return res.json([]);
   });
 };

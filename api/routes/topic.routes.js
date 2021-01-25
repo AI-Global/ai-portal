@@ -1,11 +1,13 @@
 const topicUtil = require('../models/topic.util');
 
 module.exports = (app) => {
-  app.get('/api/topics', async (req, res) => {
+  const firewall = require('../lib/firewall')(app);
+
+  firewall.get('/api/topics', async (req, res) => {
     res.json(await topicUtil.getAll());
   });
 
-  app.post('/api/topics', async (req, res) => {
+  firewall.post('/api/topics', async (req, res) => {
     const { name, desc } = req.body;
     try {
       let newTopic = await topicUtil.create({
@@ -18,7 +20,7 @@ module.exports = (app) => {
     }
   });
 
-  app.delete('/api/topics/:_id', async (req, res) => {
+  firewall.delete('/api/topics/:_id', async (req, res) => {
     await topicUtil.delete(await topicUtil.getById(req.params));
     return res.json({});
   });
