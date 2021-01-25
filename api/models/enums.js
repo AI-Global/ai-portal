@@ -40,6 +40,7 @@ module.exports.ORG_TYPES = [
   'Academia',
   'Government',
   'Civil Society',
+  'International Organization',
   'Other',
 ];
 

@@ -53,7 +53,7 @@ function FormQuestion(props) {
             defaultValue={props.question.example_ans}
           >
             {props.question.options.map((option) => (
-              <Option value={option}>{option} </Option>
+              <Option value={option.name}>{option.label} </Option>
             ))}
           </Select>
         </Form.Item>
@@ -74,7 +74,7 @@ function FormQuestion(props) {
             defaultValue={props.question.example_ans}
           >
             {props.question.options.map((option) => (
-              <Option value={option}>{option} </Option>
+              <Option value={option.name}>{option.label} </Option>
             ))}
           </Select>
         </Form.Item>
