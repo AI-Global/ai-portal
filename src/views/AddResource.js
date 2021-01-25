@@ -61,11 +61,13 @@ function AddResource() {
       setTopics(topics);
       api.get('/api/organizations').then((orgs) => {
         setOrgs(orgs);
-        steps.push({
-          title: 'Core 1',
-          content: getQuestionsCore1(topics, orgs),
-        });
-        setLoading(false);
+        if (steps.length == 0) {
+          steps.push({
+            title: 'Core 1',
+            content: getQuestionsCore1(topics, orgs),
+          });
+          setLoading(false);
+        }
       });
     });
   }, [api]);
@@ -85,7 +87,7 @@ function AddResource() {
         steps.push(datasetPage);
       }
       //Q: what field to check for model?
-      if (data['formats'].includes('Algorithm') && !steps.includes(modelPage)) {
+      if (data['formats'].includes('Model') && !steps.includes(modelPage)) {
         steps.push(modelPage);
       }
       //remove core2, model, or dataset pages if answers has changed
@@ -95,7 +97,7 @@ function AddResource() {
       if (!data['formats'].includes('Dataset') && steps.includes(datasetPage)) {
         steps = steps.filter((value) => value !== datasetPage);
       }
-      if (!data['formats'].includes('Algorithm') && steps.includes(modelPage)) {
+      if (!data['formats'].includes('Model') && steps.includes(modelPage)) {
         steps = steps.filter((value) => value !== modelPage);
       }
     }
@@ -116,7 +118,8 @@ function AddResource() {
       formVal.formats.includes('Framework') ||
       formVal.formats.includes('Framework') ||
       formVal.formats.includes('Library') ||
-      formVal.formats.includes('Software');
+      formVal.formats.includes('Software') ||
+      formVal.formats.includes('Model');
 
     let result = await api.post('/api/resources', {
       name: formVal.name,
@@ -128,7 +131,7 @@ function AddResource() {
       modifiedDate: formVal.modifiedDate,
       licenseName: formVal.licenseName,
       downloadURL: formVal.url,
-      technical: isTechnical, //TODO: HOW TO DECIDE THAT?
+      technical: isTechnical,
       trustIndexCategories: formVal.trust_index,
       fundedBy: formVal.fundedBy,
       creator: formVal.creators,
@@ -223,6 +226,7 @@ function AddResource() {
     } else {
       message.success('Form successfully submitted');
     }
+    steps = [];
     history.push('/resources');
   };
 
@@ -248,7 +252,6 @@ function AddResource() {
     setCurrent(current - 1);
   };
 
-  let history = useHistory();
   let updateSearch = (query) => {
     let segments = [];
     segments.push('q=' + (query || ''));
@@ -405,9 +408,7 @@ function AddResource() {
           {loading && <Spin />}
         </Row>
       </Content>
-      <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-        <Footer />
-      </div>
+      <Footer />
     </Layout>
   );
 }

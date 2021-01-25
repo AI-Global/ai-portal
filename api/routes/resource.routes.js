@@ -58,7 +58,54 @@ module.exports = (app) => {
         res.json({ errors: [{ msg: '' + err }] });
       }
     },
-    { user: ['fillme'] }
+    {
+      user: [
+        'name',
+        'desc',
+        'type',
+        'path',
+        'keywords',
+        'creationDate',
+        'modifiedDate',
+        'licenseName',
+        'downloadURL',
+        'technical',
+        'trustIndexCategories',
+        'fundedBy',
+        'creator',
+        'dataDictLink',
+        'sensitveData',
+        'qualityReview',
+        'ethicsReview',
+        'usage',
+        'isConfidential',
+        'offensiveContent',
+        'numInstances',
+        'instances',
+        'label',
+        'rawData',
+        'distribution',
+        'personalInfoRemoved',
+        'privacyProcedure',
+        'individualsIdentified',
+        'noiseDescription',
+        'externalRestrictions',
+        'aiSystemTyupes',
+        'version',
+        'updateFrequency',
+        'purpose',
+        'unintendedUse',
+        'ownerEmail',
+        'location',
+        'missingInfo',
+        'audience',
+        'removalRequest',
+        'dataset',
+        'model',
+        'topics',
+        'organizations',
+      ],
+    }
   );
 
   firewall.put(
@@ -82,14 +129,6 @@ module.exports = (app) => {
   );
 };
 
-app.delete('/api/resources/:_id', async (req, res) => {
-  try {
-    let result = await resourceUtil.delete(req.params);
-    return res.json(result);
-  } catch (err) {
-    return res.json({ errors: [err] });
-  }
-});
 let userIsResourceOwner = async (user, fields) => {
   let resource = await resourceUtil.getById(fields._id);
   return resource.user._id == user._id;

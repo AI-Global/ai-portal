@@ -11,14 +11,6 @@ module.exports = (app) => {
     { public: [] }
   );
 
-  app.delete('/api/topics/:_id', async (req, res) => {
-    try {
-      let result = await topicUtil.delete(req.params);
-      return res.json(result);
-    } catch (err) {
-      return res.json({ errors: [err] });
-    }
-  });
   firewall.post(
     '/api/topics',
     async (req, res) => {

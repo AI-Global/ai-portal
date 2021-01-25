@@ -146,6 +146,7 @@ function ManageUsersTable({ users }) {
         user={manageUser}
         modalVisible={manageUser != null}
         setModalVisible={() => setManageUser(null)}
+        mode="admin"
       />
     </Card>
   );
