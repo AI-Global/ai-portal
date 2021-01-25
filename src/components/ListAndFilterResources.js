@@ -34,7 +34,7 @@ export default function ListAndFilterResources({
   useEffect(() => {
     setLoading(true);
     api
-      .get('/api/resources', { query: query, ...filterVals })
+      .get('/api/resources', { query: query, approved: true, ...filterVals })
       .then((resources) => {
         setResources(resources);
         setLoading(false);
@@ -50,8 +50,6 @@ export default function ListAndFilterResources({
           <Menu
             mode="inline"
             theme="light"
-            defaultSelectedKeys={['topics']}
-            defaultOpenKeys={['topics', 'groups']}
             style={{ height: '100%', borderRight: 0 }}
           >
             <Menu.Item style={{ marginTop: '10px' }}>

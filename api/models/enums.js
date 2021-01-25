@@ -43,7 +43,7 @@ module.exports.ORG_TYPES = [
   'International Organization',
   'Other',
 ];
-
+module.exports.REVIEW_TYPES = ['mod'];
 module.exports.TRUST_INDEX_CATEGORIES = [
   'Explainability & Interpretability',
   'Data Quality',

@@ -21,6 +21,9 @@ exports.getByName = async (name) => {
   return await Topic.findOne({ name: name });
 };
 
-exports.delete = async (id) => {
-  return await Topic.deleteOne(id);
+exports.delete = async (topic) => {
+  await Topic.deleteOne({ _id: topic._id });
+
+exports.getById = async (id) => {
+  return await Topic.findById(id);
 };
