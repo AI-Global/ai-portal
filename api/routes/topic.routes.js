@@ -3,9 +3,13 @@ const topicUtil = require('../models/topic.util');
 module.exports = (app) => {
   const firewall = require('../lib/firewall')(app);
 
-  firewall.get('/api/topics', async (req, res) => {
-    res.json(await topicUtil.getAll());
-  });
+  firewall.get(
+    '/api/topics',
+    async (req, res) => {
+      res.json(await topicUtil.getAll());
+    },
+    { public: [] }
+  );
 
   firewall.post('/api/topics', async (req, res) => {
     const { name, desc } = req.body;

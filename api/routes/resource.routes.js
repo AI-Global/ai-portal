@@ -14,7 +14,18 @@ module.exports = (app) => {
       } catch (e) {}
       res.json(resources.map(resourceUtil.toJSON));
     },
-    { public: ['query', 'approved', 'organizations'] }
+    {
+      public: [
+        'query',
+        'approved',
+        'organizations',
+        'organizationType',
+        'type',
+        'path',
+        'sortBy',
+        'topics',
+      ],
+    }
   );
 
   firewall.get(
@@ -28,10 +39,14 @@ module.exports = (app) => {
     }
   );
 
-  firewall.get('/api/resources/all/pendingReview', async (req, res) => {
-    let resources = await resourceUtil.getAllPending();
-    res.json(resources.map(resourceUtil.toJSON));
-  });
+  firewall.get(
+    '/api/resources/all/pendingReview',
+    async (req, res) => {
+      let resources = await resourceUtil.getAllPending();
+      res.json(resources.map(resourceUtil.toJSON));
+    },
+    { mod: [] }
+  );
 
   firewall.post('/api/resources', async (req, res) => {
     try {
