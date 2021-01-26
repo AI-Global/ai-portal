@@ -74,7 +74,7 @@ module.exports = (app) => {
         'fundedBy',
         'creator',
         'dataDictLink',
-        'sensitveData',
+        'sensitiveData',
         'qualityReview',
         'ethicsReview',
         'usage',

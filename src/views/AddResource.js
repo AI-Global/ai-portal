@@ -174,9 +174,9 @@ function AddResource() {
         multipleInstanceTypes: formVal.multipleInstanceTypes,
         completeness: formVal.completeness,
         isSample:
-          formVal.sample === '' || formVal.sample === undefined
-            ? false
-            : formVal.sample,
+          formVal.sample === true || formVal.sample === false
+            ? formVal.sample
+            : false,
         sampleStrategy: formVal.sampleStrategy,
         populationDataSource: formVal.populationDataSource,
         sampleCoverage: formVal.representLargetSet,

@@ -177,9 +177,15 @@ export function getQuestionsCore1(topics, orgs) {
       example_ans: EXAMPLE.topics,
     },
     {
-      string: 'Which organization(s) is the resource from?',
+      string: (
+        <t>
+          Which organization(s) is the resource from? If organization is not
+          listed, please fill out this <a href="/feedback">Suggestions form</a>{' '}
+          and our admins can add it.
+        </t>
+      ),
       val: 'organizations',
-      type: 'tags',
+      type: 'multiple',
       options: orgs.map((org) => {
         return { name: org._id, label: org.name };
       }),

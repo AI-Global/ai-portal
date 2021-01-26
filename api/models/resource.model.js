@@ -86,7 +86,6 @@ const ResourceSchema = new Schema({
     architecture: { type: String, default: '' },
     taskType: { type: String, default: '' },
     learningType: { type: String, default: '' },
-
     numParameters: { type: String, default: '' },
     attributes: { type: String, default: '' },
     framework: { type: String, default: '' },

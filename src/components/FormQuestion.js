@@ -23,6 +23,7 @@ function FormQuestion(props) {
       defaultValue={uploadURL ? 'URL ' : 'FileUpload'}
       className="uploadTypes"
       onChange={handleUploadType}
+      disabled //for now, just allow to upload URL
     >
       <Option value="URL">URL</Option>
       <Option value="FileUpload">File Upload</Option>

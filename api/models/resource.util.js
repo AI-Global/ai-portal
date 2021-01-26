@@ -76,7 +76,7 @@ exports.update = async (resource, rawParams) => {
         'fundedBy',
         'creator',
         'dataDictLink',
-        'sensitveData',
+        'sensitiveData',
         'qualityReview',
         'ethicsReview',
         'usage',
