@@ -64,7 +64,7 @@ function AddResource() {
       setTopics(topics);
       api.get('/api/organizations').then((orgs) => {
         setOrgs(orgs);
-        if (steps.length == 0) {
+        if (steps.length === 0) {
           steps.push({
             title: 'Core 1',
             content: getQuestionsCore1(topics, orgs),
@@ -140,7 +140,7 @@ function AddResource() {
       ethicsReview: formVal.ethicsReview,
       usage: formVal.purpose,
       isConfidential:
-        formVal.isConfidential == true || formVal.isConfidential == false
+        formVal.isConfidential === true || formVal.isConfidential === false
           ? formVal.isConfidential
           : false,
       offensiveContent: formVal.offensiveContent,

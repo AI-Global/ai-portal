@@ -45,7 +45,12 @@ function FormQuestion(props) {
           label={props.question.string}
           rules={[{ required: props.question.required }]}
         >
-          <Select showSearch allowClear style={{ width: '100%' }}>
+          <Select
+            showSearch
+            allowClear
+            style={{ width: '100%' }}
+            placeholder={props.question.example_ans}
+          >
             {props.question.options.map((option) => (
               <Option value={option.name}>{option.label} </Option>
             ))}
@@ -58,13 +63,13 @@ function FormQuestion(props) {
           name={props.question.val}
           label={props.question.string}
           rules={[{ required: props.question.required }]}
-          initialValue={props.question.example_ans}
         >
           <Select
             showSearch
             mode={props.question.type}
             allowClear
             style={{ width: '100%' }}
+            placeholder={props.question.example_ans}
           >
             {props.question.options.map((option) => (
               <Option value={option.name}>{option.label} </Option>

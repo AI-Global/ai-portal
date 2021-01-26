@@ -3,7 +3,6 @@ import {
   Layout,
   Content,
   Button,
-  Input,
   Form,
   Col,
   Typography,
@@ -17,7 +16,6 @@ import FormQuestion from '../components/FormQuestion';
 import { useAppEnv } from './../env';
 import { useHistory } from 'react-router';
 
-const { TextArea } = Input;
 const { Title } = Typography;
 
 function AddTopic() {
