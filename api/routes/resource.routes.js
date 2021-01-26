@@ -112,7 +112,40 @@ module.exports = (app) => {
       await resourceUtil.update(req.params, req.body);
       res.json({});
     },
-    { owner: ['_id', 'fillme'], mod: ['_id', 'fillme'] },
+    {
+      owner: [
+        'name',
+        'desc',
+        'type',
+        'topics',
+        'path',
+        'downloadURL',
+        'modifiedDate',
+        'trustIndexCategories',
+        'keywords',
+        'organizations',
+        'files',
+        'creator',
+        'reviewsRemaining',
+        '_id',
+      ],
+      mod: [
+        'name',
+        'desc',
+        'type',
+        'topics',
+        'path',
+        'downloadURL',
+        'modifiedDate',
+        'trustIndexCategories',
+        'keywords',
+        'organizations',
+        'files',
+        'creator',
+        'reviewsRemaining',
+        '_id',
+      ],
+    },
     userIsResourceOwner
   );
 
@@ -129,5 +162,9 @@ module.exports = (app) => {
 
 let userIsResourceOwner = async (user, fields) => {
   let resource = await resourceUtil.getById(fields._id);
-  return resource.user._id == user._id;
+  if (resource?.user != undefined) {
+    return resource.user._id == user._id;
+  } else {
+    return false;
+  }
 };

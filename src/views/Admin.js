@@ -216,7 +216,6 @@ function Admin() {
   let [users, setUsers] = useState([]);
   let [pendingResources, setPendingResources] = useState([]);
   let [topics, setTopics] = useState([]);
-
   let history = useHistory();
   useEffect(() => {
     if (user === null || (user && user.role !== 'admin')) {
