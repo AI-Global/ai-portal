@@ -63,7 +63,7 @@ module.exports.AI_SYSTEM_TYPES = [
   'Image and Object Recognition',
   'Text and Speech Analysis',
   'Advanced Data Analytics',
-  'NLP/ Content Generation',
+  'NLP/Content Generation',
   'Other',
 ];
 module.exports.FILE_TYPES = [

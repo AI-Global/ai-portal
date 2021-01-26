@@ -44,7 +44,7 @@ export default function ManageOrganizationModal({
       footer={[]}
       width={600}
     >
-      {organization && editedOrganization && user && user.role === 'admin' && (
+      {organization && editedOrganization && user?.role === 'admin' && (
         <Form labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item label="Name">
             <Input

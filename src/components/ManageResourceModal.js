@@ -56,7 +56,7 @@ export default function ManageResourceModal({
       footer={[]}
       width={600}
     >
-      {resource && editedResource && user && user.role === 'admin' && (
+      {resource && editedResource && user?.role === 'admin' && (
         <Form labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item label="Name">
             <Input
@@ -260,7 +260,7 @@ export default function ManageResourceModal({
         </Form>
       )}
 
-      {(!user || user.role !== 'admin') && (
+      {user?.role !== 'admin' && (
         <>
           <p>You do not have sufficient permissions to edit this resource.</p>
         </>

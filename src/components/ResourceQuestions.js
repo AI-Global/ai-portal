@@ -278,7 +278,7 @@ export function getQuestionsCore1(topics, orgs) {
           label: 'Text and Speech Analysis',
         },
         { name: 'Advanced Data Analytics', label: 'Advanced Data Analytics' },
-        { name: 'NLP/ Content Generation', label: 'NLP/ Content Generation' },
+        { name: 'NLP/Content Generation', label: 'NLP/Content Generation' },
         { name: 'Other', label: 'Other' },
       ],
       required: true,

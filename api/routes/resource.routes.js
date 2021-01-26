@@ -1,6 +1,65 @@
 const searchUtil = require('../models/search.util');
 const resourceUtil = require('../models/resource.util');
-
+const resourceUpdateFields = [
+  'name',
+  'desc',
+  'type',
+  'topics',
+  'path',
+  'downloadURL',
+  'modifiedDate',
+  'trustIndexCategories',
+  'keywords',
+  'organizations',
+  'files',
+  'creator',
+  'reviewsRemaining',
+  '_id',
+];
+const resourcePostFields = [
+  'name',
+  'desc',
+  'type',
+  'path',
+  'keywords',
+  'creationDate',
+  'modifiedDate',
+  'licenseName',
+  'downloadURL',
+  'technical',
+  'trustIndexCategories',
+  'fundedBy',
+  'creator',
+  'dataDictLink',
+  'sensitiveData',
+  'qualityReview',
+  'ethicsReview',
+  'usage',
+  'isConfidential',
+  'offensiveContent',
+  'numInstances',
+  'instances',
+  'label',
+  'rawData',
+  'personalInfoRemoved',
+  'privacyProcedure',
+  'individualsIdentified',
+  'noiseDescription',
+  'externalRestrictions',
+  'aiSystemTyupes',
+  'version',
+  'updateFrequency',
+  'unintendedUse',
+  'ownerEmail',
+  'location',
+  'missingInfo',
+  'audience',
+  'removalRequest',
+  'dataset',
+  'model',
+  'topics',
+  'organizations',
+];
 module.exports = (app) => {
   const firewall = require('../lib/firewall')(app);
 
@@ -59,50 +118,7 @@ module.exports = (app) => {
       }
     },
     {
-      user: [
-        'name',
-        'desc',
-        'type',
-        'path',
-        'keywords',
-        'creationDate',
-        'modifiedDate',
-        'licenseName',
-        'downloadURL',
-        'technical',
-        'trustIndexCategories',
-        'fundedBy',
-        'creator',
-        'dataDictLink',
-        'sensitiveData',
-        'qualityReview',
-        'ethicsReview',
-        'usage',
-        'isConfidential',
-        'offensiveContent',
-        'numInstances',
-        'instances',
-        'label',
-        'rawData',
-        'personalInfoRemoved',
-        'privacyProcedure',
-        'individualsIdentified',
-        'noiseDescription',
-        'externalRestrictions',
-        'aiSystemTyupes',
-        'version',
-        'updateFrequency',
-        'unintendedUse',
-        'ownerEmail',
-        'location',
-        'missingInfo',
-        'audience',
-        'removalRequest',
-        'dataset',
-        'model',
-        'topics',
-        'organizations',
-      ],
+      user: resourcePostFields,
     }
   );
 
@@ -113,38 +129,8 @@ module.exports = (app) => {
       res.json({});
     },
     {
-      owner: [
-        'name',
-        'desc',
-        'type',
-        'topics',
-        'path',
-        'downloadURL',
-        'modifiedDate',
-        'trustIndexCategories',
-        'keywords',
-        'organizations',
-        'files',
-        'creator',
-        'reviewsRemaining',
-        '_id',
-      ],
-      mod: [
-        'name',
-        'desc',
-        'type',
-        'topics',
-        'path',
-        'downloadURL',
-        'modifiedDate',
-        'trustIndexCategories',
-        'keywords',
-        'organizations',
-        'files',
-        'creator',
-        'reviewsRemaining',
-        '_id',
-      ],
+      owner: resourceUpdateFields,
+      mod: resourceUpdateFields,
     },
     userIsResourceOwner
   );
@@ -162,9 +148,5 @@ module.exports = (app) => {
 
 let userIsResourceOwner = async (user, fields) => {
   let resource = await resourceUtil.getById(fields._id);
-  if (resource?.user != undefined) {
-    return resource.user._id == user._id;
-  } else {
-    return false;
-  }
+  return resource.user?._id == user._id;
 };
