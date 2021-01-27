@@ -111,7 +111,11 @@ module.exports = (app) => {
     '/api/resources',
     async (req, res) => {
       try {
-        let newResource = await resourceUtil.create(req.body);
+        let user = await req.getUser();
+        let newResource = await resourceUtil.create({
+          ...req.body,
+          user: user,
+        });
         return res.json(resourceUtil.toJSON(newResource));
       } catch (err) {
         res.json({ errors: [{ msg: '' + err }] });

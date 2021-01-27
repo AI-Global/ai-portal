@@ -94,6 +94,10 @@ const ResourceSchema = new Schema({
     otherPretrainedModels: { type: String, default: '' },
     metrics: { type: String, default: '' },
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   files: [
     {
       type: mongoose.Schema.Types.ObjectId,
