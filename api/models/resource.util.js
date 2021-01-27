@@ -72,6 +72,7 @@ exports.update = async (resource, rawParams) => {
         'modifiedDate',
         'licenseName',
         'downloadURL',
+        'logoURL',
         'technical',
         'trustIndexCategories',
         'fundedBy',
@@ -81,6 +82,7 @@ exports.update = async (resource, rawParams) => {
         'qualityReview',
         'ethicsReview',
         'usage',
+        'featured',
         'isConfidential',
         'offensiveContent',
         'numInstances',
@@ -131,6 +133,10 @@ exports.getAllPending = async () => {
   return await populate(
     Resource.find({ reviewsRemaining: { $exists: true, $not: { $size: 0 } } })
   );
+};
+
+exports.getFeatured = async () => {
+  return await populate(Resource.find({ featured: true }));
 };
 
 exports.delete = async (resource) => {

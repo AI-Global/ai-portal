@@ -7,9 +7,11 @@ const resourceUpdateFields = [
   'topics',
   'path',
   'downloadURL',
+  'logoURL',
   'modifiedDate',
   'trustIndexCategories',
   'keywords',
+  'featured',
   'organizations',
   'files',
   'creator',
@@ -105,6 +107,17 @@ module.exports = (app) => {
       res.json(resources.map(resourceUtil.toJSON));
     },
     { mod: [] }
+  );
+
+  firewall.get(
+    '/api/resources/all/featured',
+    async (req, res) => {
+      let resources = await resourceUtil.getFeatured();
+      res.json(resources.map(resourceUtil.toJSON));
+    },
+    {
+      public: [],
+    }
   );
 
   firewall.post(
