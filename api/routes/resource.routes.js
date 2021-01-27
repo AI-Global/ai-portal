@@ -1,6 +1,67 @@
 const searchUtil = require('../models/search.util');
 const resourceUtil = require('../models/resource.util');
-
+const resourceUpdateFields = [
+  'name',
+  'desc',
+  'type',
+  'topics',
+  'path',
+  'downloadURL',
+  'logoURL',
+  'modifiedDate',
+  'trustIndexCategories',
+  'keywords',
+  'featured',
+  'organizations',
+  'files',
+  'creator',
+  'reviewsRemaining',
+  '_id',
+];
+const resourcePostFields = [
+  'name',
+  'desc',
+  'type',
+  'path',
+  'keywords',
+  'creationDate',
+  'modifiedDate',
+  'licenseName',
+  'downloadURL',
+  'technical',
+  'trustIndexCategories',
+  'fundedBy',
+  'creator',
+  'dataDictLink',
+  'sensitiveData',
+  'qualityReview',
+  'ethicsReview',
+  'usage',
+  'isConfidential',
+  'offensiveContent',
+  'numInstances',
+  'instances',
+  'label',
+  'rawData',
+  'personalInfoRemoved',
+  'privacyProcedure',
+  'individualsIdentified',
+  'noiseDescription',
+  'externalRestrictions',
+  'aiSystemTyupes',
+  'version',
+  'updateFrequency',
+  'unintendedUse',
+  'ownerEmail',
+  'location',
+  'missingInfo',
+  'audience',
+  'removalRequest',
+  'dataset',
+  'model',
+  'topics',
+  'organizations',
+];
 module.exports = (app) => {
   const firewall = require('../lib/firewall')(app);
 
@@ -48,17 +109,34 @@ module.exports = (app) => {
     { mod: [] }
   );
 
+  firewall.get(
+    '/api/resources/all/featured',
+    async (req, res) => {
+      let resources = await resourceUtil.getFeatured();
+      res.json(resources.map(resourceUtil.toJSON));
+    },
+    {
+      public: [],
+    }
+  );
+
   firewall.post(
     '/api/resources',
     async (req, res) => {
       try {
-        let newResource = await resourceUtil.create(req.body);
+        let user = await req.getUser();
+        let newResource = await resourceUtil.create({
+          ...req.body,
+          user: user,
+        });
         return res.json(resourceUtil.toJSON(newResource));
       } catch (err) {
         res.json({ errors: [{ msg: '' + err }] });
       }
     },
-    { user: ['fillme'] }
+    {
+      user: resourcePostFields,
+    }
   );
 
   firewall.put(
@@ -67,7 +145,10 @@ module.exports = (app) => {
       await resourceUtil.update(req.params, req.body);
       res.json({});
     },
-    { owner: ['_id', 'fillme'], mod: ['_id', 'fillme'] },
+    {
+      owner: resourceUpdateFields,
+      mod: resourceUpdateFields,
+    },
     userIsResourceOwner
   );
 
@@ -84,5 +165,5 @@ module.exports = (app) => {
 
 let userIsResourceOwner = async (user, fields) => {
   let resource = await resourceUtil.getById(fields._id);
-  return resource.user._id == user._id;
+  return resource.user?._id == user._id;
 };

@@ -136,6 +136,7 @@ function ManageUsersTable({ users }) {
         user={manageUser}
         modalVisible={manageUser != null}
         setModalVisible={() => setManageUser(null)}
+        mode="admin"
       />
     </Card>
   );
@@ -146,7 +147,7 @@ function ManageTopicsTable({ topics }) {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'Name',
+      dataIndex: 'name',
       key: 'Name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['descend', 'ascend'],
@@ -204,7 +205,6 @@ function Admin() {
   let [users, setUsers] = useState([]);
   let [pendingResources, setPendingResources] = useState([]);
   let [topics, setTopics] = useState([]);
-
   let history = useHistory();
   useEffect(() => {
     if (user === null || (user && user.role !== 'admin')) {

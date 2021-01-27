@@ -1,5 +1,7 @@
 const userUtil = require('../models/user.util');
 const enums = require('../models/enums');
+const organizationUtil = require('../models/organization.util');
+const resourceUtil = require('../models/resource.util');
 
 module.exports = (app) => {
   const firewall = require('../lib/firewall')(app);
@@ -92,6 +94,7 @@ module.exports = (app) => {
         res.json({ errors: [{ msg: '' + err }] });
       }
     },
+    { public: ['name', 'email', 'username', 'password', 'confirmPassword'] },
     { mod: [] }
   );
 
@@ -99,7 +102,7 @@ module.exports = (app) => {
     '/api/users',
     async (req, res) => {
       let users = await userUtil.getAll();
-      return res.json(users);
+      return res.json(users.map(userUtil.toJSON));
     },
     { mod: [] }
   );
@@ -141,7 +144,8 @@ module.exports = (app) => {
   firewall.get(
     '/api/users/:_id/resources',
     async (req, res) => {
-      return res.json([]);
+      let resources = await userUtil.getResources(await req.getUser());
+      return res.json(resources.map(resourceUtil.toJSON));
     },
     { owner: ['_id'] },
     usersSame
@@ -150,7 +154,8 @@ module.exports = (app) => {
   firewall.get(
     '/api/users/:_id/organizations',
     async (req, res) => {
-      return res.json([]);
+      let orgs = await userUtil.getOrganizations(await req.getUser());
+      return res.json(orgs.map(organizationUtil.toJSON));
     },
     { owner: ['_id'] },
     usersSame

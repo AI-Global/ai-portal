@@ -4,6 +4,7 @@ const Organization = mongoose.model('Organization');
 const Topic = mongoose.model('Topic');
 const File = mongoose.model('File');
 const fileUtil = require('./file.util');
+const organizationUtil = require('./organization.util');
 const querys = require('../lib/querys');
 
 exports.Resource = Resource;
@@ -40,7 +41,7 @@ exports.search = async (query, fields) => {
 };
 
 exports.create = async (params) => {
-  let resource = new Resource({});
+  let resource = new Resource(params);
   await resource.save();
   resource = exports.update(resource, params);
   return resource;
@@ -61,16 +62,49 @@ exports.update = async (resource, rawParams) => {
     Resource,
     {
       setParams: [
+        'reviewsRemaining',
         'name',
         'desc',
         'type',
         'path',
-        'downloadURL',
-        'modifiedDate',
-        'trustIndexCategories',
         'keywords',
+        'creationDate',
+        'modifiedDate',
+        'licenseName',
+        'downloadURL',
+        'logoURL',
+        'technical',
+        'trustIndexCategories',
+        'fundedBy',
         'creator',
-        'reviewsRemaining',
+        'dataDictLink',
+        'sensitiveData',
+        'qualityReview',
+        'ethicsReview',
+        'usage',
+        'featured',
+        'isConfidential',
+        'offensiveContent',
+        'numInstances',
+        'instances',
+        'label',
+        'rawData',
+        'personalInfoRemoved',
+        'privacyProcedure',
+        'individualsIdentified',
+        'noiseDescription',
+        'externalRestrictions',
+        'aiSystemTyupes',
+        'version',
+        'updateFrequency',
+        'unintendedUse',
+        'ownerEmail',
+        'location',
+        'missingInfo',
+        'audience',
+        'removalRequest',
+        'dataset',
+        'model',
       ],
       setRefFuncs: {
         topics: exports.setTopics,
@@ -85,17 +119,24 @@ exports.update = async (resource, rawParams) => {
 };
 
 exports.toJSON = (resource) => {
-  return JSON.parse(JSON.stringify(resource));
+  let { __v, ...obj } = JSON.parse(JSON.stringify(resource));
+  obj.organizations = obj.organizations.map(organizationUtil.toJSON);
+  obj.files = obj.organizations.map(fileUtil.toJSON);
+  return obj;
 };
 
 exports.getById = async (id) => {
   return await populate(Resource.findById(id));
 };
 
-exports.getAllPending = async (id) => {
+exports.getAllPending = async () => {
   return await populate(
     Resource.find({ reviewsRemaining: { $exists: true, $not: { $size: 0 } } })
   );
+};
+
+exports.getFeatured = async () => {
+  return await populate(Resource.find({ featured: true }));
 };
 
 exports.delete = async (resource) => {
@@ -155,4 +196,8 @@ exports.setOrganizations = async (resource, orgs) => {
     'organizations',
     orgs
   );
+};
+
+exports.delete = async (id) => {
+  return await Resource.deleteOne(id);
 };

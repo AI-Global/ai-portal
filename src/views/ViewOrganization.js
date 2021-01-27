@@ -19,18 +19,21 @@ import ResourceTable from '../components/ResourceTable';
 import Sidebar from '../components/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
+import ManageOrganizationModal from './../components/ManageOrganizationModal';
 
 const { Panel } = Collapse;
 
 export default function ViewOrganization() {
-  let { api } = useAppEnv();
+  let { api, user } = useAppEnv();
   let { orgId } = useParams();
   let [org, setOrg] = useState(null);
   let [orgRes, setOrgRes] = useState([]);
+  let [showModal, setShowModal] = useState(false);
   let [loading, setLoading] = useState(true);
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
+  let canEdit = ['mod', 'admin'].includes(user?.role);
   useEffect(() => {
     api.get('/api/organizations/' + orgId).then((org) => {
       setOrg(org);
@@ -56,6 +59,11 @@ export default function ViewOrganization() {
   } else {
     return (
       <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
+        <ManageOrganizationModal
+          organization={org}
+          modalVisible={showModal}
+          setModalVisible={(v) => setShowModal(v)}
+        />
         <FormHeader />
         <Layout>
           <Sidebar
@@ -80,11 +88,20 @@ export default function ViewOrganization() {
                 subTitle={org.shortName}
                 tags={[]}
                 avatar={{ src: org.logoURL }}
-                extra={[
-                  <Button icon={<EditOutlined />} key="3" shape="round">
-                    Edit Organization
-                  </Button>,
-                ]}
+                extra={
+                  canEdit
+                    ? [
+                        <Button
+                          icon={<EditOutlined />}
+                          key="3"
+                          shape="round"
+                          onClick={() => setShowModal(true)}
+                        >
+                          Edit Organization
+                        </Button>,
+                      ]
+                    : []
+                }
               ></PageHeader>
             </div>
             <div ref={detailRef}>
@@ -111,7 +128,7 @@ export default function ViewOrganization() {
                       {org.websiteURL}
                     </Descriptions.Item>
                     <Descriptions.Item label="Organization Type">
-                      {org.type}
+                      {org.type.join(', ')}
                     </Descriptions.Item>
                     <Descriptions.Item label="Country">
                       {org.country}

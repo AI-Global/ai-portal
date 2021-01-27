@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, DatePicker, Form, Input, Modal, Select } from '../ant';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Checkbox,
+} from '../ant';
 import { useAppEnv } from './../env';
 import moment from 'moment';
 import FileUpload from './FilesUpload';
@@ -16,7 +24,7 @@ export default function ManageResourceModal({
     setEditedResource(JSON.parse(JSON.stringify(resource)));
   }, [resource]);
 
-  let { api, enums, refresh } = useAppEnv();
+  let { api, enums, refresh, user } = useAppEnv();
   let [topics, setTopics] = useState([]);
   let [organizations, setOrganizations] = useState([]);
 
@@ -44,6 +52,8 @@ export default function ManageResourceModal({
         files: editedResource.files,
         creator: editedResource.creator,
         reviewsRemaining: editedResource.reviewsRemaining,
+        featured: editedResource.featured,
+        logoURL: editedResource.logoURL,
       })
       .then(() => refresh());
   };
@@ -56,7 +66,7 @@ export default function ManageResourceModal({
       footer={[]}
       width={600}
     >
-      {resource && editedResource && (
+      {resource && editedResource && user?.role === 'admin' && (
         <Form labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item label="Name">
             <Input
@@ -178,6 +188,18 @@ export default function ManageResourceModal({
               }
             />
           </Form.Item>
+          <Form.Item label="Logo Image URL">
+            <Input
+              placeholder="Logo Image URL"
+              value={editedResource.logoURL}
+              onChange={(e) =>
+                setEditedResource({
+                  ...editedResource,
+                  logoURL: e.target.value,
+                })
+              }
+            />
+          </Form.Item>
           <Form.Item label="Files">
             <FileUpload
               files={editedResource.files}
@@ -193,7 +215,10 @@ export default function ManageResourceModal({
               style={{ width: '100%' }}
               mode="tags"
               onChange={(newKeywords) => {
-                setEditedResource({ ...editedResource, keywords: newKeywords });
+                setEditedResource({
+                  ...editedResource,
+                  keywords: newKeywords,
+                });
               }}
             >
               {resource?.keywords.map((word) => (
@@ -246,6 +271,19 @@ export default function ManageResourceModal({
               ))}
             </Select>
           </Form.Item>
+          <Form.Item name="featured" valuePropName="checked">
+            <Checkbox
+              checked={editedResource.featured}
+              onChange={(evt) => {
+                setEditedResource({
+                  ...editedResource,
+                  featured: evt.target.checked,
+                });
+              }}
+            >
+              Show on landing page
+            </Checkbox>
+          </Form.Item>
           <Button
             type="primary"
             style={{ marginTop: '10px' }}
@@ -255,6 +293,12 @@ export default function ManageResourceModal({
             Apply Changes
           </Button>
         </Form>
+      )}
+
+      {user?.role !== 'admin' && (
+        <>
+          <p>You do not have sufficient permissions to edit this resource.</p>
+        </>
       )}
     </Modal>
   );

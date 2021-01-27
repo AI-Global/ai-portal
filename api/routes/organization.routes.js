@@ -29,7 +29,28 @@ module.exports = (app) => {
       await organizationUtil.update(req.params, req.body);
       res.json({});
     },
-    { owner: ['_id', 'fillme'], mod: ['_id', 'fillme'] },
+    {
+      owner: [
+        '_id',
+        'shortName',
+        'country',
+        'city',
+        'logoURL',
+        'websiteURL',
+        'type',
+        'name',
+      ],
+      mod: [
+        '_id',
+        'shortName',
+        'country',
+        'city',
+        'logoURL',
+        'websiteURL',
+        'type',
+        'name',
+      ],
+    },
     userPartOfOrg
   );
 
@@ -52,7 +73,17 @@ module.exports = (app) => {
         res.json({ errors: [{ msg: '' + err }] });
       }
     },
-    { mod: ['fillme'] }
+    {
+      mod: [
+        'shortName',
+        'country',
+        'city',
+        'logoURL',
+        'websiteURL',
+        'type',
+        'name',
+      ],
+    }
   );
 
   firewall.delete(
@@ -67,6 +98,6 @@ module.exports = (app) => {
 };
 
 let userPartOfOrg = async (user, fields) => {
-  console.log('WARNING: TODO userPartOfOrg(...)');
-  return true;
+  let org = await organizationUtil.getById(fields._id);
+  return org?.members.includes(user._id);
 };
