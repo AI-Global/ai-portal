@@ -124,7 +124,7 @@ export default function ListAndFilterResources({
               <Select
                 showSearch
                 onChange={(e) => updateFilters({ path: e })}
-                placeholder="Resource Path"
+                placeholder="Role"
                 style={{ width: '100%' }}
                 mode="multiple"
                 showArrow={true}

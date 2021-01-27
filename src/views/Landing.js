@@ -86,16 +86,13 @@ function Landing() {
           </div>
         </Row>
         <Row justify="center">
-          <Col span={15}>
+          <Col span={14}>
             <p style={{ fontSize: '1.4em', textAlign: 'center' }}>
               On the Community Portal, you can find{' '}
               <strong>selected research, datasets, toolkits, and more</strong>{' '}
               to help you learn more about <strong>Responsible AI</strong> and
-              apply it in you work. Start searching or explore our resources
-              above!
-              {/* Whether you're an experienced practitioner
-              or learning about AI for the first time, we have resources for
-              you! */}
+              apply it in you work. Start <a href="/resources?q=">searching</a>{' '}
+              or <a href="/resources/create">upload</a>&nbsp;your own resources!
             </p>
           </Col>
         </Row>
