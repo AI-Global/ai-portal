@@ -32,11 +32,11 @@ module.exports.RESOURCE_TYPES = [
   'Other',
 ];
 module.exports.RESOURCE_PATHS = [
-  'Designer',
-  'Developer',
-  'Policymaker',
-  'Risk Manager',
-  'Explorer',
+  'Designer Path',
+  'Developer Path',
+  'Policymaker Path',
+  'Risk Manager Path',
+  'Explorer Path',
   'Other',
 ];
 module.exports.ORG_TYPES = [

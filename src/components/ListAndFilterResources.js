@@ -131,7 +131,9 @@ export default function ListAndFilterResources({
                 allowClear={true}
               >
                 {resourcePath.map((res) => (
-                  <Select.Option value={res}>{res}</Select.Option>
+                  <Select.Option value={res}>
+                    {res.replace('Path', '')}
+                  </Select.Option>
                 ))}
               </Select>
             </Menu.Item>
