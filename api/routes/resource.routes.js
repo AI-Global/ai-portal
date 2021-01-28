@@ -133,7 +133,7 @@ module.exports = (app) => {
         });
         return res.json(resourceUtil.toJSON(newResource));
       } catch (err) {
-        res.json({ errors: [{ msg: '' + err }], body: req.body });
+        res.json({ errors: [{ msg: '' + err }] });
       }
     },
     {
