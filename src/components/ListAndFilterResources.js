@@ -124,14 +124,20 @@ export default function ListAndFilterResources({
               <Select
                 showSearch
                 onChange={(e) => updateFilters({ path: e })}
+<<<<<<< HEAD
                 placeholder="Role"
+=======
+                placeholder="Roles"
+>>>>>>> 7d380052118d4ba82a99c6291cd7d9ffd9e02aa9
                 style={{ width: '100%' }}
                 mode="multiple"
                 showArrow={true}
                 allowClear={true}
               >
                 {resourcePath.map((res) => (
-                  <Select.Option value={res}>{res}</Select.Option>
+                  <Select.Option value={res}>
+                    {res.replace('Path', '')}
+                  </Select.Option>
                 ))}
               </Select>
             </Menu.Item>
