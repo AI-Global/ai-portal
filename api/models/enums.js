@@ -9,7 +9,6 @@ module.exports.RESOURCE_TYPES = [
   'Assessment',
   'Benchmark',
   'Best Practices',
-  'Datasets',
   'Dataset',
   'Design Tool',
   'Education Tool',
@@ -33,11 +32,11 @@ module.exports.RESOURCE_TYPES = [
   'Other',
 ];
 module.exports.RESOURCE_PATHS = [
-  'Designer Path',
-  'Developer Path',
-  'Policymaker Path',
-  'Risk Manager Path',
-  'Explorer Path',
+  'Designer',
+  'Developer',
+  'Policymaker',
+  'Risk Manager',
+  'Explorer',
   'Other',
 ];
 module.exports.ORG_TYPES = [

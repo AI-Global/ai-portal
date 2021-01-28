@@ -327,6 +327,7 @@ function AddResource() {
       <Content
         style={{
           padding: '0 50px',
+          minHeight: '700px',
         }}
       >
         <Row
