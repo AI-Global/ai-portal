@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Content, Search, Row, Col, Card, Button } from '../ant';
 import { useHistory } from 'react-router';
 import Footer from '../components/Footer';
@@ -11,9 +11,11 @@ import {
   RightCircleOutlined,
   QuestionCircleOutlined,
   UpCircleOutlined,
+  DownCircleOutlined,
 } from '@ant-design/icons';
 
 function Landing() {
+  let faqRef = useRef(null);
   let { api } = useAppEnv();
   let [featured, setFeatured] = useState([]);
   let history = useHistory();
@@ -105,9 +107,29 @@ function Landing() {
             <RightCircleOutlined />
           </a>
         </Row>
-        <Row justify="center" style={{ marginTop: '10rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <p style={{ fontSize: '2em', fontWeight: 'bold', color: 'black' }}>
+        <Row justify="center" style={{ marginTop: '2rem' }}>
+          <DownCircleOutlined
+            style={{ fontSize: '3em', color: '#1890ff', opacity: '0.6' }}
+            onClick={() =>
+              faqRef.current.scrollIntoView({
+                behavior: 'smooth',
+              })
+            }
+          />
+        </Row>
+        <Row justify="center" style={{ marginTop: '9rem' }}>
+          <div
+            ref={faqRef}
+            style={{ display: 'flex', justifyContent: 'flex-start' }}
+          >
+            <p
+              style={{
+                fontSize: '2em',
+                fontWeight: 'bold',
+                color: 'black',
+                marginTop: '2rem',
+              }}
+            >
               Frequently Asked Questions
             </p>
           </div>
