@@ -317,11 +317,7 @@ function AddResource() {
               onClick={() => history.push('/resources/create')}
             >
               <Button style={{ borderRadius: '10px', fontWeight: 'bold' }}>
-<<<<<<< HEAD
                 Add A Resource
-=======
-                Upload
->>>>>>> 28b0e1601b257718bf994b88eddf751559b7627a
               </Button>
             </Menu.Item>
           </Menu>
