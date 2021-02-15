@@ -61,6 +61,10 @@ export default function ViewResource() {
       setLoading(false);
     };
     fetchResource();
+    window.gtag('event', 'resource_page_view_v2', {
+      event_label: resource._name,
+      event_category: 'view_resource',
+    });
   }, [api, resId]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
