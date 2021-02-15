@@ -3,6 +3,7 @@ const Resource = mongoose.model('Resource');
 const Organization = mongoose.model('Organization');
 const Topic = mongoose.model('Topic');
 const File = mongoose.model('File');
+const User = mongoose.model('User');
 const fileUtil = require('./file.util');
 const organizationUtil = require('./organization.util');
 const queries = require('../lib/queries');
@@ -32,7 +33,11 @@ exports.search = async (query, fields) => {
       queryFields: ['name', 'desc'],
       anyFields: ['topics', 'organizations', 'type', 'path'],
       exactFields: ['reviewsRemaining'],
-      sorts: { byUploadDateAsc: ['uploadDate', 1], byNameAsc: ['name', 1] },
+      sorts: {
+        byUploadDateAsc: ['uploadDate', 1],
+        byNameAsc: ['name', 1],
+        byUploadDateDesc: ['uploadDate', -1],
+      },
     },
     query,
     fields
@@ -111,6 +116,7 @@ exports.update = async (resource, rawParams) => {
         topics: exports.setTopics,
         organizations: exports.setOrganizations,
         files: exports.setFiles,
+        user: exports.setUser,
       },
     },
     resource,
@@ -199,6 +205,16 @@ exports.setOrganizations = async (resource, orgs) => {
   );
 };
 
+exports.setUser = async (resource, user) => {
+  return await queries.execUpdateSetManyToMany(
+    Resource,
+    'resources',
+    resource,
+    User,
+    'user',
+    [user]
+  );
+};
 exports.delete = async (id) => {
   return await Resource.deleteOne(id);
 };
