@@ -3,9 +3,9 @@ const Resource = mongoose.model('Resource');
 const Organization = mongoose.model('Organization');
 const Topic = mongoose.model('Topic');
 const File = mongoose.model('File');
-const User = mongoose.model('User');
 const fileUtil = require('./file.util');
 const organizationUtil = require('./organization.util');
+const userUtil = require('./user.util');
 const queries = require('../lib/queries');
 
 exports.Resource = Resource;
@@ -116,7 +116,7 @@ exports.update = async (resource, rawParams) => {
         topics: exports.setTopics,
         organizations: exports.setOrganizations,
         files: exports.setFiles,
-        user: exports.setUser,
+        user: userUtil.setResources,
       },
     },
     resource,
@@ -205,16 +205,6 @@ exports.setOrganizations = async (resource, orgs) => {
   );
 };
 
-exports.setUser = async (resource, user) => {
-  return await queries.execUpdateSetManyToOne(
-    User,
-    null,
-    user,
-    Resource,
-    'resources',
-    [resource]
-  );
-};
 exports.delete = async (id) => {
   return await Resource.deleteOne(id);
 };

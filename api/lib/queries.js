@@ -127,7 +127,7 @@ exports.execUpdateSetManyToOne = async (
   }
   let updatedOneModel = await oneModel.findByIdAndUpdate(
     oneObj._id,
-    { $addToSet: { [oneKeyOfMany]: manyObjs.map((fl) => fl._id) } },
+    { $set: { [oneKeyOfMany]: manyObjs.map((fl) => fl._id) } },
     { new: true, useFindAndModify: false }
   );
   return updatedOneModel;
