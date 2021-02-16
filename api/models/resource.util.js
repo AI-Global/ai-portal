@@ -206,13 +206,13 @@ exports.setOrganizations = async (resource, orgs) => {
 };
 
 exports.setUser = async (resource, user) => {
-  return await queries.execUpdateSetManyToMany(
+  return await queries.execUpdateSetManyToOne(
+    User,
+    null,
+    user,
     Resource,
     'resources',
-    resource,
-    User,
-    'user',
-    [user]
+    [resource]
   );
 };
 exports.delete = async (id) => {
