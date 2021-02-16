@@ -116,7 +116,7 @@ exports.update = async (resource, rawParams) => {
         topics: exports.setTopics,
         organizations: exports.setOrganizations,
         files: exports.setFiles,
-        user: userUtil.setResources,
+        user: exports.setUser,
       },
     },
     resource,
@@ -203,6 +203,11 @@ exports.setOrganizations = async (resource, orgs) => {
     'organizations',
     orgs
   );
+};
+
+exports.setUser = async (resource, user) => {
+  await userUtil.addResource(resource, user);
+  return resource;
 };
 
 exports.delete = async (id) => {

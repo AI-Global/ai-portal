@@ -94,17 +94,19 @@ exports.setOrganizations = async (user, orgs) => {
   );
 };
 
-exports.setResources = async (resource, user) => {
-  let resources = await this.getResources(user);
-  resources.push(resource);
-  return await queries.execUpdateSetManyToOne(
-    User,
-    null,
-    user,
-    Resource,
-    'resources',
-    resources
-  );
+exports.addResource = async (resource, user) => {
+  let resources = await exports.getResources(user);
+  if (!resources.find((r) => r._id === resource._id)) {
+    resources.push(resource);
+    await queries.execUpdateSetManyToOne(
+      User,
+      'user',
+      user,
+      Resource,
+      'resources',
+      resources
+    );
+  }
 };
 
 exports.getByUsernameOrEmail = async (userOrEmail) => {
