@@ -44,8 +44,7 @@ let protect = (method, app, endpoint, endpointHandler, rules, ownerTest) => {
     if (user) {
       if (user.role == 'member' && firewall(keys, 'user', rules)) {
         return endpointHandler(req, res);
-      }
-      if (user.role == 'mod' && firewall(keys, 'mod', rules)) {
+      } else if (user.role == 'mod' && firewall(keys, 'mod', rules)) {
         return endpointHandler(req, res);
       } else if (user.role == 'admin' && firewall(keys, 'admin', rules)) {
         return endpointHandler(req, res);
