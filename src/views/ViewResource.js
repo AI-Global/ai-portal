@@ -128,16 +128,21 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
-                        <Button
-                          icon={<EditOutlined />}
-                          key="3"
-                          shape="round"
-                          onClick={() => setShowModal(true)}
-                        >
-                          Edit Resource
+                      <Button
+                        icon={<EditOutlined />}
+                        key="3"
+                        shape="round"
+                        onClick={() => setShowModal(true)}
+                      >
+                        Edit Resource
                         </Button>,
-                      ]
-                    : []
+                    ]
+                    : [
+                      <Button
+                        onClick={console.log("hi")}>
+                        Pin This Feature!
+                     </Button>
+                    ]
                 }
               >
                 {resource.desc}
