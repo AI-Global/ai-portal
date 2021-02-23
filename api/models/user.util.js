@@ -55,7 +55,7 @@ exports.create = async ({ name, email, username, password }) => {
   return user;
 };
 
-exports.get = async (where) => {
+exports.get = async where => {
   return User.findOne(where);
 };
 
@@ -93,7 +93,7 @@ exports.setOrganizations = async (user, orgs) => {
   );
 };
 
-exports.getByUsernameOrEmail = async (userOrEmail) => {
+exports.getByUsernameOrEmail = async userOrEmail => {
   let user = await User.findOne({ username: userOrEmail });
   if (user) {
     return user;
@@ -105,7 +105,7 @@ exports.getAll = async () => {
   return await User.find();
 };
 
-exports.sendReset = async (user) => {
+exports.sendReset = async user => {
   let token = exports.makeToken();
   await exports.update(user, { resetToken: token });
   await _email.send.resetPassword(user.email, {
@@ -136,7 +136,7 @@ exports.verifyEmail = async (user, token) => {
   return true;
 };
 
-exports.getResources = async (user) => {
+exports.getResources = async user => {
   let { resources } = await User.findById(user._id).populate(
     'resources',
     '-_id -__v -resources'
@@ -144,7 +144,7 @@ exports.getResources = async (user) => {
   return resources;
 };
 
-exports.getOrganizations = async (user) => {
+exports.getOrganizations = async user => {
   let { organizations } = await User.findById(user._id).populate(
     'organizations',
     '-_id -__v -organizations'
@@ -152,11 +152,11 @@ exports.getOrganizations = async (user) => {
   return organizations;
 };
 
-exports.getById = async (id) => {
+exports.getById = async id => {
   return await User.findById(id);
 };
 
-exports.toJSON = (user) => {
+exports.toJSON = user => {
   let { __v, hashedPassword, salt, ...userObj } = JSON.parse(
     JSON.stringify(user)
   );
@@ -168,25 +168,33 @@ exports.toTokenJSON = (user, accessClient) => {
   return { _id, email, name, username, role, accessClient };
 };
 
-exports.toPrivateJSON = (user) => {
+exports.toPrivateJSON = user => {
   let { __v, hashedPassword, salt, ...userObj } = JSON.parse(
     JSON.stringify(user)
   );
   return userObj;
 };
 
-exports.delete = async (user) => {
+exports.delete = async user => {
   await User.deleteOne({ _id: user._id });
 };
 
-exports.addToPinnedResources = async (user, resourceId) => {
-  let users = await User.findOne({ _id: user._id });
-  const pinExists = await User.findOne({ _id: user._id }, { pinnedResources: resourceId })
-  await User.updateOne({ _id: user._id }, { $push: { pinnedResources: 'HELLO' } })
-  if (!pinExists) {
-    await User.updateOne({ _id: user._id }, { $push: { pinnedResources: resourceId } })
+exports.addToPinnedResources = async (userId, resourceId) => {
+  const currentUser = await User.findOne({ _id: userId });
+  var exists = false;
+  currentUser.pinnedResources.forEach(pin => {
+    if (pin.toString() === resourceId) {
+      exists = true;
+    }
+  });
+  if (!exists) {
+    await User.updateOne(
+      { _id: userId },
+      { $push: { pinnedResources: resourceId } }
+    );
+    console.log('Added Pin');
+  } else {
+    console.log('Pin Already Exists');
   }
-  await users.save();
   return;
-}
-
+};

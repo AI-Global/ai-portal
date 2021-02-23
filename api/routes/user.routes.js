@@ -3,7 +3,7 @@ const enums = require('../models/enums');
 const organizationUtil = require('../models/organization.util');
 const resourceUtil = require('../models/resource.util');
 
-module.exports = (app) => {
+module.exports = app => {
   const firewall = require('../lib/firewall')(app);
 
   firewall.post(
@@ -161,12 +161,17 @@ module.exports = (app) => {
     usersSame
   );
 
-  firewall.post('/api/users/:_id/pin-resource', async (req, res) => {
-    const { resourceId } = req.body
-    console.log(`Here is resourceID: ${resourceId} you are user ${req.params._id}`)
-    await userUtil.addToPinnedResources(req.getUser(), resourceId)
-
-  }, { public: ['_id', 'resourceId'] })
+  firewall.post(
+    '/api/users/:_id/pin-resource',
+    async (req, res) => {
+      const { resourceId } = req.body;
+      console.log(
+        `Here is resourceID: ${resourceId} you are user ${req.params._id}`
+      );
+      await userUtil.addToPinnedResources(req.params._id, resourceId);
+    },
+    { public: ['_id', 'resourceId'] }
+  );
 };
 
 let usersSame = async (user, { _id }) => {

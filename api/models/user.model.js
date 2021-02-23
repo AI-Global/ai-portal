@@ -21,7 +21,9 @@ const UserSchema = new Schema({
   resources: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', default: [] },
   ],
-  pinnedResources: [String]
+  pinnedResources: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', default: [] },
+  ],
 });
 
 mongoose.model('User', UserSchema);
