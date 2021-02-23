@@ -143,6 +143,13 @@ exports.getResources = async user => {
   );
   return resources;
 };
+exports.getPinnedResources = async user => {
+  let { pinnedResources } = await User.findById(user._id).populate(
+    'pinnedResources',
+    ' -__v -pinnedResources'
+  );
+  return pinnedResources;
+};
 
 exports.getOrganizations = async user => {
   let { organizations } = await User.findById(user._id).populate(
@@ -179,6 +186,12 @@ exports.delete = async user => {
   await User.deleteOne({ _id: user._id });
 };
 
+exports.deletePinnedResource = async (user, resourceId) => {
+  await User.updateOne(
+    { _id: user._id },
+    { $pull: { pinnedResources: resourceId } }
+  );
+};
 exports.addToPinnedResources = async (userId, resourceId) => {
   const currentUser = await User.findOne({ _id: userId });
   var exists = false;

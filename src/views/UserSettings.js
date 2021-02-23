@@ -39,7 +39,7 @@ function Dashboard({ user }) {
       <ManageUserModal
         user={user}
         modalVisible={showEditModal}
-        setModalVisible={(v) => setShowEditModal(v)}
+        setModalVisible={v => setShowEditModal(v)}
         mode="user"
       />
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>
@@ -171,16 +171,21 @@ function UserSettings() {
     orgRef = useRef(null);
 
   let [resources, setResources] = useState([]);
+  let [pinnedResources, setPinnedResources] = useState([]);
   let [orgs, setOrgs] = useState([]);
 
   useEffect(() => {
     if (userID) {
       api
         .get('/api/users/' + userID + '/resources')
-        .then((resources) => setResources(resources));
+        .then(resources => setResources(resources));
+      api
+        .get('/api/users/' + userID + '/pinnedResources')
+        .then(pinnedResources => setPinnedResources(pinnedResources));
+
       api
         .get('/api/users/' + userID + '/organizations')
-        .then((orgs) => setOrgs(orgs));
+        .then(orgs => setOrgs(orgs));
     }
   }, [api, userID]);
   return (
@@ -188,7 +193,12 @@ function UserSettings() {
       <FormHeader />
       <Layout>
         <Sidebar
-          headings={['User Overview', 'Pinned Resources', 'Uploaded Resources', 'Organizations']}
+          headings={[
+            'User Overview',
+            'Pinned Resources',
+            'Uploaded Resources',
+            'Organizations',
+          ]}
           icons={[
             <AreaChartOutlined />,
             <FileProtectOutlined />,
@@ -211,12 +221,22 @@ function UserSettings() {
           )}
           {user && (
             <div ref={pinnedResRef}>
-              <ResourceTable edit={true} admin={false} resources={resources} titleParam="Pinned Resources" />
+              <ResourceTable
+                edit={false}
+                admin={false}
+                resources={pinnedResources}
+                titleParam="Pinned Resources"
+              />
             </div>
           )}
           {user && (
             <div ref={resourceRef}>
-              <ResourceTable edit={true} admin={false} resources={resources} titleParam="Uploaded Resources" />
+              <ResourceTable
+                edit={true}
+                admin={false}
+                resources={resources}
+                titleParam="Uploaded Resources"
+              />
             </div>
           )}
           {user && (

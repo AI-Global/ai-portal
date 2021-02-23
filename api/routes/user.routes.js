@@ -142,6 +142,31 @@ module.exports = app => {
   );
 
   firewall.get(
+    '/api/users/:_id/pinnedResources',
+    async (req, res) => {
+      let pinnedResources = await userUtil.getPinnedResources(
+        await req.getUser()
+      );
+      return res.json(pinnedResources.map(resourceUtil.toJSON));
+    },
+    { owner: ['_id'] },
+    usersSame
+  );
+
+  firewall.delete(
+    '/api/users/:_id/pinnedResources/:resourceId',
+    async (req, res) => {
+      const { resourceId } = req.params;
+      await userUtil.deletePinnedResource(await req.getUser(), resourceId);
+      let pinnedResources = await userUtil.getPinnedResources(
+        await req.getUser()
+      );
+      return res.json(pinnedResources.map(resourceUtil.toJSON));
+    },
+    { owner: ['_id', 'resourceId'] },
+    usersSame
+  );
+  firewall.get(
     '/api/users/:_id/resources',
     async (req, res) => {
       let resources = await userUtil.getResources(await req.getUser());

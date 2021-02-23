@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 import { Card, Button, Tag, Table, Tooltip } from '../ant';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 import ManageResourceModal from './ManageResourceModal';
+import { useAppEnv } from './../env';
 
 function ResourceTable({ resources, edit, admin, titleParam }) {
+  let { api, userID } = useAppEnv();
   let [manageResource, setManageResource] = useState(null);
+  const deletePinnedResource = resourceId => {
+    if (userID && resourceId) {
+      api.del('/api/users/' + userID + '/pinnedResources/' + resourceId);
+    }
+    window.location.reload();
+  };
   const resourcesColumns = [
     {
       title: 'Resource Name',
@@ -30,9 +38,9 @@ function ResourceTable({ resources, edit, admin, titleParam }) {
       title: 'Path',
       key: 'path',
       dataIndex: 'path',
-      render: (path) => (
+      render: path => (
         <>
-          {path.map((p) => {
+          {path.map(p => {
             return (
               <Tag
                 style={{
@@ -54,9 +62,9 @@ function ResourceTable({ resources, edit, admin, titleParam }) {
       title: 'Type',
       key: 'type',
       dataIndex: 'type',
-      render: (type) => (
+      render: type => (
         <>
-          {type.map((t) => {
+          {type.map(t => {
             return (
               <Tag
                 style={{
@@ -90,7 +98,17 @@ function ResourceTable({ resources, edit, admin, titleParam }) {
       title: 'Manage',
       key: 'action',
       render: (text, resource) => (
-        <Button onClick={() => setManageResource(resource)}>Edit</Button>
+        <Button
+          onClick={() => {
+            if (edit) {
+              setManageResource(resource);
+            } else {
+              deletePinnedResource(resource._id);
+            }
+          }}
+        >
+          {edit ? 'Edit' : 'Delete'}
+        </Button>
       ),
     },
   ];
