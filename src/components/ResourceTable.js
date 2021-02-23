@@ -3,7 +3,7 @@ import { Card, Button, Tag, Table, Tooltip } from '../ant';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 import ManageResourceModal from './ManageResourceModal';
 
-function ResourceTable({ resources, edit, admin }) {
+function ResourceTable({ resources, edit, admin, titleParam }) {
   let [manageResource, setManageResource] = useState(null);
   const resourcesColumns = [
     {
@@ -95,7 +95,7 @@ function ResourceTable({ resources, edit, admin }) {
     },
   ];
 
-  let title = 'Uploaded Resources';
+  let title = titleParam;
   if (admin) title = 'Pending Resources';
   return (
     <Card id="resources" style={{ marginBottom: '20px' }}>

@@ -166,6 +166,7 @@ function UserSettings() {
   }, [user, history]);
 
   let dashRef = useRef(null),
+    pinnedResRef = useRef(null),
     resourceRef = useRef(null),
     orgRef = useRef(null);
 
@@ -187,13 +188,14 @@ function UserSettings() {
       <FormHeader />
       <Layout>
         <Sidebar
-          headings={['User Overview', 'Uploaded Resources', 'Organizations']}
+          headings={['User Overview', 'Pinned Resources', 'Uploaded Resources', 'Organizations']}
           icons={[
             <AreaChartOutlined />,
             <FileProtectOutlined />,
+            <FileProtectOutlined />,
             <TeamOutlined />,
           ]}
-          refs={[dashRef, resourceRef, orgRef]}
+          refs={[dashRef, pinnedResRef, resourceRef, orgRef]}
         />
         <Content
           style={{
@@ -208,8 +210,13 @@ function UserSettings() {
             </div>
           )}
           {user && (
+            <div ref={pinnedResRef}>
+              <ResourceTable edit={true} admin={false} resources={resources} titleParam="Pinned Resources" />
+            </div>
+          )}
+          {user && (
             <div ref={resourceRef}>
-              <ResourceTable edit={true} admin={false} resources={resources} />
+              <ResourceTable edit={true} admin={false} resources={resources} titleParam="Uploaded Resources" />
             </div>
           )}
           {user && (

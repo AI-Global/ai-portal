@@ -48,10 +48,12 @@ function FileTable(props) {
   );
 }
 
+
 export default function ViewResource() {
   let [resource, setResource] = useState(null);
   let [loading, setLoading] = useState(true);
   let [showModal, setShowModal] = useState(false);
+  let [pinned, setPinned] = useState(false);
   let { api, user } = useAppEnv();
   let { resId } = useParams();
   useEffect(() => {
@@ -67,6 +69,21 @@ export default function ViewResource() {
   let detailRef = useRef(null);
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
+
+  const pinResource = async () => {
+    let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
+      resourceId: resId
+    });
+    console.log(res);
+    if (res.status === 200) {
+      console.log("pinned!")
+      setPinned(true);
+    }
+    else {
+      console.log("Could not pin!");
+    }
+  }
+
   if (loading) {
     return (
       <div
@@ -139,8 +156,8 @@ export default function ViewResource() {
                     ]
                     : [
                       <Button
-                        onClick={console.log("hi")}>
-                        Pin This Feature!
+                        onClick={() => pinResource()}>
+                        Pin This Resource!
                      </Button>
                     ]
                 }

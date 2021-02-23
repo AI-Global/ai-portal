@@ -178,3 +178,15 @@ exports.toPrivateJSON = (user) => {
 exports.delete = async (user) => {
   await User.deleteOne({ _id: user._id });
 };
+
+exports.addToPinnedResources = async (user, resourceId) => {
+  let users = await User.findOne({ _id: user._id });
+  const pinExists = await User.findOne({ _id: user._id }, { pinnedResources: resourceId })
+  await User.updateOne({ _id: user._id }, { $push: { pinnedResources: 'HELLO' } })
+  if (!pinExists) {
+    await User.updateOne({ _id: user._id }, { $push: { pinnedResources: resourceId } })
+  }
+  await users.save();
+  return;
+}
+

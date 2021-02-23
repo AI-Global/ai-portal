@@ -160,6 +160,13 @@ module.exports = (app) => {
     { owner: ['_id'] },
     usersSame
   );
+
+  firewall.post('/api/users/:_id/pin-resource', async (req, res) => {
+    const { resourceId } = req.body
+    console.log(`Here is resourceID: ${resourceId} you are user ${req.params._id}`)
+    await userUtil.addToPinnedResources(req.getUser(), resourceId)
+
+  }, { public: ['_id', 'resourceId'] })
 };
 
 let usersSame = async (user, { _id }) => {
