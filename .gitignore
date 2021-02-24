@@ -26,4 +26,5 @@ debug.log*
 # Locals
 .netlify
 *.env.*
+.env
 *.csv
