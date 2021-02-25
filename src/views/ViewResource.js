@@ -18,6 +18,7 @@ import {
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
 import Sidebar from '../components/Sidebar';
+import Pin from '../components/Pin';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
 import ManageResourceModal from './../components/ManageResourceModal';
@@ -63,6 +64,7 @@ export default function ViewResource() {
       setLoading(false);
     };
     fetchResource();
+    setPinned(user?.pinnedResources.includes(resId));
   }, [api, resId]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
@@ -155,10 +157,12 @@ export default function ViewResource() {
                         </Button>,
                     ]
                     : [
-                      <Button
-                        onClick={() => pinResource()}>
-                        Pin This Resource!
-                     </Button>
+                      <Pin 
+                        defaultState={false} 
+                        size={"32px"} 
+                        isPinned={pinned} 
+                        onClick={pinResource}
+                      />
                     ]
                 }
               >
