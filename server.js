@@ -2,10 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const dotenv = require('dotenv');
 
 const port = process.env.PORT || 5000;
 const secret = process.env.SECRET || 'secret.';
 const app = express();
+dotenv.config();
 
 require('./api/models/index');
 const userUtil = require('./api/models/user.util');
@@ -24,7 +26,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   if (
     !req.originalUrl.startsWith('/api/') &&
-    ['js', 'json', 'css', 'png', 'map', 'ico', 'txt'].filter((ext) =>
+    ['js', 'json', 'css', 'png', 'map', 'ico', 'txt'].filter(ext =>
       req.originalUrl.endsWith('.' + ext)
     ).length == 0
   ) {
@@ -40,7 +42,7 @@ app.use(
     secret: secret,
     algorithms: ['HS256'],
     credentialsRequired: false,
-    getToken: (req) => {
+    getToken: req => {
       if (
         req.headers.authorization &&
         req.headers.authorization.split(' ')[0] === 'Bearer'
@@ -55,12 +57,12 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  req.jwtSign = (obj) => {
+  req.jwtSign = obj => {
     return jwt.sign(obj, secret, {
       algorithm: 'HS256',
     });
   };
-  req.jwtDecode = (token) => {
+  req.jwtDecode = token => {
     return jwt.verify(token, secret);
   };
   req.getUser = async () => {
