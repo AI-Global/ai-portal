@@ -27,3 +27,4 @@ debug.log*
 .netlify
 *.env.*
 *.csv
+.env
