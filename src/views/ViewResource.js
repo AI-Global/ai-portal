@@ -9,6 +9,7 @@ import {
   Table,
   Tag,
   Spin,
+  notification,
 } from '../ant';
 import {
   FileDoneOutlined,
@@ -36,7 +37,7 @@ function FileTable(props) {
       title: 'Link',
       dataIndex: 'url',
       key: 'link',
-      render: (text) => <a href={text}>{text}</a>,
+      render: text => <a href={text}>{text}</a>,
     },
   ];
   return (
@@ -48,7 +49,6 @@ function FileTable(props) {
     </div>
   );
 }
-
 
 export default function ViewResource() {
   let [resource, setResource] = useState(null);
@@ -74,17 +74,16 @@ export default function ViewResource() {
 
   const pinResource = async () => {
     let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
-      resourceId: resId
+      resourceId: resId,
     });
-    console.log(res);
     if (res.status === 200) {
-      console.log("pinned!")
-      setPinned(true);
+      notification.open({
+        message: !pinned ? 'Pinned Resource!' : 'Unpinned Resource!',
+        placement: 'topLeft',
+      });
+      setPinned(!pinned);
     }
-    else {
-      console.log("Could not pin!");
-    }
-  }
+  };
 
   if (loading) {
     return (
@@ -105,7 +104,7 @@ export default function ViewResource() {
         <ManageResourceModal
           resource={resource}
           modalVisible={showModal}
-          setModalVisible={(v) => setShowModal(v)}
+          setModalVisible={v => setShowModal(v)}
         />
         <FormHeader />
         <Layout>
@@ -128,8 +127,8 @@ export default function ViewResource() {
                 title={resource.name}
                 onBack={() => window.history.back()}
                 className="site-page-header"
-                subTitle={resource.organizations.map((o) => o.name).join(', ')}
-                tags={resource.topics.map((t) => {
+                subTitle={resource.organizations.map(o => o.name).join(', ')}
+                tags={resource.topics.map(t => {
                   return (
                     <Tag
                       color={'#00CDFF'}
@@ -147,23 +146,23 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
-                      <Button
-                        icon={<EditOutlined />}
-                        key="3"
-                        shape="round"
-                        onClick={() => setShowModal(true)}
-                      >
-                        Edit Resource
+                        <Button
+                          icon={<EditOutlined />}
+                          key="3"
+                          shape="round"
+                          onClick={() => setShowModal(true)}
+                        >
+                          Edit Resource
                         </Button>,
-                    ]
+                      ]
                     : [
-                      <Pin 
-                        defaultState={false} 
-                        size={"32px"} 
-                        isPinned={pinned} 
-                        onClick={pinResource}
-                      />
-                    ]
+                        <Pin
+                          defaultState={false}
+                          size={'32px'}
+                          isPinned={pinned}
+                          onClick={pinResource}
+                        />,
+                      ]
                 }
               >
                 {resource.desc}

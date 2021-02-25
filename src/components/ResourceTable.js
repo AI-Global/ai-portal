@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { Card, Button, Tag, Table, Tooltip } from '../ant';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 import ManageResourceModal from './ManageResourceModal';
-import { useAppEnv } from './../env';
 
-function ResourceTable({ resources, edit, admin, titleParam }) {
-  let { api, userID } = useAppEnv();
+function ResourceTable({
+  resources,
+  edit,
+  admin,
+  titleParam,
+  deletePinnedResource,
+}) {
   let [manageResource, setManageResource] = useState(null);
-  const deletePinnedResource = resourceId => {
-    if (userID && resourceId) {
-      api.del('/api/users/' + userID + '/pinnedResources/' + resourceId);
-    }
-    window.location.reload();
-  };
   const resourcesColumns = [
     {
       title: 'Resource Name',

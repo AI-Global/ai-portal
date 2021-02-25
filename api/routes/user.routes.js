@@ -190,10 +190,7 @@ module.exports = app => {
     '/api/users/:_id/pin-resource',
     async (req, res) => {
       const { resourceId } = req.body;
-      console.log(
-        `Here is resourceID: ${resourceId} you are user ${req.params._id}`
-      );
-      await userUtil.addToPinnedResources(req.params._id, resourceId);
+      await userUtil.addToPinnedResources(await req.getUser(), resourceId);
       res.send({ status: 200 });
     },
     { public: ['_id', 'resourceId'] }

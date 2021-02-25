@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PushpinFilled, PushpinOutlined } from '@ant-design/icons';
 
-export default function Pin({ defaultState, size, isPinned, onClick }) {
-  let [hovered, setHovered] = useState(false);
-
+export default function Pin({ size, isPinned, onClick }) {
   return (
-    <div  
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => onClick()}
-    >
-      {isPinned 
-        ? <PushpinFilled style={{fontSize: size}} /> 
-        : (hovered 
-          ? <PushpinFilled style={{fontSize: size}} />
-          : <PushpinOutlined style={{fontSize: size}} />
-          )
-      }
+    <div onClick={() => onClick()}>
+      {isPinned ? (
+        <PushpinFilled style={{ fontSize: size }} />
+      ) : (
+        <PushpinOutlined style={{ fontSize: size }} />
+      )}
     </div>
   );
 }

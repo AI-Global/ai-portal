@@ -192,8 +192,8 @@ exports.deletePinnedResource = async (user, resourceId) => {
     { $pull: { pinnedResources: resourceId } }
   );
 };
-exports.addToPinnedResources = async (userId, resourceId) => {
-  const currentUser = await User.findOne({ _id: userId });
+exports.addToPinnedResources = async (user, resourceId) => {
+  const currentUser = await User.findOne({ _id: user._id });
   var exists = false;
   currentUser.pinnedResources.forEach(pin => {
     if (pin.toString() === resourceId) {
@@ -202,12 +202,11 @@ exports.addToPinnedResources = async (userId, resourceId) => {
   });
   if (!exists) {
     await User.updateOne(
-      { _id: userId },
+      { _id: user._id },
       { $push: { pinnedResources: resourceId } }
     );
-    console.log('Added Pin');
   } else {
-    console.log('Pin Already Exists');
+    this.deletePinnedResource(user._id, resourceId);
   }
   return;
 };

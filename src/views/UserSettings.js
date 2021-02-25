@@ -188,6 +188,14 @@ function UserSettings() {
         .then(orgs => setOrgs(orgs));
     }
   }, [api, userID]);
+  const deletePinnedResource = async resourceId => {
+    if (userID && resourceId) {
+      const res = await api.del(
+        '/api/users/' + userID + '/pinnedResources/' + resourceId
+      );
+      setPinnedResources(res);
+    }
+  };
   return (
     <Layout style={{ backgroundColor: '#fff' }}>
       <FormHeader />
@@ -226,6 +234,7 @@ function UserSettings() {
                 admin={false}
                 resources={pinnedResources}
                 titleParam="Pinned Resources"
+                deletePinnedResource={deletePinnedResource}
               />
             </div>
           )}
