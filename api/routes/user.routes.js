@@ -194,6 +194,7 @@ module.exports = app => {
         `Here is resourceID: ${resourceId} you are user ${req.params._id}`
       );
       await userUtil.addToPinnedResources(req.params._id, resourceId);
+      res.send({ status: 200 });
     },
     { public: ['_id', 'resourceId'] }
   );
