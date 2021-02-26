@@ -65,7 +65,7 @@ export default function ViewResource() {
     };
     fetchResource();
     setPinned(user?.pinnedResources.includes(resId));
-  }, [api, resId]);
+  }, [api, resId, user]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
