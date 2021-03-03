@@ -22,11 +22,15 @@ exports.get = async (where) => {
 
 exports.addReply = async (parentID, user, text, timestamp) => {
   let newComment = await exports.create(user, text, timestamp);
-  await Comment.updateOne({ _id: parentID }, { $push: { replies: newComment._id } });
+  await Comment.updateOne({ _id: parentID }, { $push: { replies: newComment._id }, $set: { parent: parentID } });
 }
 
 exports.delete = async (commentID) => {
   let comment = await Comment.findOne({ _id: commentID });
+  if (comment.parent) {
+    await Comment.updateOne({ _id: comment.parent }, { $pull: { replies: commentID } })
+  }
+
   if (comment.replies.length > 0) {
     await Comment.updateOne({ _id: commentID }, { $set: { deleted: true } });
   }

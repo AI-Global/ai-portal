@@ -9,6 +9,7 @@ const CommentSchema = new Schema({
   upvotes: { type: Number, default: 0 },
   timestamp: { type: Date, required: true },
   deleted: { type: Boolean, required: true, default: false },
+  parent: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null }
 });
 
 mongoose.model('Comment', CommentSchema);
