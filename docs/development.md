@@ -29,8 +29,6 @@ $ yarn install
 $ yarn watch:api
 ```
 
-see `/package.json` (next to `"scripts"`) for more handy yarn commands like `yarn build`.
-
 ## Helpful Docs
 
 - [ExpressJS](https://expressjs.com/en/5x/api.html)
@@ -38,4 +36,3 @@ see `/package.json` (next to `"scripts"`) for more handy yarn commands like `yar
 - [Ant Design Components](https://ant.design/components/overview/)
 - [React Hooks](https://reactjs.org/docs/hooks-intro.html)
 - [General Docs](https://github.com/AI-Global/ai-portal/blob/master/docs/general.md)
-- [Front-end Patterns](https://github.com/AI-Global/ai-portal/blob/master/docs/fe-patterns.md) and [Back-end Patterns](https://github.com/AI-Global/ai-portal/blob/master/docs/be-patterns.md)

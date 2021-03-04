@@ -9,6 +9,7 @@ import {
   Table,
   Tag,
   Spin,
+  notification,
 } from '../ant';
 import {
   FileDoneOutlined,
@@ -18,6 +19,7 @@ import {
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
 import Sidebar from '../components/Sidebar';
+import Pin from '../components/Pin';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
 import ManageResourceModal from './../components/ManageResourceModal';
@@ -35,7 +37,7 @@ function FileTable(props) {
       title: 'Link',
       dataIndex: 'url',
       key: 'link',
-      render: (text) => <a href={text}>{text}</a>,
+      render: text => <a href={text}>{text}</a>,
     },
   ];
   return (
@@ -52,6 +54,7 @@ export default function ViewResource() {
   let [resource, setResource] = useState(null);
   let [loading, setLoading] = useState(true);
   let [showModal, setShowModal] = useState(false);
+  let [pinned, setPinned] = useState(false);
   let { api, user } = useAppEnv();
   let { resId } = useParams();
   useEffect(() => {
@@ -65,12 +68,28 @@ export default function ViewResource() {
       });
     };
     fetchResource();
-  }, [api, resId, resource]);
+    setPinned(user?.pinnedResources.includes(resId));
+  }, [api, resId, user]);
+
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
+
+  const pinResource = async () => {
+    let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
+      resourceId: resId,
+    });
+    if (res.status === 200) {
+      notification.open({
+        message: !pinned ? 'Pinned Resource!' : 'Unpinned Resource!',
+        placement: 'topLeft',
+      });
+      setPinned(!pinned);
+    }
+  };
+
   if (loading) {
     return (
       <div
@@ -90,7 +109,7 @@ export default function ViewResource() {
         <ManageResourceModal
           resource={resource}
           modalVisible={showModal}
-          setModalVisible={(v) => setShowModal(v)}
+          setModalVisible={v => setShowModal(v)}
         />
         <FormHeader />
         <Layout>
@@ -113,8 +132,8 @@ export default function ViewResource() {
                 title={resource.name}
                 onBack={() => window.history.back()}
                 className="site-page-header"
-                subTitle={resource.organizations.map((o) => o.name).join(', ')}
-                tags={resource.topics.map((t) => {
+                subTitle={resource.organizations.map(o => o.name).join(', ')}
+                tags={resource.topics.map(t => {
                   return (
                     <Tag
                       color={'#00CDFF'}
@@ -141,7 +160,14 @@ export default function ViewResource() {
                           Edit Resource
                         </Button>,
                       ]
-                    : []
+                    : [
+                        <Pin
+                          defaultState={false}
+                          size={'32px'}
+                          isPinned={pinned}
+                          onClick={pinResource}
+                        />,
+                      ]
                 }
               >
                 {resource.desc}

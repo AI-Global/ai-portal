@@ -3,7 +3,13 @@ import { Card, Button, Tag, Table, Tooltip } from '../ant';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 import ManageResourceModal from './ManageResourceModal';
 
-function ResourceTable({ resources, edit, admin }) {
+function ResourceTable({
+  resources,
+  edit,
+  admin,
+  titleParam,
+  deletePinnedResource,
+}) {
   let [manageResource, setManageResource] = useState(null);
   const resourcesColumns = [
     {
@@ -30,9 +36,9 @@ function ResourceTable({ resources, edit, admin }) {
       title: 'Path',
       key: 'path',
       dataIndex: 'path',
-      render: (path) => (
+      render: path => (
         <>
-          {path.map((p) => {
+          {path.map(p => {
             return (
               <Tag
                 style={{
@@ -54,9 +60,9 @@ function ResourceTable({ resources, edit, admin }) {
       title: 'Type',
       key: 'type',
       dataIndex: 'type',
-      render: (type) => (
+      render: type => (
         <>
-          {type.map((t) => {
+          {type.map(t => {
             return (
               <Tag
                 style={{
@@ -90,12 +96,22 @@ function ResourceTable({ resources, edit, admin }) {
       title: 'Manage',
       key: 'action',
       render: (text, resource) => (
-        <Button onClick={() => setManageResource(resource)}>Edit</Button>
+        <Button
+          onClick={() => {
+            if (edit) {
+              setManageResource(resource);
+            } else {
+              deletePinnedResource(resource._id);
+            }
+          }}
+        >
+          {edit ? 'Edit' : 'Delete'}
+        </Button>
       ),
     },
   ];
 
-  let title = 'Uploaded Resources';
+  let title = titleParam;
   if (admin) title = 'Pending Resources';
   return (
     <Card id="resources" style={{ marginBottom: '20px' }}>

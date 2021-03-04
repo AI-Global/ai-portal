@@ -23,18 +23,12 @@
   - Overview
   - Limitations
 - [Scripts](https://github.com/AI-Global/ai-portal/blob/master/docs/scripts.md)
-  - Overview
-  - Scripts
-- [Front-end Patterns](https://github.com/AI-Global/ai-portal/blob/master/docs/fe-patterns.md)
-  - Overview
-  - Patterns
-- [Back-end Patterns](https://github.com/AI-Global/ai-portal/blob/master/docs/be-patterns.md)
-  - Overview
-  - Patterns
+- Front-end Patterns
+- Back-end Patterns
 
 ## Vocab
 
-> I thought it might help to include some (somewhat oversimplified and project specific) vocab in case any devs are confused by our terminology.
+> I thought it might help to include some vocab in case any devs are confused by our terminology.
 
 **front-end** - the visual interface of the app, code that runs on the clients (think: React)
 
@@ -42,11 +36,7 @@
 
 **production** - the version of the app that everyone can see (think: not localhost)
 
-**deployment** - the process of taking code from GitHub and running it in production
-
 **CI** - "continuous integration", automated builds and tests
-
-**model** - a common type of object/abstraction (think: user, resource, organization, topic, file)
 
 ## Tech Stack
 
