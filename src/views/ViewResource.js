@@ -62,10 +62,15 @@ export default function ViewResource() {
       let resource = await api.get('/api/resources/' + resId);
       setResource(resource);
       setLoading(false);
+      window.gtag('event', 'resource_page_view_v2', {
+        event_label: resource._name,
+        event_category: 'view_resource',
+      });
     };
     fetchResource();
     setPinned(user?.pinnedResources.includes(resId));
   }, [api, resId, user]);
+
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);

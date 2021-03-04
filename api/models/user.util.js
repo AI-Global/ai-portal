@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Organization = mongoose.model('Organization');
+const Resource = mongoose.model('Resource');
 const crypto = require('crypto');
 const _email = require('../lib/email');
 const queries = require('../lib/queries');
@@ -93,6 +94,7 @@ exports.setOrganizations = async (user, orgs) => {
   );
 };
 
+
 exports.getByUsernameOrEmail = async userOrEmail => {
   let user = await User.findOne({ username: userOrEmail });
   if (user) {
@@ -139,7 +141,7 @@ exports.verifyEmail = async (user, token) => {
 exports.getResources = async user => {
   let { resources } = await User.findById(user._id).populate(
     'resources',
-    '-_id -__v -resources'
+    '-__v -resources'
   );
   return resources;
 };
