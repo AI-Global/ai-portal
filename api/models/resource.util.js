@@ -15,7 +15,8 @@ let populate = resourceQuery => {
     .populate('organizations', '-__v -organizations')
     .populate('topics', '-__v -topics')
     .populate('files', '-__v -files')
-    .populate('comments', '-__v -comments');
+    .populate('comments', '-__v -comments')
+    .populate({ path: 'comments', populate: { path: 'user', model: 'User' } });
 };
 
 exports.search = async (query, fields) => {

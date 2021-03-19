@@ -21,7 +21,7 @@ const CommentsList = ({ data }) => {
       renderItem={item => (
         <li>
           <Comment
-            author={item.user}
+            author={item.user.username}
             avatar={item.avatar}
             content={item.text}
             datetime={getFormattedDate(new Date(item.timestamp))}
