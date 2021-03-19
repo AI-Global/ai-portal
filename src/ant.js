@@ -33,6 +33,9 @@ import {
   Spin,
   Modal,
   Upload,
+  Comment,
+  Avatar,
+  List,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -80,4 +83,7 @@ export {
   Spin,
   Modal,
   Upload,
+  Comment,
+  Avatar,
+  List,
 };

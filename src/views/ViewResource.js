@@ -16,6 +16,7 @@ import {
   SearchOutlined,
   EditOutlined,
   FolderOpenOutlined,
+  CommentOutlined,
 } from '@ant-design/icons';
 import FormHeader from '../components/FormHeader';
 import Sidebar from '../components/Sidebar';
@@ -23,6 +24,7 @@ import Pin from '../components/Pin';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
 import ManageResourceModal from './../components/ManageResourceModal';
+import Comments from '../components/Comments';
 
 const { Panel } = Collapse;
 
@@ -70,10 +72,22 @@ export default function ViewResource() {
     fetchResource();
     setPinned(user?.pinnedResources.includes(resId));
   }, [api, resId, user]);
-
+  const renderComments = () => {
+    let fetchResource = async () => {
+      let resource = await api.get('/api/resources/' + resId);
+      setResource(resource);
+      setLoading(false);
+      window.gtag('event', 'resource_page_view_v2', {
+        event_label: resource._name,
+        event_category: 'view_resource',
+      });
+    };
+    fetchResource();
+  };
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
+  let commentRef = useRef(null);
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
 
@@ -114,13 +128,14 @@ export default function ViewResource() {
         <FormHeader />
         <Layout>
           <Sidebar
-            headings={['Overview', 'Details', 'Files']}
+            headings={['Overview', 'Details', 'Files', 'Comments']}
             icons={[
               <FileDoneOutlined />,
               <SearchOutlined />,
               <FolderOpenOutlined />,
+              <CommentOutlined />,
             ]}
-            refs={[topRef, detailRef, fileRef]}
+            refs={[topRef, detailRef, fileRef, commentRef]}
           />
           <Content
             style={{
@@ -288,6 +303,12 @@ export default function ViewResource() {
                 <FileTable data={resource.files}></FileTable>
               </div>
             )}
+            <div ref={commentRef}>
+              <Comments
+                data={resource.comments}
+                renderComments={renderComments()}
+              />
+            </div>
           </Content>
         </Layout>
       </Layout>

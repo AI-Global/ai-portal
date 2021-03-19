@@ -10,11 +10,12 @@ const queries = require('../lib/queries');
 
 exports.Resource = Resource;
 
-let populate = (resourceQuery) => {
+let populate = resourceQuery => {
   return resourceQuery
     .populate('organizations', '-__v -organizations')
     .populate('topics', '-__v -topics')
-    .populate('files', '-__v -files');
+    .populate('files', '-__v -files')
+    .populate('comments', '-__v -comments');
 };
 
 exports.search = async (query, fields) => {
@@ -22,7 +23,7 @@ exports.search = async (query, fields) => {
     let orgs = await Organization.find({
       type: fields.organizationType,
     }).select('id');
-    fields.organizations = orgs.map((org) => org._id).join(',');
+    fields.organizations = orgs.map(org => org._id).join(',');
   }
   if (fields.approved) {
     fields.reviewsRemaining = [];
@@ -45,7 +46,7 @@ exports.search = async (query, fields) => {
   return await populate(result);
 };
 
-exports.create = async (params) => {
+exports.create = async params => {
   let resource = new Resource(params);
   await resource.save();
   resource = exports.update(resource, params);
@@ -55,7 +56,7 @@ exports.create = async (params) => {
 exports.update = async (resource, rawParams) => {
   if (rawParams.files?.length && typeof rawParams.files[0] === 'object') {
     rawParams.files = await Promise.all(
-      rawParams.files.map(async (fl) => {
+      rawParams.files.map(async fl => {
         if (fl.awsStoragePath) {
           return await fileUtil.createFromAWSUpload(fl);
         }
@@ -125,14 +126,14 @@ exports.update = async (resource, rawParams) => {
   return result;
 };
 
-exports.toJSON = (resource) => {
+exports.toJSON = resource => {
   let { __v, ...obj } = JSON.parse(JSON.stringify(resource));
   obj.organizations = obj.organizations?.map(organizationUtil.toJSON);
   obj.files = obj.files?.map(fileUtil.toJSON);
   return obj;
 };
 
-exports.getById = async (id) => {
+exports.getById = async id => {
   return await populate(Resource.findById(id));
 };
 
@@ -146,7 +147,7 @@ exports.getFeatured = async () => {
   return await populate(Resource.find({ featured: true }));
 };
 
-exports.delete = async (resource) => {
+exports.delete = async resource => {
   await Resource.deleteOne({ _id: resource._id });
 };
 
@@ -210,6 +211,6 @@ exports.setUser = async (resource, user) => {
   return resource;
 };
 
-exports.delete = async (id) => {
+exports.delete = async id => {
   return await Resource.deleteOne(id);
 };
