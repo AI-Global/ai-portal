@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
-import { Form, Button, Input } from '../ant';
+import { Form, Button, Input, notification } from '../ant';
 const { TextArea } = Input;
 
 const AddComment = ({ type, parentID }) => {
@@ -13,6 +13,9 @@ const AddComment = ({ type, parentID }) => {
   };
   const handleOnSubmit = async () => {
     if (type === 'comment') {
+      notification.open({
+        message: 'Comment Successfully Submitted!',
+      });
       await api.post('/api/comments', {
         resourceId: resId,
         text: commentField,
@@ -28,10 +31,10 @@ const AddComment = ({ type, parentID }) => {
   };
   return (
     <>
-      <Form.Item>
+      <Form.Item shouldUpdate>
         <TextArea rows={4} onChange={handleOnChange} value={commentField} />
       </Form.Item>
-      <Form.Item>
+      <Form.Item shouldUpdate>
         <Button htmlType="submit" onClick={handleOnSubmit} type="primary">
           Add Comment
         </Button>

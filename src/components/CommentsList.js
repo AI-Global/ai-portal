@@ -15,7 +15,6 @@ const CommentsList = ({ data }) => {
   return (
     <List
       className="comment-list"
-      header={`${data.length} replies`}
       itemLayout="horizontal"
       dataSource={data}
       renderItem={item => (
