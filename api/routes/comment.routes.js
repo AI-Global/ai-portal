@@ -26,9 +26,9 @@ module.exports = app => {
   firewall.delete(
     '/api/comments',
     async (req, res) => {
-      const { resourceId, commentId } = req.body;
+      const { commentId } = req.body;
 
-      await commentUtil.deleteComment(resourceId, commentId);
+      await commentUtil.delete(commentId);
     },
     { owner: ['_id'], mod: ['_id'], public: ['resourceId, commentId'] }
   );

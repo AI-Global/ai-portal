@@ -59,31 +59,19 @@ export default function ViewResource() {
   let [pinned, setPinned] = useState(false);
   let { api, user } = useAppEnv();
   let { resId } = useParams();
+  let fetchResource = async () => {
+    let resource = await api.get('/api/resources/' + resId);
+    setResource(resource);
+    setLoading(false);
+    window.gtag('event', 'resource_page_view_v2', {
+      event_label: resource._name,
+      event_category: 'view_resource',
+    });
+  };
   useEffect(() => {
-    let fetchResource = async () => {
-      let resource = await api.get('/api/resources/' + resId);
-      setResource(resource);
-      setLoading(false);
-      window.gtag('event', 'resource_page_view_v2', {
-        event_label: resource._name,
-        event_category: 'view_resource',
-      });
-    };
     fetchResource();
     setPinned(user?.pinnedResources.includes(resId));
-  }, [api, resId, user]);
-  const renderComments = () => {
-    let fetchResource = async () => {
-      let resource = await api.get('/api/resources/' + resId);
-      setResource(resource);
-      setLoading(false);
-      window.gtag('event', 'resource_page_view_v2', {
-        event_label: resource._name,
-        event_category: 'view_resource',
-      });
-    };
-    fetchResource();
-  };
+  }, [api, resId, user, fetchResource]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
@@ -306,7 +294,7 @@ export default function ViewResource() {
             <div ref={commentRef}>
               <Comments
                 data={resource.comments}
-                renderComments={renderComments()}
+                renderComments={fetchResource}
               />
             </div>
           </Content>
