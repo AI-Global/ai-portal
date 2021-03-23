@@ -21,7 +21,7 @@ export default function ResourceCard({ resource }) {
             {resource.name}
           </button>
         }
-        extra={tags.map((t) => (
+        extra={tags.map(t => (
           <Tag
             style={{
               color: 'white',
@@ -67,7 +67,7 @@ export default function ResourceCard({ resource }) {
         <p style={{ marginBottom: '5px' }}>
           <strong style={{ marginRight: '10px' }}>Organizations: </strong>{' '}
           <Space>
-            {resource.organizations.map((org) => (
+            {resource.organizations.map(org => (
               <span key={org.name}>{org.name}</span>
             ))}
           </Space>
@@ -89,7 +89,7 @@ export default function ResourceCard({ resource }) {
         <p style={{ marginBottom: '5px' }}>
           <strong style={{ marginRight: '10px' }}>Keywords: </strong>
           <Space>
-            {tags.map((t) => (
+            {tags.map(t => (
               <Tag
                 style={{
                   color: 'white',
