@@ -4,7 +4,7 @@ import { useAppEnv } from './../env';
 import { Form, Button, Input, notification } from '../ant';
 const { TextArea } = Input;
 
-const AddComment = ({ type, parentID }) => {
+const AddComment = ({ type, fetchResource }) => {
   let { api } = useAppEnv();
   let { resId } = useParams();
   const [commentField, setCommentField] = useState('');
@@ -21,13 +21,8 @@ const AddComment = ({ type, parentID }) => {
         text: commentField,
         timestamp: Date.now(),
       });
-    } else if (type === 'reply') {
-      await api.post('/api/comments/add-reply', {
-        parentID,
-        replyText: commentField,
-        resId,
-      });
     }
+    fetchResource();
   };
   return (
     <>
