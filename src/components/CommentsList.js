@@ -1,17 +1,8 @@
 import React from 'react';
-import { List, Comment } from '../ant';
+import { List } from '../ant';
+import CommentWithUpvote from './CommentWithUpvote';
+
 const CommentsList = ({ data }) => {
-  const getFormattedDate = date => {
-    let year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date
-      .getDate()
-      .toString()
-      .padStart(2, '0');
-
-    return month + '/' + day + '/' + year;
-  };
-
   return (
     <List
       className="comment-list"
@@ -19,12 +10,7 @@ const CommentsList = ({ data }) => {
       dataSource={data}
       renderItem={item => (
         <li>
-          <Comment
-            author={item.user.username}
-            avatar={item.avatar}
-            content={item.text}
-            datetime={getFormattedDate(new Date(item.timestamp))}
-          />
+          <CommentWithUpvote item={item} />
         </li>
       )}
     />

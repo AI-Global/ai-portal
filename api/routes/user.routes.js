@@ -195,6 +195,17 @@ module.exports = app => {
     },
     { public: ['_id', 'resourceId'] }
   );
+
+  firewall.post(
+    '/api/users/:_id/upvote-comment',
+    async (req, res) => {
+      const { commentId } = req.body;
+      await userUtil.upvoteComment(await req.getUser(), commentId);
+      res.send({ status: 200 });
+    },
+    { public: ['_id', 'commentId'] }
+  )
+
 };
 
 let usersSame = async (user, { _id }) => {
