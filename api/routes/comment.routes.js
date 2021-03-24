@@ -5,8 +5,8 @@ module.exports = app => {
     '/api/comments/:commentId',
     async (req, res) => {
       const { commentId } = req.params;
-      const result = await commentUtil.getCommentsForResource(commentId);
-      res.json(commentUtil.toJson(result));
+      const result = await commentUtil.get(commentId);
+      res.json(commentUtil.toJSON(result));
     },
     { public: ['commentId'] }
   );
@@ -30,7 +30,7 @@ module.exports = app => {
 
       await commentUtil.delete(commentId);
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId, commentId'] }
+    { owner: ['_id'], mod: ['_id'], public: ['resourceId', 'commentId'] }
   );
   firewall.post(
     '/api/comments/add-reply',
@@ -45,6 +45,6 @@ module.exports = app => {
         resId
       );
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId, commentId'] }
+    { owner: ['_id'], mod: ['_id'], public: ['resId', 'replyText', 'parentID'] }
   );
 };
