@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
 import { Form, Button, Input } from '../ant';
-import mongoose from 'mongoose';
 
 const { TextArea } = Input;
 

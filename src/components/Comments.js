@@ -1,7 +1,6 @@
 import React from 'react';
 import AddComment from './AddComment';
 import CommentsList from './CommentsList';
-
 const Comments = ({ data, fetchResource }) => {
   return (
     <div>

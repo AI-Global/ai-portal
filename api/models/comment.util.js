@@ -43,13 +43,13 @@ exports.addReply = async (parentID, user, text, timestamp, resId) => {
     { $push: { replies: comment._id } }
   );
 
-  /*if (resId) {
+  if (resId) {
     // add new child comment to resource, if applicable
     await Resource.updateOne(
       { _id: resId },
       { $push: { comments: comment._id } }
     );
-  }*/
+  }
 };
 
 exports.delete = async commentID => {
