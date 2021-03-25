@@ -5,7 +5,7 @@ import { useAppEnv } from './../env';
 
 import AddReply from './AddReply';
 
-const ReplysList = ({ data }) => {
+const ReplysList = ({ data, leftMargin }) => {
   const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -28,6 +28,27 @@ const ReplysList = ({ data }) => {
     }
     return array;
   }
+
+  let userArray = async (input) => {
+    let array = [];
+    for(var i = 0; i < input.length; i++){
+      let response = await api.get('/api/users/' + input[i].user);
+      let resultJSON = JSON.parse(JSON.stringify(response));
+      array.push(resultJSON);
+    }
+    return array;
+  }
+
+ /* let objectArray3 = objectArray();
+  objectArray3.then(function(result){
+    let userArray2 = userArray(result);
+    userArray2.then(function(result2){
+      console.log("In 2nd then");
+      console.log(result2);
+      console.log(result2[0].username);
+    })
+  })*/
+
   let objectArray2 = [{
     "text": "Test 5 Reply",
     "replies": [],
@@ -52,15 +73,20 @@ const ReplysList = ({ data }) => {
   "timestamp": "2021-03-23T19:31:13.737Z",
   "__v": 0
 }];
+let newMarginLeft = `${leftMargin + 20}px`;
+let styles = {
+  marginLeft: newMarginLeft,
+};
 
+//ReplysList will be added to return statement
   return (
     <List
       className="reply-list"
-      header={`${objectArray2.length} replied`}
+      header={`${objectArray2.length} replies`}
       itemLayout="horizontal"
       dataSource={objectArray2}
       renderItem={item => (
-        <li>
+        <li style={ styles }>
           <Comment
             author={item.user}
             avatar={item.avatar}

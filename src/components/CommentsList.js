@@ -23,7 +23,6 @@ const CommentsList = ({ data }) => {
   );
 
   let result = filteredArray.map(x => x.replies);
-
   return (
     <List
       className="comment-list"
@@ -39,7 +38,7 @@ const CommentsList = ({ data }) => {
             datetime={getFormattedDate(new Date(item.timestamp))}
           />
           <AddReply type="reply" commentID={item._id}></AddReply>
-          <ReplysList data={item.replies}></ReplysList>
+          <ReplysList data={item.replies} leftMargin={0}></ReplysList>
         </li>
       )}
     />
