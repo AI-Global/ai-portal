@@ -4,7 +4,7 @@ import { useAppEnv } from './../env';
 
 import AddReply from './AddReply';
 
-const ReplysList = ({ data, leftMargin }) => {
+const ReplysList = ({ data, leftMargin, parentID }) => {
   const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -18,7 +18,7 @@ const ReplysList = ({ data, leftMargin }) => {
 
 let { api } = useAppEnv();
 
-let newMarginLeft = `${leftMargin + 20}px`;
+let newMarginLeft = `${leftMargin}px`;
 let styles = {
   marginLeft: newMarginLeft,
 };
@@ -30,9 +30,13 @@ let objectArray = async() => {
   for(var i = 0; i < data.length; i++){
     let responseComments = await api.get('/api/comments/' + data[i]);
     let resultJSON = JSON.parse(JSON.stringify(responseComments));
-    let responseUser = await api.get('/api/users/' + resultJSON.user);
-    resultJSON.username = responseUser.username;
-    array.push(resultJSON);
+    if(resultJSON != null){
+      let responseUser = await api.get('/api/users/' + resultJSON.user);
+      if(responseUser != null){
+        resultJSON.username = responseUser.username;
+        array.push(resultJSON);
+      }
+    }
   }
   return array;
 }
@@ -60,8 +64,7 @@ useEffect(() => {
             content={item.text}
             datetime={getFormattedDate(new Date(item.timestamp))}
           />
-          <AddReply type="reply" commentID={item._id}></AddReply>
-          <ReplysList data={item.replies} leftMargin={leftMargin + 20}></ReplysList>
+          <AddReply type="reply" commentID={parentID}></AddReply>
         </li>
       )}
     />

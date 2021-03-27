@@ -18,7 +18,7 @@ const CommentsList = ({ data }) => {
   let filteredArray = data.filter( x => 
     x.parent==null
   );
-
+  
   return (
     <List
       className="comment-list"
@@ -33,7 +33,7 @@ const CommentsList = ({ data }) => {
             datetime={getFormattedDate(new Date(item.timestamp))}
           />
           <AddReply type="reply" commentID={item._id}></AddReply>
-          <ReplysList data={item.replies} leftMargin={0}></ReplysList>
+          <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
         </li>
       )}
     />
