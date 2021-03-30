@@ -16,7 +16,7 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
     return month + '/' + day + '/' + year;
   };
 
-let { api } = useAppEnv();
+let { api, user } = useAppEnv();
 
 let newMarginLeft = `${leftMargin}px`;
 let styles = {
@@ -34,6 +34,7 @@ let objectArray = async() => {
       let responseUser = await api.get('/api/users/' + resultJSON.user);
       if(responseUser != null){
         resultJSON.username = responseUser.username;
+        resultJSON.name = responseUser.name;
         array.push(resultJSON);
       }
     }
@@ -64,7 +65,7 @@ useEffect(() => {
             content={item.text}
             datetime={getFormattedDate(new Date(item.timestamp))}
           />
-          <AddReply type="reply" commentID={parentID}></AddReply>
+          <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
         </li>
       )}
     />
