@@ -10,6 +10,7 @@ const Comments = ({ data, fetchResource }) => {
       <div>
         <CommentsList data={data} />
       </div>
+      <br></br>
       <AddComment type="comment" renderComments={fetchResource} />
     </div>
   );
