@@ -30,7 +30,7 @@ const CommentsList = ({ data }) => {
       dataSource={filteredArray}
       renderItem={(item) => (
         <li>
-          <CommentWithUpvote item={item} />
+          <CommentWithUpvote item={item} name={item.user.name} />
           <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name}></AddReply>
           <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
         </li>

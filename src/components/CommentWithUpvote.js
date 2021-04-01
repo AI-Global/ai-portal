@@ -14,7 +14,7 @@ const getFormattedDate = date => {
   return month + '/' + day + '/' + year;
 };
 
-export default function CommentWithUpvote({ item }) {
+export default function CommentWithUpvote({ item, name }) {
   let { api, user } = useAppEnv();
   let [upvoted, setUpvoted] = useState(false);
   let [upvotes, setUpvotes] = useState(item.upvotes);
@@ -50,7 +50,7 @@ export default function CommentWithUpvote({ item }) {
         </Col>
         <Col justify="center">
           <Comment
-            author={item.user.username}
+            author={name}
             avatar={item.avatar}
             content={item.text}
             datetime={getFormattedDate(new Date(item.timestamp))}
