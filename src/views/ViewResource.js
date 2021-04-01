@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import {
   Layout,
   Content,
@@ -70,8 +70,10 @@ export default function ViewResource() {
   };
   useEffect(() => {
     fetchResource();
-    setPinned(user?.pinnedResources.includes(resId));
   }, [api, resId, user, fetchResource]);
+  useLayoutEffect(() => {
+    setPinned(user?.pinnedResources.includes(resId));
+  }, [api, user, resId])
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);

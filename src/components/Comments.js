@@ -5,7 +5,7 @@ const Comments = ({ data, fetchResource }) => {
   return (
     <div>
       <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
-        Comments
+        Comments ({data.length} replies)
       </h1>
       <div>
         <CommentsList data={data} />

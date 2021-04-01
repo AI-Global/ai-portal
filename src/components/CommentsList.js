@@ -1,5 +1,6 @@
 import React from 'react';
 import { List, Comment } from '../ant';
+import CommentWithUpvote from './CommentWithUpvote';
 import AddReply from './AddReply';
 import ReplysList from './ReplysList';
 import { useAppEnv } from './../env';
@@ -29,12 +30,7 @@ const CommentsList = ({ data }) => {
       dataSource={filteredArray}
       renderItem={(item) => (
         <li>
-          <Comment
-            author={item.user.username}
-            avatar={item.avatar}
-            content={item.text}
-            datetime={getFormattedDate(new Date(item.timestamp))}
-          />
+          <CommentWithUpvote item={item} />
           <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name}></AddReply>
           <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
         </li>

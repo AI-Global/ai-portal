@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { List, Comment } from '../ant';
 import { useAppEnv } from './../env';
 
+import CommentWithUpvote from './CommentWithUpvote';
 import AddReply from './AddReply';
 
 const ReplysList = ({ data, leftMargin, parentID }) => {
@@ -59,12 +60,7 @@ useEffect(() => {
       dataSource={comments}
       renderItem={item => (
         <li style={ styles }>
-          <Comment
-            author={item.username}
-            avatar={item.avatar}
-            content={item.text}
-            datetime={getFormattedDate(new Date(item.timestamp))}
-          />
+          <CommentWithUpvote item={item} />
           <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
         </li>
       )}
