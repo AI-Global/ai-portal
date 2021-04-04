@@ -113,7 +113,7 @@ module.exports = app => {
       let user = await userUtil.getById(req.params);
       return res.json(userUtil.toJSON(user));
     },
-    { owner: ['_id'], mod: ['_id'] },
+    { owner: ['_id'], mod: ['_id'], public: ['_id'] },
     usersSame
   );
 
