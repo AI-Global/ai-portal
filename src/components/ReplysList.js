@@ -5,7 +5,7 @@ import { useAppEnv } from './../env';
 import CommentWithUpvote from './CommentWithUpvote';
 import AddReply from './AddReply';
 
-const ReplysList = ({ data, leftMargin, parentID, currentUser }) => {
+const ReplysList = ({ data, leftMargin, parentID }) => {
   const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -61,7 +61,7 @@ useEffect(() => {
       renderItem={item => (
         <li style={ styles }>
           <CommentWithUpvote item={item} name={item.name} />
-          <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={currentUser}></AddReply>
+          <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
         </li>
       )}
     />
