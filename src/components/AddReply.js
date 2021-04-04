@@ -14,6 +14,7 @@ const AddReply = ({ type, commentID, repliedCommentName, currentUser }) => {
   };
 const handleOnSubmit = async () => {
   if (type === 'reply') {
+    setReplyField('');
     await api.post('/api/comments/add-reply', {
       parentID: commentID,
       replyText: replyField,

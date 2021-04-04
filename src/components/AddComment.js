@@ -16,6 +16,7 @@ const AddComment = ({ type, fetchResource }) => {
       notification.open({
         message: 'Comment Successfully Submitted!',
       });
+      setCommentField('');
       await api.post('/api/comments', {
         resourceId: resId,
         text: commentField,
