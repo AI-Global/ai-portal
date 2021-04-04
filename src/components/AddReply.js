@@ -33,18 +33,23 @@ useEffect(() => {
   fetchName();
 }, [repliedCommentName]);
 
-  return (
-    <>
-      <Form.Item>
-        <TextArea rows={4} onChange={handleOnChange} value={replyField} />
-      </Form.Item>
-      <Form.Item>
-        <Button htmlType="submit" onClick={handleOnSubmit} type="primary">
-          Add Reply
-        </Button>
-      </Form.Item>
-    </>
-  );
+  if(currentUser == ""){
+    return (<></>);
+  }
+  else{
+    return (
+      <>
+        <Form.Item>
+          <TextArea rows={4} onChange={handleOnChange} value={replyField} />
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit" onClick={handleOnSubmit} type="primary">
+            Add Reply
+          </Button>
+        </Form.Item>
+      </>
+    );
+  }
 };
 
 export default AddReply;

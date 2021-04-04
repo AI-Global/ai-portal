@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { List, Comment } from '../ant';
 import CommentWithUpvote from './CommentWithUpvote';
 import AddReply from './AddReply';
@@ -23,6 +23,20 @@ const CommentsList = ({ data }) => {
     x.parent==null
   );
   
+  const [userName, setUserName] = useState("");
+
+  let fetchUserName = async (input) => {
+    let updatedUserName = "";
+    if(input != null){
+      updatedUserName = input.name;
+    }
+    setUserName(updatedUserName);
+  };
+  
+  useEffect(() => {
+    fetchUserName(user);
+  }, [user]);
+
   return (
     <List
       className="comment-list"
@@ -31,8 +45,8 @@ const CommentsList = ({ data }) => {
       renderItem={(item) => (
         <li>
           <CommentWithUpvote item={item} name={item.user.name} />
-          <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name}></AddReply>
-          <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
+          <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={userName}></AddReply>
+          <ReplysList data={item.replies} leftMargin={20} parentID={item._id} currentUser={userName}></ReplysList>
         </li>
       )}
     />
