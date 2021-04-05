@@ -27,19 +27,37 @@ const CommentsList = ({ data, isOnCommentTab }) => {
     filteredArray = filteredArray.slice(0, 2)
   }
 
-  return (
-    <List
-      className="comment-list"
-      itemLayout="horizontal"
-      dataSource={filteredArray}
-      renderItem={(item) => (
-        <li>
-          <CommentWithUpvote item={item} name={item.user.name} />
-          <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name}></AddReply>
-          <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
-        </li>
-      )}
-    />
-  );
+  if (user != null) {
+    return (
+      <List
+        className="comment-list"
+        itemLayout="horizontal"
+        dataSource={filteredArray}
+        renderItem={(item) => (
+          <li>
+            <CommentWithUpvote item={item} name={item.user.name} />
+            <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name}></AddReply>
+            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
+          </li>
+        )}
+      />
+    );
+  }
+  else {
+    return (
+      <List
+        className="comment-list"
+        itemLayout="horizontal"
+        dataSource={filteredArray}
+        renderItem={(item) => (
+          <li>
+            <CommentWithUpvote item={item} name={item.user.name} />
+            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
+          </li>
+        )}
+      />
+
+    );
+  }
 };
 export default CommentsList;
