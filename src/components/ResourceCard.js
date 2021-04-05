@@ -68,9 +68,15 @@ export default function ResourceCard({ resource }) {
             <Card.Meta description={resource.desc}></Card.Meta>
           </>
         )}
-        {key === "Comments" && (
+        {resource.comments.length == 0 && key === "Comments" && (
           <>
-            <CommentsList data={resource.comments} />
+            <big>No comments to display.</big>
+          </>
+        )}
+        {resource.comments.length != 0 && key === "Comments" && (
+          <>
+            <CommentsList data={resource.comments} isOnCommentTab={1} />
+            <big>View resource to check all the comments.</big>
           </>
         )}
       </Card>
