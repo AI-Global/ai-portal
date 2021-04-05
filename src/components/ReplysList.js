@@ -17,54 +17,71 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
     return month + '/' + day + '/' + year;
   };
 
-let { api, user } = useAppEnv();
+  let { api, user } = useAppEnv();
 
-let newMarginLeft = `${leftMargin}px`;
-let styles = {
-  marginLeft: newMarginLeft,
-};
+  let newMarginLeft = `${leftMargin}px`;
+  let styles = {
+    marginLeft: newMarginLeft,
+  };
 
-const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([]);
 
-let objectArray = async() => {
-  let array = [];
-  for(var i = 0; i < data.length; i++){
-    let responseComments = await api.get('/api/comments/' + data[i]);
-    let resultJSON = JSON.parse(JSON.stringify(responseComments));
-    if(resultJSON != null){
-      let responseUser = await api.get('/api/users/' + resultJSON.user);
-      if(responseUser != null){
-        resultJSON.username = responseUser.username;
-        resultJSON.name = responseUser.name;
-        array.push(resultJSON);
+  let objectArray = async () => {
+    let array = [];
+    for (var i = 0; i < data.length; i++) {
+      let responseComments = await api.get('/api/comments/' + data[i]);
+      let resultJSON = JSON.parse(JSON.stringify(responseComments));
+      if (resultJSON != null) {
+        let responseUser = await api.get('/api/users/' + resultJSON.user);
+        if (responseUser != null) {
+          resultJSON.username = responseUser.username;
+          resultJSON.name = responseUser.name;
+          array.push(resultJSON);
+        }
       }
     }
+    return array;
   }
-  return array;
-}
 
-let fetchComments = async () => {
-  let userObjectResult = await objectArray();
-  setComments(userObjectResult);
-};
+  let fetchComments = async () => {
+    let userObjectResult = await objectArray();
+    setComments(userObjectResult);
+  };
 
-useEffect(() => {
-  fetchComments();
-}, [data]);
+  useEffect(() => {
+    fetchComments();
+  }, [data]);
 
-  return (
-    <List
-      className="reply-list"
-      itemLayout="horizontal"
-      locale={{ emptyText: " ", }}
-      dataSource={comments}
-      renderItem={item => (
-        <li style={ styles }>
-          <CommentWithUpvote item={item} name={item.name} />
-          <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
-        </li>
-      )}
-    />
-  );
+  if (user != null) {
+    return (
+      <List
+        className="reply-list"
+        itemLayout="horizontal"
+        locale={{ emptyText: " ", }}
+        dataSource={comments}
+        renderItem={item => (
+          <li style={styles}>
+            <CommentWithUpvote item={item} name={item.name} />
+            <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
+          </li>
+        )}
+      />
+    );
+  }
+  else {
+    return (
+      <List
+        className="reply-list"
+        itemLayout="horizontal"
+        locale={{ emptyText: " ", }}
+        dataSource={comments}
+        renderItem={item => (
+          <li style={styles}>
+            <CommentWithUpvote item={item} name={item.name} />
+          </li>
+        )}
+      />
+    );
+  }
 };
 export default ReplysList;

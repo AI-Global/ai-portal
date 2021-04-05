@@ -93,6 +93,7 @@ export default function ViewResource() {
       setPinned(!pinned);
     }
   };
+  let isUserSignedIn = user == null ? 0 : 1
 
   if (loading) {
     return (
@@ -156,23 +157,23 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
-                        <Button
-                          icon={<EditOutlined />}
-                          key="3"
-                          shape="round"
-                          onClick={() => setShowModal(true)}
-                        >
-                          Edit Resource
+                      <Button
+                        icon={<EditOutlined />}
+                        key="3"
+                        shape="round"
+                        onClick={() => setShowModal(true)}
+                      >
+                        Edit Resource
                         </Button>,
-                      ]
+                    ]
                     : [
-                        <Pin
-                          defaultState={false}
-                          size={'32px'}
-                          isPinned={pinned}
-                          onClick={pinResource}
-                        />,
-                      ]
+                      <Pin
+                        defaultState={false}
+                        size={'32px'}
+                        isPinned={pinned}
+                        onClick={pinResource}
+                      />,
+                    ]
                 }
               >
                 {resource.desc}
@@ -297,6 +298,7 @@ export default function ViewResource() {
               <Comments
                 data={resource.comments}
                 renderComments={fetchResource}
+                isUserSignedIn={isUserSignedIn}
               />
             </div>
           </Content>
