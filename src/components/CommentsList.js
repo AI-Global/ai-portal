@@ -5,7 +5,7 @@ import AddReply from './AddReply';
 import ReplysList from './ReplysList';
 import { useAppEnv } from './../env';
 
-const CommentsList = ({ data }) => {
+const CommentsList = ({ data, isOnCommentTab }) => {
   const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -19,10 +19,14 @@ const CommentsList = ({ data }) => {
 
   let { api, user } = useAppEnv();
 
-  let filteredArray = data.filter( x => 
-    x.parent==null
+  let filteredArray = data.filter(x =>
+    x.parent == null
   );
-  
+
+  if (isOnCommentTab == 1) {
+    filteredArray = filteredArray.slice(0, 2)
+  }
+
   return (
     <List
       className="comment-list"
