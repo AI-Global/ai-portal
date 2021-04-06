@@ -4,7 +4,7 @@ import { useAppEnv } from './../env';
 import { Form, Button, Input } from '../ant';
 const { TextArea } = Input;
 
-const AddComment = ({ type, fetchResource }) => {
+const AddComment = ({ fetchResource }) => {
   let { api } = useAppEnv();
   let { resId } = useParams();
   const [commentField, setCommentField] = useState('');
@@ -12,17 +12,15 @@ const AddComment = ({ type, fetchResource }) => {
     setCommentField(e.target.value);
   };
   const handleOnSubmit = async () => {
-    if (type === 'comment') {
-      await api.post('/api/comments', {
-        resourceId: resId,
-        text: commentField,
-        timestamp: Date.now(),
-      });
-    }
+    await api.post('/api/comments', {
+      resourceId: resId,
+      text: commentField,
+      timestamp: Date.now(),
+    });
     fetchResource();
   };
   return (
-    <>
+    <div style={{ marginTop: '1rem' }}>
       <Form.Item>
         <TextArea rows={4} onChange={handleOnChange} value={commentField} />
       </Form.Item>
@@ -31,7 +29,7 @@ const AddComment = ({ type, fetchResource }) => {
           Add Comment
         </Button>
       </Form.Item>
-    </>
+    </div>
   );
 };
 

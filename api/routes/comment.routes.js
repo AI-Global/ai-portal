@@ -24,13 +24,14 @@ module.exports = app => {
     { public: ['resourceId', 'text', 'timestamp'] }
   );
   firewall.delete(
-    '/api/comments',
+    '/api/comments/:commentId/:userId',
     async (req, res) => {
-      const { commentId } = req.body;
-
-      await commentUtil.delete(commentId);
+      const { commentId, userId } = req.params;
+      await commentUtil.delete(commentId, userId);
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId, commentId'] }
+    {
+      public: ['userId', 'commentId'],
+    }
   );
   firewall.post(
     '/api/comments/add-reply',
@@ -45,6 +46,6 @@ module.exports = app => {
         resId
       );
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId, commentId'] }
+    { owner: ['_id'], mod: ['_id'], public: ['resourceId', 'commentId'] }
   );
 };

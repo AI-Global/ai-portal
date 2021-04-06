@@ -24,6 +24,9 @@ const UserSchema = new Schema({
   pinnedResources: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', default: [] },
   ],
+  createdComments: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] },
+  ],
 });
 
 mongoose.model('User', UserSchema);
