@@ -13,15 +13,22 @@ const AddComment = ({ type, fetchResource }) => {
   };
   const handleOnSubmit = async () => {
     if (type === 'comment') {
-      notification.open({
-        message: 'Comment Successfully Submitted!',
-      });
       setCommentField('');
-      await api.post('/api/comments', {
+      let response = await api.post('/api/comments', {
         resourceId: resId,
         text: commentField,
         timestamp: Date.now(),
       });
+      if(response.status === 200){
+        notification.open({
+          message: 'Comment Successfully Submitted!',
+        });
+      }
+      else{
+        notification.open({
+          message: 'Error adding comment',
+        });
+      }
     }
     fetchResource();
   };

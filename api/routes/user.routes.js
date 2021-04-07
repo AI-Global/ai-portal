@@ -111,7 +111,9 @@ module.exports = app => {
     '/api/users/:_id',
     async (req, res) => {
       let user = await userUtil.getById(req.params);
-      return res.json(userUtil.toJSON(user));
+      let userResponse = userUtil.toJSON(user);
+      userResponse.status = 200;
+      return res.json(userResponse);
     },
     { owner: ['_id'], mod: ['_id'], public: ['_id'] },
     usersSame

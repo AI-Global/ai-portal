@@ -6,7 +6,9 @@ module.exports = app => {
     async (req, res) => {
       const { commentId } = req.params;
       const result = await commentUtil.get(commentId);
-      res.json(commentUtil.toJSON(result));
+      let response = commentUtil.toJSON(result);
+      response.status = 200;
+      res.json(response);
     },
     { public: ['commentId'] }
   );
@@ -30,6 +32,7 @@ module.exports = app => {
       const { commentId } = req.body;
 
       await commentUtil.delete(commentId);
+      res.send({ status: 200 });
     },
     { owner: ['_id'], mod: ['_id'], public: ['resourceId', 'commentId'] }
   );
@@ -45,6 +48,7 @@ module.exports = app => {
         Date.now(),
         resId
       );
+      res.send({ status: 200 });
     },
     { owner: ['_id'], mod: ['_id'], public: ['resId', 'replyText', 'parentID'] }
   );

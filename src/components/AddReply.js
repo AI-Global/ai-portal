@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
-import { Form, Button, Input } from '../ant';
+import { Form, Button, Input, notification } from '../ant';
 
 const { TextArea } = Input;
 
@@ -15,11 +15,21 @@ const AddReply = ({ type, commentID, repliedCommentName, currentUser }) => {
 const handleOnSubmit = async () => {
   if (type === 'reply') {
     setReplyField('');
-    await api.post('/api/comments/add-reply', {
+    let response = await api.post('/api/comments/add-reply', {
       parentID: commentID,
       replyText: replyField,
       resId: resId,
     });
+    if(response.status === 200){
+      notification.open({
+        message: 'Reply Successfully Submitted!',
+      });
+    }
+    else{
+      notification.open({
+        message: 'Error adding reply',
+      });
+    }
   }
 };
 
