@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import {
   Layout,
   Content,
@@ -59,7 +59,7 @@ export default function ViewResource() {
   let [pinned, setPinned] = useState(false);
   let { api, user } = useAppEnv();
   let { resId } = useParams();
-  let fetchResource = async () => {
+  let fetchResource = useCallback(async () => {
     let resource = await api.get('/api/resources/' + resId);
     setResource(resource);
     setLoading(false);
@@ -67,7 +67,7 @@ export default function ViewResource() {
       event_label: resource._name,
       event_category: 'view_resource',
     });
-  };
+  }, [api, resId]);
   useEffect(() => {
     fetchResource();
   }, [api, resId, user, fetchResource]);
