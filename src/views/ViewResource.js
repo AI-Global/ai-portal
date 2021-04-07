@@ -297,7 +297,7 @@ export default function ViewResource() {
             <div ref={commentRef}>
               <Comments
                 data={resource.comments}
-                renderComments={fetchResource}
+                fetchResource={fetchResource}
                 isUserSignedIn={isUserSignedIn}
               />
             </div>

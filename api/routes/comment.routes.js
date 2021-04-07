@@ -20,6 +20,7 @@ module.exports = app => {
         timestamp,
         resourceId
       );
+      res.send({ status: 200 });
     },
     { public: ['resourceId', 'text', 'timestamp'] }
   );

@@ -16,7 +16,7 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
           <CommentsList data={data} />
         </div>
         <br></br>
-        <AddComment type="comment" renderComments={fetchResource} />
+        <AddComment type="comment" fetchResource={fetchResource} />
       </div>
     );
   }
