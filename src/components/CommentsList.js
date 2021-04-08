@@ -5,7 +5,7 @@ import AddReply from './AddReply';
 import ReplysList from './ReplysList';
 import { useAppEnv } from './../env';
 
-const CommentsList = ({ data, isOnCommentTab }) => {
+const CommentsList = ({ data, isOnCommentTab, fetchResource }) => {
   const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -36,8 +36,12 @@ const CommentsList = ({ data, isOnCommentTab }) => {
         renderItem={(item) => (
           <li>
             <CommentWithUpvote item={item} name={item.user.name} />
-            <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name}></AddReply>
-            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
+            {
+              item.replies?.length > 0 ? 
+              <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList> :
+              null
+            }
+            <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name} fetchResource={fetchResource}></AddReply>
           </li>
         )}
       />
