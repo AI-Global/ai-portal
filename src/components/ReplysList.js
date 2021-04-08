@@ -76,7 +76,6 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
         renderItem={item => (
           <li style={styles}>
             <CommentWithUpvote item={item} name={item.name} />
-            <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
           </li>
         )}
       />
