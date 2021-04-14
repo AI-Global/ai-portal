@@ -41,3 +41,7 @@ exports.delete = async postId => {
 exports.upvote = async postId => {
   await DiscussionPost.updateOne({ _id: postId }, { $inc: { upvotes: 1 } });
 };
+
+exports.toJSON = post => {
+  return JSON.parse(JSON.stringify(post));
+};
