@@ -81,6 +81,7 @@ export default function ViewResource() {
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
 
+
   const pinResource = async () => {
     let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
       resourceId: resId,
@@ -109,6 +110,9 @@ export default function ViewResource() {
       </div>
     );
   } else {
+    if (user == null && canEdit) {
+      canEdit = false
+    }
     return (
       <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
         <ManageResourceModal
@@ -157,14 +161,26 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
-                      <Button
-                        icon={<EditOutlined />}
-                        key="3"
-                        shape="round"
-                        onClick={() => setShowModal(true)}
-                      >
-                        Edit Resource
-                        </Button>,
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        <Pin
+                          defaultState={false}
+                          size={'32px'}
+                          isPinned={pinned}
+                          onClick={pinResource}
+                        />
+                        <Button
+                          icon={<EditOutlined />}
+                          key="3"
+                          shape="round"
+                          onClick={() => setShowModal(true)}
+                        >
+                          Edit Resource
+                        </Button>
+                      </div>
                     ]
                     : [
                       <Pin
@@ -172,7 +188,8 @@ export default function ViewResource() {
                         size={'32px'}
                         isPinned={pinned}
                         onClick={pinResource}
-                      />,
+                        noUser={user == null}
+                      />
                     ]
                 }
               >
@@ -302,8 +319,8 @@ export default function ViewResource() {
               />
             </div>
           </Content>
-        </Layout>
-      </Layout>
+        </Layout >
+      </Layout >
     );
   }
 }
