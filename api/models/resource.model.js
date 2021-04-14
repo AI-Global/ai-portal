@@ -120,6 +120,13 @@ const ResourceSchema = new Schema({
       default: [],
     },
   ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+      default: [],
+    },
+  ],
 });
 
 mongoose.model('Resource', ResourceSchema);

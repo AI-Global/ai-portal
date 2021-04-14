@@ -64,7 +64,7 @@ const resourcePostFields = [
   'organizations',
   'files',
 ];
-module.exports = (app) => {
+module.exports = app => {
   const firewall = require('../lib/firewall')(app);
 
   firewall.get(

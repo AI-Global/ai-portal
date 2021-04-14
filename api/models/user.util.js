@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Organization = mongoose.model('Organization');
 const Resource = mongoose.model('Resource');
+const Comment = mongoose.model('Comment');
 const crypto = require('crypto');
 const _email = require('../lib/email');
 const queries = require('../lib/queries');
@@ -212,3 +213,33 @@ exports.addToPinnedResources = async (user, resourceId) => {
   }
   return;
 };
+
+exports.upvoteComment = async (user, commentId) => {
+  const currentUser = await User.findOne({ _id: user._id });
+  let upvoted = false;
+  currentUser.upvotedComments.forEach(comment => {
+    if (comment.toString() === commentId) {
+      upvoted = true;
+    }
+  });
+
+  if (upvoted) {
+    await User.updateOne(
+      { _id: user._id },
+      { $pull: { upvotedComments: commentId } }
+    );
+    await Comment.updateOne(
+      {_id: commentId },
+      { $inc: { upvotes: -1 } }
+    );
+  } else {
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { upvotedComments: commentId } }
+    );
+    await Comment.updateOne(
+      {_id: commentId },
+      { $inc: { upvotes: 1 } }
+    )
+  }
+}

@@ -111,9 +111,11 @@ module.exports = app => {
     '/api/users/:_id',
     async (req, res) => {
       let user = await userUtil.getById(req.params);
-      return res.json(userUtil.toJSON(user));
+      let userResponse = userUtil.toJSON(user);
+      userResponse.status = 200;
+      return res.json(userResponse);
     },
-    { owner: ['_id'], mod: ['_id'] },
+    { owner: ['_id'], mod: ['_id'], public: ['_id'] },
     usersSame
   );
 
@@ -195,6 +197,17 @@ module.exports = app => {
     },
     { public: ['_id', 'resourceId'] }
   );
+
+  firewall.post(
+    '/api/users/:_id/upvote-comment',
+    async (req, res) => {
+      const { commentId } = req.body;
+      await userUtil.upvoteComment(await req.getUser(), commentId);
+      res.send({ status: 200 });
+    },
+    { public: ['_id', 'commentId'] }
+  )
+
 };
 
 let usersSame = async (user, { _id }) => {
