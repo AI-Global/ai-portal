@@ -27,14 +27,15 @@ module.exports = app => {
     { public: ['resourceId', 'text', 'timestamp'] }
   );
   firewall.delete(
-    '/api/comments',
+    '/api/comments/:commentId/:userId',
     async (req, res) => {
-      const { commentId } = req.body;
-
-      await commentUtil.delete(commentId);
+      const { commentId, userId } = req.params;
+      await commentUtil.delete(commentId, userId);
       res.send({ status: 200 });
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId', 'commentId'] }
+    {
+      public: ['userId', 'commentId'],
+    }
   );
   firewall.post(
     '/api/comments/add-reply',

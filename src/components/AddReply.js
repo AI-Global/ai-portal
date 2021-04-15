@@ -7,17 +7,21 @@ import { CommentOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 const { Panel } = Collapse;
 
-const AddReply = ({ type, commentID, repliedCommentName, currentUser, fetchResource }) => {
+const AddReply = ({
+  commentID,
+  repliedCommentName,
+  currentUser,
+  fetchResource,
+}) => {
   let { api } = useAppEnv();
   let { resId } = useParams();
-  const [replyField, setReplyField] = useState("");
+  const [replyField, setReplyField] = useState('');
   const [open, setOpen] = useState(false);
 
   const handleOnChange = e => {
     setReplyField(e.target.value);
   };
-const handleOnSubmit = async () => {
-  if (type === 'reply') {
+  const handleOnSubmit = async () => {
     setReplyField('');
     setOpen(false);
     let response = await api.post('/api/comments/add-reply', {
@@ -25,28 +29,26 @@ const handleOnSubmit = async () => {
       replyText: replyField,
       resId: resId,
     });
-    if(response.status === 200){
+    if (response.status === 200) {
       notification.open({
         message: 'Reply Successfully Submitted!',
       });
       fetchResource();
-    }
-    else{
+    } else {
       notification.open({
         message: 'Error adding reply',
       });
     }
-  }
-};
+  };
 
   let replyStyle = {
     backgroundColor: 'transparent',
     marginTop: 0,
-    border: 'none'
+    border: 'none',
   };
 
   let fetchName = async () => {
-    if(repliedCommentName != currentUser){
+    if (repliedCommentName !== currentUser) {
       setReplyField(`@${repliedCommentName}`);
     }
   };
@@ -57,21 +59,27 @@ const handleOnSubmit = async () => {
 
   return (
     <>
-      <Collapse 
-        activeKey={open ? [1] : []} 
-        onChange={() => setOpen(prev => !prev)} 
-        style={replyStyle} 
-        expandIcon={() => <CommentOutlined />} ghost
+      <Collapse
+        activeKey={open ? [1] : []}
+        onChange={() => setOpen(prev => !prev)}
+        style={replyStyle}
+        expandIcon={() => <CommentOutlined />}
+        ghost
       >
-        <Panel header="Reply" style={replyStyle} key={1} onChange={() => setOpen(prev => !prev)}>
-        <Form.Item>
-          <TextArea rows={4} onChange={handleOnChange} value={replyField} />
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" onClick={handleOnSubmit} type="primary">
-            Add Reply
-          </Button>
-        </Form.Item>
+        <Panel
+          header="Reply"
+          style={replyStyle}
+          key={1}
+          onChange={() => setOpen(prev => !prev)}
+        >
+          <Form.Item>
+            <TextArea rows={4} onChange={handleOnChange} value={replyField} />
+          </Form.Item>
+          <Form.Item>
+            <Button htmlType="submit" onClick={handleOnSubmit} type="primary">
+              Add Reply
+            </Button>
+          </Form.Item>
         </Panel>
       </Collapse>
     </>

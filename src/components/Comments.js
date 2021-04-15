@@ -6,12 +6,12 @@ import { useHistory } from 'react-router';
 
 const Comments = ({ data, fetchResource, isUserSignedIn }) => {
   let history = useHistory();
-  if (isUserSignedIn == 1) {
+  if (isUserSignedIn === 1) {
     return (
       <div>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
           Comments ({data.length} replies)
-      </h1>
+        </h1>
         <div>
           <CommentsList data={data} fetchResource={fetchResource} />
         </div>
@@ -19,13 +19,12 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
         <AddComment type="comment" fetchResource={fetchResource} />
       </div>
     );
-  }
-  else {
+  } else {
     return (
       <div>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
           Comments ({data.length} replies)
-      </h1>
+        </h1>
         <div>
           <CommentsList data={data} />
         </div>
@@ -35,9 +34,8 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
           onClick={() => history.push('/register')}
         >
           Register an account
-      </Button>
+        </Button>
         <big> to make comments!</big>
-
       </div>
     );
   }
