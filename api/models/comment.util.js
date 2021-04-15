@@ -5,12 +5,13 @@ const User = mongoose.model('User');
 
 exports.Comment = Comment;
 
-exports.create = async (user, text, timestamp, resId) => {
+exports.create = async (user, text, timestamp, resId, parentId) => {
   let comment = new Comment({
     user: user,
     text: text,
     timestamp: timestamp,
     resource: resId,
+    parent: parentId,
   });
   await comment.save();
 
@@ -29,21 +30,28 @@ exports.create = async (user, text, timestamp, resId) => {
 };
 
 exports.get = async where => {
-  return Comment.findOne(where);
+  return Comment.findById(where);
 };
 
 exports.addReply = async (parentID, user, text, timestamp, resId) => {
-  let newComment = await exports.create(user, text, timestamp);
+  let comment = new Comment({
+    user: user,
+    text: text,
+    timestamp: timestamp,
+    resource: resId,
+    parent: parentID,
+  });
+  await comment.save();
   await Comment.updateOne(
     { _id: parentID },
-    { $push: { replies: newComment._id }, $set: { parent: parentID } }
+    { $push: { replies: comment._id } }
   );
 
   if (resId) {
     // add new child comment to resource, if applicable
     await Resource.updateOne(
       { _id: resId },
-      { $push: { comments: newComment._id } }
+      { $push: { comments: comment._id } }
     );
     await User.updateOne(
       { _id: user._id },

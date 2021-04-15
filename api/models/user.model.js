@@ -27,6 +27,9 @@ const UserSchema = new Schema({
   createdComments: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] },
   ],
+  upvotedComments: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] },
+  ],
 });
 
 mongoose.model('User', UserSchema);

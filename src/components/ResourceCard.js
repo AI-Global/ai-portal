@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
 import { Modal, Button, Card, Tag, Space, Tooltip } from '../ant';
+import CommentsList from './CommentsList';
 
 export default function ResourceCard({ resource }) {
   let [modalVisible, setModalVisible] = useState(false);
   let tags = resource.type;
+
+  let [key, setKey] = useState('Info');
+  const tabList = [
+    {
+      key: 'Info',
+      tab: 'Info',
+    },
+    {
+      key: 'Comments',
+      tab: 'Comments',
+    },
+  ];
+
   return (
     <div className="resource-box">
       <Card
@@ -32,18 +46,37 @@ export default function ResourceCard({ resource }) {
             {t.toUpperCase()}
           </Tag>
         ))}
+        tabList={tabList}
+        activeTabKey={key}
+        onTabChange={key => {
+          setKey(key);
+        }}
       >
-        <Card.Meta
-          description={resource.organizations.map((org, index) => {
-            let orgText =
-              index < resource.organizations.length - 1
-                ? org.name + ', '
-                : org.name;
-            return <b>{orgText}</b>;
-          })}
-        />
-
-        <Card.Meta description={resource.desc} />
+        {key === 'Info' && (
+          <>
+            <Card.Meta
+              description={resource.organizations.map((org, index) => {
+                let orgText =
+                  index < resource.organizations.length - 1
+                    ? org.name + ', '
+                    : org.name;
+                return <b>{orgText}</b>;
+              })}
+            ></Card.Meta>
+            <Card.Meta description={resource.desc}></Card.Meta>
+          </>
+        )}
+        {resource.comments.length === 0 && key === 'Comments' && (
+          <>
+            <big>No comments to display.</big>
+          </>
+        )}
+        {resource.comments.length !== 0 && key === 'Comments' && (
+          <>
+            <CommentsList data={resource.comments} isOnCommentTab={1} />
+            <big>View resource to check all the comments.</big>
+          </>
+        )}
       </Card>
       <Modal
         title={

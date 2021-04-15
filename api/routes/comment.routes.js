@@ -5,8 +5,10 @@ module.exports = app => {
     '/api/comments/:commentId',
     async (req, res) => {
       const { commentId } = req.params;
-      const result = await commentUtil.getCommentsForResource(commentId);
-      res.json(commentUtil.toJson(result));
+      const result = await commentUtil.get(commentId);
+      let response = commentUtil.toJSON(result);
+      response.status = 200;
+      res.json(response);
     },
     { public: ['commentId'] }
   );
@@ -20,6 +22,7 @@ module.exports = app => {
         timestamp,
         resourceId
       );
+      res.send({ status: 200 });
     },
     { public: ['resourceId', 'text', 'timestamp'] }
   );
@@ -28,6 +31,7 @@ module.exports = app => {
     async (req, res) => {
       const { commentId, userId } = req.params;
       await commentUtil.delete(commentId, userId);
+      res.send({ status: 200 });
     },
     {
       public: ['userId', 'commentId'],
@@ -45,7 +49,8 @@ module.exports = app => {
         Date.now(),
         resId
       );
+      res.send({ status: 200 });
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId', 'commentId'] }
+    { owner: ['_id'], mod: ['_id'], public: ['resId', 'replyText', 'parentID'] }
   );
 };

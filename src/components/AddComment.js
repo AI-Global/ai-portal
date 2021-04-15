@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
-import { Form, Button, Input } from '../ant';
+import { Form, Button, Input, notification } from '../ant';
 const { TextArea } = Input;
 
 const AddComment = ({ fetchResource }) => {
@@ -12,24 +12,35 @@ const AddComment = ({ fetchResource }) => {
     setCommentField(e.target.value);
   };
   const handleOnSubmit = async () => {
-    await api.post('/api/comments', {
+    setCommentField('');
+    let response = await api.post('/api/comments', {
       resourceId: resId,
       text: commentField,
       timestamp: Date.now(),
     });
+    if (response.status === 200) {
+      notification.open({
+        message: 'Comment Successfully Submitted!',
+      });
+    } else {
+      notification.open({
+        message: 'Error adding comment',
+      });
+    }
+
     fetchResource();
   };
   return (
-    <div style={{ marginTop: '1rem' }}>
-      <Form.Item>
+    <>
+      <Form.Item shouldUpdate>
         <TextArea rows={4} onChange={handleOnChange} value={commentField} />
       </Form.Item>
-      <Form.Item>
+      <Form.Item shouldUpdate>
         <Button htmlType="submit" onClick={handleOnSubmit} type="primary">
           Add Comment
         </Button>
       </Form.Item>
-    </div>
+    </>
   );
 };
 

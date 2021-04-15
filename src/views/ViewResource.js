@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import {
   Layout,
   Content,
@@ -59,7 +59,7 @@ export default function ViewResource() {
   let [pinned, setPinned] = useState(false);
   let { api, user } = useAppEnv();
   let { resId } = useParams();
-  let fetchResource = async () => {
+  let fetchResource = useCallback(async () => {
     let resource = await api.get('/api/resources/' + resId);
     setResource(resource);
     setLoading(false);
@@ -67,17 +67,20 @@ export default function ViewResource() {
       event_label: resource._name,
       event_category: 'view_resource',
     });
-  };
+  }, [api, resId]);
   useEffect(() => {
     fetchResource();
-    setPinned(user?.pinnedResources.includes(resId));
   }, [api, resId, user, fetchResource]);
+  useLayoutEffect(() => {
+    setPinned(user?.pinnedResources.includes(resId));
+  }, [api, user, resId])
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
   let commentRef = useRef(null);
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
+
 
   const pinResource = async () => {
     let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
@@ -91,6 +94,7 @@ export default function ViewResource() {
       setPinned(!pinned);
     }
   };
+  let isUserSignedIn = user == null ? 0 : 1
 
   if (loading) {
     return (
@@ -106,6 +110,9 @@ export default function ViewResource() {
       </div>
     );
   } else {
+    if (user == null && canEdit) {
+      canEdit = false
+    }
     return (
       <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
         <ManageResourceModal
@@ -154,6 +161,17 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        <Pin
+                          defaultState={false}
+                          size={'32px'}
+                          isPinned={pinned}
+                          onClick={pinResource}
+                        />
                         <Button
                           icon={<EditOutlined />}
                           key="3"
@@ -161,16 +179,18 @@ export default function ViewResource() {
                           onClick={() => setShowModal(true)}
                         >
                           Edit Resource
-                        </Button>,
-                      ]
+                        </Button>
+                      </div>
+                    ]
                     : [
-                        <Pin
-                          defaultState={false}
-                          size={'32px'}
-                          isPinned={pinned}
-                          onClick={pinResource}
-                        />,
-                      ]
+                      <Pin
+                        defaultState={false}
+                        size={'32px'}
+                        isPinned={pinned}
+                        onClick={pinResource}
+                        noUser={user == null}
+                      />
+                    ]
                 }
               >
                 {resource.desc}
@@ -294,12 +314,13 @@ export default function ViewResource() {
             <div ref={commentRef}>
               <Comments
                 data={resource.comments}
-                renderComments={fetchResource}
+                fetchResource={fetchResource}
+                isUserSignedIn={isUserSignedIn}
               />
             </div>
           </Content>
-        </Layout>
-      </Layout>
+        </Layout >
+      </Layout >
     );
   }
 }
