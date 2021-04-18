@@ -3,12 +3,14 @@ import AddComment from './AddComment';
 import CommentsList from './CommentsList';
 import { Button } from '../ant';
 import { useHistory } from 'react-router';
+import DiscussionCard from './DiscussionCard'; // TEMPORARY, PLEASE DELETE IF SOMEHOW COMMITTED
 
 const Comments = ({ data, fetchResource, isUserSignedIn }) => {
   let history = useHistory();
   if (isUserSignedIn === 1) {
     return (
       <div>
+        <DiscussionCard></DiscussionCard>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
           Comments ({data.length} replies)
         </h1>
