@@ -161,26 +161,14 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                        <Pin
-                          defaultState={false}
-                          size={'32px'}
-                          isPinned={pinned}
-                          onClick={pinResource}
-                        />
-                        <Button
-                          icon={<EditOutlined />}
-                          key="3"
-                          shape="round"
-                          onClick={() => setShowModal(true)}
-                        >
-                          Edit Resource
-                        </Button>
-                      </div>
+                      <Button
+                        icon={<EditOutlined />}
+                        key="3"
+                        shape="round"
+                        onClick={() => setShowModal(true)}
+                      >
+                        Edit Resource
+                        </Button>,
                     ]
                     : [
                       <Pin
@@ -188,8 +176,7 @@ export default function ViewResource() {
                         size={'32px'}
                         isPinned={pinned}
                         onClick={pinResource}
-                        noUser={user == null}
-                      />
+                      />,
                     ]
                 }
               >
@@ -314,7 +301,7 @@ export default function ViewResource() {
             <div ref={commentRef}>
               <Comments
                 data={resource.comments}
-                fetchResource={fetchResource}
+                renderComments={fetchResource}
                 isUserSignedIn={isUserSignedIn}
               />
             </div>

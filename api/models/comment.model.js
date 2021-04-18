@@ -10,7 +10,8 @@ const CommentSchema = new Schema({
   timestamp: { type: Date, required: true },
   deleted: { type: Boolean, required: true, default: false },
   parent: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null },
-  resource: { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', default: null }
+  resource: { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', default: null },
+  discussionPost: { type: mongoose.Schema.Types.ObjectId, ref: 'DiscussionPost', default: null },
 });
 
 mongoose.model('Comment', CommentSchema);

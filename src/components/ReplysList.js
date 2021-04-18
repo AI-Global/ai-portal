@@ -32,25 +32,11 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
       let responseComments = await api.get('/api/comments/' + data[i]);
       let resultJSON = JSON.parse(JSON.stringify(responseComments));
       if (resultJSON != null) {
-        if(resultJSON.status === 200){
-          let responseUser = await api.get('/api/users/' + resultJSON.user);
-          if (responseUser != null) {
-            if(responseUser.status === 200){
-              resultJSON.username = responseUser.username;
-              resultJSON.name = responseUser.name;
-              array.push(resultJSON);  
-            }
-            else{
-              notification.open({
-                message: 'Failed to fetch full list of replies',
-              });
-            }
-          }
-        }
-        else{
-          notification.open({
-            message: 'Failed to fetch full list of replies',
-          });
+        let responseUser = await api.get('/api/users/' + resultJSON.user);
+        if (responseUser != null) {
+          resultJSON.username = responseUser.username;
+          resultJSON.name = responseUser.name;
+          array.push(resultJSON);
         }
       }
     }
@@ -76,6 +62,7 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
         renderItem={item => (
           <li style={styles}>
             <CommentWithUpvote item={item} name={item.name} />
+            <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
           </li>
         )}
       />

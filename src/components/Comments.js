@@ -3,30 +3,31 @@ import AddComment from './AddComment';
 import CommentsList from './CommentsList';
 import { Button } from '../ant';
 import { useHistory } from 'react-router';
-import DiscussionCard from './DiscussionCard'; // TEMPORARY, PLEASE DELETE IF SOMEHOW COMMITTED
+import DiscussionCard from './DiscussionCard';
 
 const Comments = ({ data, fetchResource, isUserSignedIn }) => {
   let history = useHistory();
-  if (isUserSignedIn === 1) {
+  if (isUserSignedIn == 1) {
     return (
       <div>
         <DiscussionCard></DiscussionCard>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
           Comments ({data.length} replies)
-        </h1>
+      </h1>
         <div>
-          <CommentsList data={data} fetchResource={fetchResource} />
+          <CommentsList data={data} />
         </div>
         <br></br>
-        <AddComment type="comment" fetchResource={fetchResource} />
+        <AddComment type="comment" renderComments={fetchResource} />
       </div>
     );
-  } else {
+  }
+  else {
     return (
       <div>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
           Comments ({data.length} replies)
-        </h1>
+      </h1>
         <div>
           <CommentsList data={data} />
         </div>
@@ -35,9 +36,10 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
           style={{ marginLeft: '10px' }}
           onClick={() => history.push('/register')}
         >
-          Register an account
-        </Button>
+          Sign in
+      </Button>
         <big> to make comments!</big>
+
       </div>
     );
   }
