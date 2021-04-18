@@ -34,7 +34,7 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
           style={{ marginLeft: '10px' }}
           onClick={() => history.push('/register')}
         >
-          Register an account
+          Sign in
       </Button>
         <big> to make comments!</big>
 

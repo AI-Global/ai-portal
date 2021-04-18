@@ -19,6 +19,7 @@ import ResetPassword from './views/ResetPassword';
 import Verify from './views/Verify';
 import SearchResults from './views/SearchResults';
 import FAQ from './views/Faq';
+import DiscussionForum from './views/DiscussionForum';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route exact path="/reset" component={ResetPassword} />
             <Route exact path="/verify" component={Verify} />
             <Route exact path="/faq" component={FAQ} />
+            <Route exact path="/discussion" component={DiscussionForum} />
           </Switch>
         </BrowserRouter>
       </AppEnv>

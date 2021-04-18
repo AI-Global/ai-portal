@@ -77,7 +77,6 @@ exports.delete = async commentID => {
 };
 
 exports.upvote = async commentID => {
-  let comment = await Comment.findOne({ _id: commentID });
   await Comment.updateOne({ _id: commentID }, { $inc: { upvotes: 1 } });
 };
 

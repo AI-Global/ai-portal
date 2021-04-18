@@ -300,6 +300,12 @@ function AddResource() {
             >
               Resources
             </Menu.Item>
+            <Menu.Item 
+              key="discussion" 
+              onClick={() => history.push('/discussion')}
+            >
+              Discussion Forum
+            </Menu.Item>
             <Menu.Item
               key="organizations"
               onClick={() => history.push('/organizations')}
