@@ -2,6 +2,28 @@ const discussionUtil = require('../models/discussionpost.util');
 
 module.exports = app => {
   const firewall = require('../lib/firewall')(app);
+
+  firewall.get(
+    '/api/discussionposts',
+    async (req, res) => {
+      let { query, ...filters } = req.query;
+      let discussionPosts = await discussionUtil.search(query, filters);
+      try {
+        await searchUtil.create(JSON.stringify(req.query));
+      } catch (e) {}
+      res.json(discussionPosts.map(discussionUtil.toJSON));
+    },
+    {
+      public: [
+        'query',
+        'approved',
+        'type',
+        'path',
+        'sortBy',
+      ],
+    }
+  );
+
   firewall.get(
     '/api/discussionposts/:discussionId',
     async(req, res) => {
