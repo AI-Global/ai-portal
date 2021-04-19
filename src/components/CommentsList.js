@@ -26,6 +26,7 @@ const CommentsList = ({ data, isOnCommentTab }) => {
   if (isOnCommentTab == 1) {
     filteredArray = filteredArray.slice(0, 2)
   }
+  // console.log(filteredArray)
 
   if (user != null) {
     return (

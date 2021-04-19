@@ -3,7 +3,7 @@ import { notification } from '../ant';
 import { PushpinFilled, PushpinOutlined } from '@ant-design/icons';
 
 export default function Pin({ size, isPinned, onClick, noUser }) {
-  console.debug("Inside pin", noUser)
+  //console.debug("Inside pin", noUser)
   const sendNotif = () => {
     notification.open({ message: "Make an account to pin resources!" })
   }
