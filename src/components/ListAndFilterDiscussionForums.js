@@ -11,7 +11,7 @@ import {
   Tooltip,
   Button,
 } from '../ant';
-import ResourceCard from '../components/ResourceCard';
+import DiscussionCard from './DiscussionCard';
 import { useAppEnv } from '../env';
 import { FilterTwoTone, RedoOutlined } from '@ant-design/icons';
 
@@ -135,6 +135,13 @@ export default function ListAndFilterDiscussionForums({
       </Affix>
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content style={{ minHeight: '750px' }}>
+          {!loading && (
+            <Space direction="vertical" style={{ width: '100%' }}>
+              {discussionPosts.map(res => (
+                <DiscussionCard key={res._id} discussion={res} />
+              ))}
+            </Space>
+          )}
           {!loading && discussionPosts.length === 0 && (
             <div>
               <h3 style={{ marginTop: '5px' }}>

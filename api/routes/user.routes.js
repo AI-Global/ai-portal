@@ -208,6 +208,17 @@ module.exports = app => {
     { public: ['_id', 'commentId'] }
   )
 
+  firewall.post(
+    '/api/users/:_id/upvote-discussion',
+    async (req, res) => {
+      const { discussionId } = req.body;
+      console.log("inside upvote-discussion")
+      await userUtil.upvoteDiscussion(await req.getUser(), discussionId);
+      res.send({ status: 200 });
+    },
+    { public: ['_id', 'discussionId'] }
+  )
+
 };
 
 let usersSame = async (user, { _id }) => {
