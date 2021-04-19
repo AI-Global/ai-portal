@@ -4,7 +4,7 @@ import { useAppEnv } from './../env';
 import { Form, Button, Input, notification } from '../ant';
 const { TextArea } = Input;
 
-const AddComment = ({ fetchResource }) => {
+const AddComment = ({ type, fetchResource }) => {
   let { api } = useAppEnv();
   let { resId } = useParams();
   const [commentField, setCommentField] = useState('');
@@ -12,22 +12,17 @@ const AddComment = ({ fetchResource }) => {
     setCommentField(e.target.value);
   };
   const handleOnSubmit = async () => {
-    setCommentField('');
-    let response = await api.post('/api/comments', {
-      resourceId: resId,
-      text: commentField,
-      timestamp: Date.now(),
-    });
-    if (response.status === 200) {
+    if (type === 'comment') {
       notification.open({
         message: 'Comment Successfully Submitted!',
       });
-    } else {
-      notification.open({
-        message: 'Error adding comment',
+      setCommentField('');
+      await api.post('/api/comments', {
+        resourceId: resId,
+        text: commentField,
+        timestamp: Date.now(),
       });
     }
-
     fetchResource();
   };
   return (
