@@ -121,16 +121,22 @@ export default function ListAndFilterDiscussionForums({
               showArrow={true}
               allowClear={true}
             >
+              <Select.Option value="byCreationDateAsc">
+                Date Created (Ascending)
+              </Select.Option>
               <Select.Option value="byCreationDateDesc">
-                Date Created (Newest)
+                Date Created (Descending)
               </Select.Option>
-              <Select.Option value="byUploadDateAsc">
-                Date Uploaded(Oldest)
+              <Select.Option value="byUpdatedDateAsc">
+                Date Updated (Ascending)
               </Select.Option>
-              <Select.Option value="byUploadDateDesc">
-                Date Uploaded (Newest)
+              <Select.Option value="byUpdatedDateDesc">
+                Date Updated (Descending)
               </Select.Option>
-              <Select.Option value="byNameAsc">Name</Select.Option>
+              <Select.Option value="byNameAsc">Name (Ascending)</Select.Option>
+              <Select.Option value="byNameDesc">Name (Descending)</Select.Option>
+              <Select.Option value="byUpvotesAsc">Upvotes (Ascending)</Select.Option>
+              <Select.Option value="byUpvotesDesc">Upvotes (Descending)</Select.Option>
             </Select>
       </Affix>
       <Layout style={{ padding: '24px 24px 24px' }}>
