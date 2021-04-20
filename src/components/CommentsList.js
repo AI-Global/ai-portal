@@ -23,6 +23,8 @@ const CommentsList = ({ data, isOnCommentTab, fetchResource }) => {
     x.parent == null
   );
 
+  filteredArray = filteredArray.reverse()
+
   if (isOnCommentTab == 1) {
     filteredArray = filteredArray.slice(0, 2)
   }
