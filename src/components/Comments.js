@@ -9,10 +9,12 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
   if (isUserSignedIn == 1) {
     return (
       <div>
-        <AddComment type="comment" fetchResource={fetchResource} />
+        <br></br>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
           Comments ({data.length} replies)
-      </h1>
+        </h1>
+        <AddComment type="comment" fetchResource={fetchResource} />
+
         <div>
           <CommentsList data={data} fetchResource={fetchResource} />
         </div>
