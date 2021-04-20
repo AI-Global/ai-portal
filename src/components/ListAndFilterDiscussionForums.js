@@ -107,11 +107,6 @@ export default function ListAndFilterDiscussionForums({
                 </Select.Option>
               ))}
             </Select>
-            <Menu.Item disbled selectable={false}>
-              <Button href="/discussion">
-                Reset Filters <RedoOutlined style={{ marginRight: '0' }} />
-              </Button>
-            </Menu.Item>
             <Select
               onChange={(e) => updateFilters({ sortBy: e })}
               placeholder="Sort By"
@@ -136,6 +131,11 @@ export default function ListAndFilterDiscussionForums({
               <Select.Option value="byUpvotesAsc">Upvotes (Ascending)</Select.Option>
               <Select.Option value="byUpvotesDesc">Upvotes (Descending)</Select.Option>
             </Select>
+            <Menu.Item disbled selectable={false}>
+              <Button href="/discussion">
+                Reset Filters <RedoOutlined style={{ marginRight: '0' }} />
+              </Button>
+            </Menu.Item>
           </Menu>
         </Sider>
       </Affix>
