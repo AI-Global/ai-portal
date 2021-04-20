@@ -10,6 +10,8 @@ import {
   Spin,
   Tooltip,
   Button,
+  Row,
+  Col
 } from '../ant';
 import DiscussionCard from './DiscussionCard';
 import { useAppEnv } from '../env';
@@ -110,11 +112,7 @@ export default function ListAndFilterDiscussionForums({
                 Reset Filters <RedoOutlined style={{ marginRight: '0' }} />
               </Button>
             </Menu.Item>
-          </Menu>
-        </Sider>
-      </Affix>
-      <Affix offsetTop={0}>
-      <Select
+            <Select
               onChange={(e) => updateFilters({ sortBy: e })}
               placeholder="Sort By"
               style={{ width: '100%', padding: '5px 10px' }}
@@ -138,7 +136,11 @@ export default function ListAndFilterDiscussionForums({
               <Select.Option value="byUpvotesAsc">Upvotes (Ascending)</Select.Option>
               <Select.Option value="byUpvotesDesc">Upvotes (Descending)</Select.Option>
             </Select>
+          </Menu>
+        </Sider>
       </Affix>
+
+
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content style={{ minHeight: '750px' }}>
           {!loading && (

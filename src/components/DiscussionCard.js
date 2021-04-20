@@ -17,23 +17,23 @@ export default function DiscussionCard({ discussion }) {
     let [userName, setUserName] = useState("");
 
     let requestUserName = async () => {
-      let fetchedUserName = "";
-      let responseUser = await api.get('/api/users/' + discussion.user);
-      if (responseUser != null) {
-        if(responseUser.status === 200){
-          fetchedUserName = responseUser.name;
+        let fetchedUserName = "";
+        let responseUser = await api.get('/api/users/' + discussion.user);
+        if (responseUser != null) {
+            if (responseUser.status === 200) {
+                fetchedUserName = responseUser.name;
+            }
         }
-      }
-      return fetchedUserName;
+        return fetchedUserName;
     }
 
     let fetchUserName = async () => {
-      let fetchedUserName = await requestUserName();
-      setUserName(fetchedUserName);
+        let fetchedUserName = await requestUserName();
+        setUserName(fetchedUserName);
     };
 
     useEffect(() => {
-      fetchUserName();
+        fetchUserName();
     }, [discussion]);
 
     useLayoutEffect(() => {
@@ -76,7 +76,7 @@ export default function DiscussionCard({ discussion }) {
         <div className="discussion-box">
             <Card
                 hoverable
-                style={{ width: 965 }}
+                style={{ width: 900 }}
                 title={
                     <>
                         <Row gutter={[24, 4]}>
