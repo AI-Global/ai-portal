@@ -81,6 +81,7 @@ export default function ViewResource() {
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
 
+
   const pinResource = async () => {
     let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
       resourceId: resId,
@@ -109,6 +110,9 @@ export default function ViewResource() {
       </div>
     );
   } else {
+    if (user == null && canEdit) {
+      canEdit = false
+    }
     return (
       <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
         <ManageResourceModal
@@ -297,13 +301,13 @@ export default function ViewResource() {
             <div ref={commentRef}>
               <Comments
                 data={resource.comments}
-                renderComments={fetchResource}
+                fetchResource={fetchResource}
                 isUserSignedIn={isUserSignedIn}
               />
             </div>
           </Content>
-        </Layout>
-      </Layout>
+        </Layout >
+      </Layout >
     );
   }
 }

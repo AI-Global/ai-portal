@@ -6,7 +6,9 @@ module.exports = app => {
     async (req, res) => {
       const { commentId } = req.params;
       const result = await commentUtil.get(commentId);
-      res.json(commentUtil.toJSON(result));
+      let response = commentUtil.toJSON(result);
+      response.status = 200;
+      res.json(response);
     },
     { public: ['commentId'] }
   );
@@ -20,17 +22,20 @@ module.exports = app => {
         timestamp,
         resourceId
       );
+      res.send({ status: 200 });
     },
     { public: ['resourceId', 'text', 'timestamp'] }
   );
   firewall.delete(
-    '/api/comments',
+    '/api/comments/:commentId/:userId',
     async (req, res) => {
-      const { commentId } = req.body;
-
-      await commentUtil.delete(commentId);
+      const { commentId, userId } = req.params;
+      await commentUtil.delete(commentId, userId);
+      res.send({ status: 200 });
     },
-    { owner: ['_id'], mod: ['_id'], public: ['resourceId', 'commentId'] }
+    {
+      public: ['userId', 'commentId'],
+    }
   );
   firewall.post(
     '/api/comments/add-reply',
@@ -44,6 +49,7 @@ module.exports = app => {
         Date.now(),
         resId
       );
+      res.send({ status: 200 });
     },
     { owner: ['_id'], mod: ['_id'], public: ['resId', 'replyText', 'parentID'] }
   );

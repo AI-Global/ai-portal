@@ -54,7 +54,7 @@ function App() {
             <Route exact path="/reset" component={ResetPassword} />
             <Route exact path="/verify" component={Verify} />
             <Route exact path="/faq" component={FAQ} />
-            <Route exact path="/discussion" component={DiscussionForum} />
+            <Route exact path="/discussion" component={SearchResults} />
           </Switch>
         </BrowserRouter>
       </AppEnv>

@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { Modal, Button, Card, Tag, Space, Tooltip } from '../ant';
 import CommentsList from './CommentsList';
 
-
 export default function ResourceCard({ resource }) {
   let [modalVisible, setModalVisible] = useState(false);
   let tags = resource.type;
 
-  let [key, setKey] = useState("Info")
+  let [key, setKey] = useState('Info');
   const tabList = [
     {
       key: 'Info',
@@ -53,7 +52,7 @@ export default function ResourceCard({ resource }) {
           setKey(key);
         }}
       >
-        {key === "Info" && (
+        {key === 'Info' && (
           <>
             <Card.Meta
               description={resource.organizations.map((org, index) => {
@@ -63,8 +62,7 @@ export default function ResourceCard({ resource }) {
                     : org.name;
                 return <b>{orgText}</b>;
               })}
-            >
-            </Card.Meta>
+            ></Card.Meta>
             <Card.Meta description={resource.desc}></Card.Meta>
           </>
         )}

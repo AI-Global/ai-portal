@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, Comment } from '../ant';
+import { List, Comment, notification } from '../ant';
 import { useAppEnv } from './../env';
 
 import CommentWithUpvote from './CommentWithUpvote';
@@ -32,11 +32,25 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
       let responseComments = await api.get('/api/comments/' + data[i]);
       let resultJSON = JSON.parse(JSON.stringify(responseComments));
       if (resultJSON != null) {
-        let responseUser = await api.get('/api/users/' + resultJSON.user);
-        if (responseUser != null) {
-          resultJSON.username = responseUser.username;
-          resultJSON.name = responseUser.name;
-          array.push(resultJSON);
+        if(resultJSON.status === 200){
+          let responseUser = await api.get('/api/users/' + resultJSON.user);
+          if (responseUser != null) {
+            if(responseUser.status === 200){
+              resultJSON.username = responseUser.username;
+              resultJSON.name = responseUser.name;
+              array.push(resultJSON);  
+            }
+            else{
+              notification.open({
+                message: 'Failed to fetch full list of replies',
+              });
+            }
+          }
+        }
+        else{
+          notification.open({
+            message: 'Failed to fetch full list of replies',
+          });
         }
       }
     }
@@ -52,6 +66,8 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
     fetchComments();
   }, [data]);
 
+  //             <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
+
   if (user != null) {
     return (
       <List
@@ -62,7 +78,6 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
         renderItem={item => (
           <li style={styles}>
             <CommentWithUpvote item={item} name={item.name} />
-            <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
           </li>
         )}
       />

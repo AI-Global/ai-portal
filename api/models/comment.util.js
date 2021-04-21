@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Comment = mongoose.model('Comment');
 const Resource = mongoose.model('Resource');
+const User = mongoose.model('User');
 
 exports.Comment = Comment;
 
@@ -20,8 +21,11 @@ exports.create = async (user, text, timestamp, resId, parentId) => {
       { _id: resId },
       { $push: { comments: comment._id } }
     );
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { createdComments: comment._id } }
+    );
   }
-
   return comment;
 };
 
@@ -49,30 +53,37 @@ exports.addReply = async (parentID, user, text, timestamp, resId) => {
       { _id: resId },
       { $push: { comments: comment._id } }
     );
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { createdComments: comment._id } }
+    );
   }
 };
 
-exports.delete = async commentID => {
-  let comment = await Comment.findOne({ _id: commentID });
+exports.delete = async (commentId, userId) => {
+  let comment = await Comment.findOne({ _id: commentId });
   if (comment.parent) {
     await Comment.updateOne(
       { _id: comment.parent },
-      { $pull: { replies: commentID } }
+      { $pull: { replies: commentId } }
     );
   }
-
   if (comment.resource) {
     await Resource.updateOne(
       { _id: comment.resource },
-      { $pull: { comments: commentID } }
+      { $pull: { comments: commentId } }
     );
   }
+  await User.updateOne(
+    { _id: userId },
+    { $pull: { createdComments: commentId } }
+  );
 
   if (comment.replies.length > 0) {
     // don't want to necessarily delete child comments if parent is deleted
-    await Comment.updateOne({ _id: commentID }, { $set: { deleted: true } });
+    await Comment.updateOne({ _id: commentId }, { $set: { deleted: true } });
   } else {
-    await Comment.deleteOne({ _id: commentID });
+    await Comment.deleteOne({ _id: commentId });
   }
 };
 

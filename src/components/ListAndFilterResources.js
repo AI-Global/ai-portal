@@ -30,20 +30,44 @@ export default function ListAndFilterResources({
   let [topics, setTopics] = useState([]);
   let [orgs, setOrgs] = useState([]);
   useEffect(() => {
-    api.get('/api/organizations').then((orgs) => setOrgs(orgs));
-    api.get('/api/topics').then((topics) => setTopics(topics));
+    api.get('/api/organizations').then(orgs => setOrgs(orgs));
+    api.get('/api/topics').then(topics => setTopics(topics));
   }, [api]);
   useEffect(() => {
     setLoading(true);
     api
       .get('/api/resources', { query: query, approved: true, ...filterVals })
-      .then((resources) => {
+      .then(resources => {
         setResources(resources);
         setLoading(false);
       });
   }, [query, filterVals, api]);
-  let updateFilters = (newFilters) => {
+  let updateFilters = newFilters => {
     updateSearch(query, { ...filterVals, ...newFilters });
+  };
+  let updateFiltersByName = (namesSelected, type) => {
+    if (type === 'organization') {
+      const organizationIds = [];
+      namesSelected.forEach(name => {
+        orgs.forEach(org => {
+          if (org.name === name) {
+            organizationIds.push(org._id);
+          }
+        });
+      });
+      updateSearch(query, { ...filterVals, organizations: organizationIds });
+    }
+    if (type === 'topics') {
+      const topicIds = [];
+      namesSelected.forEach(name => {
+        topics.forEach(topic => {
+          if (topic.name === name) {
+            topicIds.push(topic._id);
+          }
+        });
+      });
+      updateSearch(query, { ...filterVals, topics: topicIds });
+    }
   };
   return (
     <Layout>
@@ -77,60 +101,60 @@ export default function ListAndFilterResources({
               </Tooltip>
             </Menu.Item>
             <Select
-              onChange={(v) => updateFilters({ organizations: v })}
+              onChange={v => updateFiltersByName(v, 'organization')}
               placeholder="Organization"
               style={{ width: '95%', padding: '2px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {orgs.map((org) => (
-                <Select.Option value={org._id}>{org.name}</Select.Option>
+              {orgs.map(org => (
+                <Select.Option value={org.name}>{org.name}</Select.Option>
               ))}
             </Select>
             <Select
               showSearch
-              onChange={(e) => updateFilters({ organizationType: e })}
+              onChange={e => updateFilters({ organizationType: e })}
               placeholder="Organization Type"
               style={{ width: '95%', padding: '5px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {orgTypes.map((res) => (
+              {orgTypes.map(res => (
                 <Select.Option value={res}>{res}</Select.Option>
               ))}
             </Select>
             <Select
               showS
-              onChange={(e) => updateFilters({ type: e })}
+              onChange={e => updateFilters({ type: e })}
               placeholder="Resource Type"
               style={{ width: '95%', padding: '5px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {resourceTypes.map((res) => (
+              {resourceTypes.map(res => (
                 <Select.Option value={res}>{res}</Select.Option>
               ))}
             </Select>
             <Select
               showSearch
-              onChange={(e) => updateFilters({ path: e })}
+              onChange={e => updateFilters({ path: e })}
               placeholder="Roles"
               style={{ width: '95%', padding: '5px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {resourcePath.map((res) => (
+              {resourcePath.map(res => (
                 <Select.Option value={res}>
                   {res.replace('Path', '')}
                 </Select.Option>
               ))}
             </Select>
             <Select
-              onChange={(e) => updateFilters({ sortBy: e })}
+              onChange={e => updateFilters({ sortBy: e })}
               placeholder="Sort By"
               style={{ width: '95%', padding: '5px 10px' }}
               showArrow={true}
@@ -145,15 +169,15 @@ export default function ListAndFilterResources({
               </Select.Option>
             </Select>
             <Select
-              onChange={(e) => updateFilters({ topics: e })}
+              onChange={e => updateFiltersByName(e, 'topics')}
               placeholder="Topics"
               style={{ width: '95%', padding: '5px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {topics.map((res) => (
-                <Select.Option value={res._id}>{res.name}</Select.Option>
+              {topics.map(res => (
+                <Select.Option value={res.name}>{res.name}</Select.Option>
               ))}
             </Select>
 
@@ -169,7 +193,7 @@ export default function ListAndFilterResources({
         <Content style={{ minHeight: '750px' }}>
           {!loading && (
             <Space direction="vertical" style={{ width: '100%' }}>
-              {resources.map((res) => (
+              {resources.map(res => (
                 <ResourceCard key={res._id} resource={res} />
               ))}
             </Space>

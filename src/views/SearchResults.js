@@ -7,6 +7,7 @@ import { useAppEnv } from '../env';
 import { useHistory } from 'react-router';
 import ListAndFilterResources from './../components/ListAndFilterResources';
 import ListAndFilterOrganizations from './../components/ListAndFilterOrganizations';
+import ListAndFilterDiscussionForums from '../components/ListAndFilterDiscussionForums';
 
 export default function SearchResults(props) {
   let { enums } = useAppEnv();
@@ -17,8 +18,11 @@ export default function SearchResults(props) {
   let resourcePath = enums ? enums.RESOURCE_PATHS : [];
   let { q, ...filterParams } = queryParamsFromProps(props);
   let isResourceView = history.location.pathname.includes('/resources');
+  let isDiscussionView = history.location.pathname.includes('/discussion');
   let View = isResourceView
     ? ListAndFilterResources
+    : (isDiscussionView) 
+    ? ListAndFilterDiscussionForums
     : ListAndFilterOrganizations;
   let updateSearch = (query, filters) => {
     let segments = [];
@@ -29,7 +33,7 @@ export default function SearchResults(props) {
       }
     }
     let url =
-      (isResourceView ? '/resources?' : '/organizations?') + segments.join('&');
+      (isResourceView ? '/resources?' : (isDiscussionView) ? '/discussion?' : '/organizations?') + segments.join('&');
     window.gtag('event', 'search_bar_query', {
       event_label: query,
       event_category: 'search',
@@ -52,7 +56,7 @@ export default function SearchResults(props) {
             theme="light"
             mode="horizontal"
             defaultSelectedKeys={
-              isResourceView ? ['resources'] : ['organizations']
+              isResourceView ? ['resources'] : (isDiscussionView) ? ['discussion'] : ['organizations']
             }
           >
             <Menu.Item key="s" disabled>
@@ -60,7 +64,7 @@ export default function SearchResults(props) {
                 className="menu-search"
                 style={{ marginTop: '20px' }}
                 placeholder={`Search for ${
-                  isResourceView ? 'resources' : 'organizations'
+                  isResourceView ? 'resources' : (isDiscussionView) ? 'discussion' : 'organizations'
                 }`}
                 enterButton
                 onSearch={(q) => updateSearch(q, filterParams)}
