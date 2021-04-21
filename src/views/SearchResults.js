@@ -56,7 +56,7 @@ export default function SearchResults(props) {
             theme="light"
             mode="horizontal"
             defaultSelectedKeys={
-              isResourceView ? ['resources'] : ['organizations']
+              isResourceView ? ['resources'] : (isDiscussionView) ? ['discussion'] : ['organizations']
             }
           >
             <Menu.Item key="s" disabled>
@@ -64,7 +64,7 @@ export default function SearchResults(props) {
                 className="menu-search"
                 style={{ marginTop: '20px' }}
                 placeholder={`Search for ${
-                  isResourceView ? 'resources' : 'organizations'
+                  isResourceView ? 'resources' : (isDiscussionView) ? 'discussion' : 'organizations'
                 }`}
                 enterButton
                 onSearch={(q) => updateSearch(q, filterParams)}
