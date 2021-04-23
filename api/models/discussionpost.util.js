@@ -8,8 +8,8 @@ exports.search = async (query, fields) => {
   let result = queries.searchQuery(
     DiscussionPost,
     {
-      queryFields: ['user', 'text', 'comments', 'upvotes', 'timestamp', 'lastUpdated', 'header'],
-      anyFields: ['type', 'path'],
+      queryFields: ['text', 'header', 'type', 'path'],
+      anyFields: ['user', 'comments', 'upvotes', 'timestamp', 'lastUpdated'],
       sorts: {
         byCreationDateAsc: ['timestamp', 1],
         byCreationDateDesc: ['timestamp', -1],
