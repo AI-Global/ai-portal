@@ -11,9 +11,10 @@ import {
   Tooltip,
   Button,
   Row,
-  Col
+  Col,
 } from '../ant';
 import DiscussionCard from './DiscussionCard';
+import CreateDiscussionPostModal from './../components/CreateDiscussionPostModal';
 import { useAppEnv } from '../env';
 import { FilterTwoTone, RedoOutlined } from '@ant-design/icons';
 
@@ -31,6 +32,7 @@ export default function ListAndFilterDiscussionForums({
   let [discussionPosts, setDiscussionPosts] = useState([]);
   let [loading, setLoading] = useState(true);
   let [topics, setTopics] = useState([]);
+  let [showModal, setShowModal] = useState(false);
   let updateFilters = (newFilters) => {
     updateSearch(query, { ...filterVals, ...newFilters });
   };
@@ -40,7 +42,11 @@ export default function ListAndFilterDiscussionForums({
   useEffect(() => {
     setLoading(true);
     api
-      .get('/api/discussionposts', { query: query, approved: true, ...filterVals })
+      .get('/api/discussionposts', {
+        query: query,
+        approved: true,
+        ...filterVals,
+      })
       .then((discussionPosts) => {
         setDiscussionPosts(discussionPosts);
         setLoading(false);
@@ -49,6 +55,10 @@ export default function ListAndFilterDiscussionForums({
 
   return (
     <Layout>
+      <CreateDiscussionPostModal
+        modalVisible={showModal}
+        setModalVisible={setShowModal}
+      />
       <Affix offsetTop={64}>
         <Sider width={200}>
           <Menu
@@ -87,9 +97,7 @@ export default function ListAndFilterDiscussionForums({
               allowClear={true}
             >
               {resourceTypes.map((res) => (
-                <Select.Option value={res}>
-                  {res}
-                </Select.Option>
+                <Select.Option value={res}>{res}</Select.Option>
               ))}
             </Select>
             <Select
@@ -127,9 +135,15 @@ export default function ListAndFilterDiscussionForums({
                 Date Updated (Descending)
               </Select.Option>
               <Select.Option value="byNameAsc">Name (Ascending)</Select.Option>
-              <Select.Option value="byNameDesc">Name (Descending)</Select.Option>
-              <Select.Option value="byUpvotesAsc">Upvotes (Ascending)</Select.Option>
-              <Select.Option value="byUpvotesDesc">Upvotes (Descending)</Select.Option>
+              <Select.Option value="byNameDesc">
+                Name (Descending)
+              </Select.Option>
+              <Select.Option value="byUpvotesAsc">
+                Upvotes (Ascending)
+              </Select.Option>
+              <Select.Option value="byUpvotesDesc">
+                Upvotes (Descending)
+              </Select.Option>
             </Select>
             <Menu.Item disbled selectable={false}>
               <Button href="/discussion">
@@ -140,21 +154,28 @@ export default function ListAndFilterDiscussionForums({
         </Sider>
       </Affix>
 
-
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content style={{ minHeight: '750px' }}>
           {!loading && (
-            <Space direction="vertical" style={{ width: '100%' }}>
-              {discussionPosts.map(res => (
-                <DiscussionCard key={res._id} discussion={res} />
-              ))}
-            </Space>
+            <>
+              <Button
+                type="primary"
+                onClick={() => setShowModal((prev) => !prev)}
+              >
+                Create New Post
+              </Button>
+              <Space direction="vertical" style={{ width: '100%' }}>
+                {discussionPosts.map((res) => (
+                  <DiscussionCard key={res._id} discussion={res} />
+                ))}
+              </Space>
+            </>
           )}
           {!loading && discussionPosts.length === 0 && (
             <div>
               <h3 style={{ marginTop: '5px' }}>
-                Your search did not match any discussion forums. Try a different search
-                or use the filters.
+                Your search did not match any discussion forums. Try a different
+                search or use the filters.
               </h3>
             </div>
           )}
