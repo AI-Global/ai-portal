@@ -27,7 +27,7 @@ export default function ListAndFilterDiscussionForums({
   filterVals,
   updateSearch,
 }) {
-  let { api } = useAppEnv();
+  let { api, user } = useAppEnv();
   let { enums } = useAppEnv();
   let [discussionPosts, setDiscussionPosts] = useState([]);
   let [loading, setLoading] = useState(true);
@@ -52,6 +52,8 @@ export default function ListAndFilterDiscussionForums({
         setLoading(false);
       });
   }, [query, filterVals, api]);
+
+  let isUserSignedIn = user != null;
 
   return (
     <Layout>
@@ -156,20 +158,20 @@ export default function ListAndFilterDiscussionForums({
 
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content style={{ minHeight: '750px' }}>
+          {isUserSignedIn && (
+            <Button
+              type="primary"
+              onClick={() => setShowModal((prev) => !prev)}
+            >
+              Create New Post
+            </Button>
+          )}
           {!loading && (
-            <>
-              <Button
-                type="primary"
-                onClick={() => setShowModal((prev) => !prev)}
-              >
-                Create New Post
-              </Button>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                {discussionPosts.map((res) => (
-                  <DiscussionCard key={res._id} discussion={res} />
-                ))}
-              </Space>
-            </>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              {discussionPosts.map((res) => (
+                <DiscussionCard key={res._id} discussion={res} />
+              ))}
+            </Space>
           )}
           {!loading && discussionPosts.length === 0 && (
             <div>

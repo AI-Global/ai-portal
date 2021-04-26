@@ -6,7 +6,7 @@ export default function CreateDiscussionPostModal({
   modalVisible,
   setModalVisible,
 }) {
-  let { api, enums, user, refresh } = useAppEnv();
+  let { api, enums, refresh } = useAppEnv();
   let [topics, setTopics] = useState([]);
 
   useEffect(() => {
@@ -29,6 +29,8 @@ export default function CreateDiscussionPostModal({
       type: types,
       path: path,
     });
+
+    refresh();
   };
 
   return (
