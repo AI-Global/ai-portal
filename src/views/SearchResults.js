@@ -7,6 +7,7 @@ import { useAppEnv } from '../env';
 import { useHistory } from 'react-router';
 import ListAndFilterResources from './../components/ListAndFilterResources';
 import ListAndFilterOrganizations from './../components/ListAndFilterOrganizations';
+import ListAndFilterDiscussionForums from '../components/ListAndFilterDiscussionForums';
 
 export default function SearchResults(props) {
   let { enums } = useAppEnv();
@@ -17,8 +18,11 @@ export default function SearchResults(props) {
   let resourcePath = enums ? enums.RESOURCE_PATHS : [];
   let { q, ...filterParams } = queryParamsFromProps(props);
   let isResourceView = history.location.pathname.includes('/resources');
+  let isDiscussionView = history.location.pathname.includes('/discussion');
   let View = isResourceView
     ? ListAndFilterResources
+    : (isDiscussionView) 
+    ? ListAndFilterDiscussionForums
     : ListAndFilterOrganizations;
   let updateSearch = (query, filters) => {
     let segments = [];
@@ -29,7 +33,7 @@ export default function SearchResults(props) {
       }
     }
     let url =
-      (isResourceView ? '/resources?' : '/organizations?') + segments.join('&');
+      (isResourceView ? '/resources?' : (isDiscussionView) ? '/discussion?' : '/organizations?') + segments.join('&');
     window.gtag('event', 'search_bar_query', {
       event_label: query,
       event_category: 'search',
@@ -40,27 +44,43 @@ export default function SearchResults(props) {
     <Layout>
       <Affix offsetTop={0}>
         <Header style={{ backgroundColor: '#fff', paddingLeft: '0' }}>
-          <a href="/">
-            <img
-              alt="logo"
-              style={{ float: 'left', marginRight: '40px' }}
-              src="/logo.png"
-              width={'160px'}
-            />
-          </a>
+          <div
+            style={{
+              position: 'absolute',
+              top: '0px',
+              left: '0px',
+              alignItems: 'center',
+              textAlign: 'center',
+              width: '180px',
+            }}
+          >
+            <a href="/">
+              <img
+                alt="logo"
+                style={{ float: 'center' }}
+                src="/rai-logo-text.png"
+                width="160"
+              />
+            </a>
+          </div>
           <Menu
             theme="light"
             mode="horizontal"
             defaultSelectedKeys={
-              isResourceView ? ['resources'] : ['organizations']
+              isResourceView ? ['resources'] : (isDiscussionView) ? ['discussion'] : ['organizations']
             }
+            style={{
+              position: 'absolute',
+              top: '0px',
+              left: '180px',
+            }}
           >
             <Menu.Item key="s" disabled>
               <Search
                 className="menu-search"
                 style={{ marginTop: '20px' }}
                 placeholder={`Search for ${
-                  isResourceView ? 'resources' : 'organizations'
+                  isResourceView ? 'resources' : (isDiscussionView) ? 'discussion' : 'organizations'
                 }`}
                 enterButton
                 onSearch={(q) => updateSearch(q, filterParams)}
@@ -71,6 +91,12 @@ export default function SearchResults(props) {
               onClick={() => history.push('/resources')}
             >
               Resources
+            </Menu.Item>
+            <Menu.Item 
+              key="discussion" 
+              onClick={() => history.push('/discussion')}
+            >
+              Discussion Forum
             </Menu.Item>
             <Menu.Item
               key="organizations"

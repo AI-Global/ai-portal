@@ -229,7 +229,7 @@ exports.upvoteComment = async (user, commentId) => {
       { $pull: { upvotedComments: commentId } }
     );
     await Comment.updateOne(
-      {_id: commentId },
+      { _id: commentId },
       { $inc: { upvotes: -1 } }
     );
   } else {
@@ -238,7 +238,37 @@ exports.upvoteComment = async (user, commentId) => {
       { $push: { upvotedComments: commentId } }
     );
     await Comment.updateOne(
-      {_id: commentId },
+      { _id: commentId },
+      { $inc: { upvotes: 1 } }
+    )
+  }
+}
+
+exports.upvoteDiscussion = async (user, discussionId) => {
+  const currentUser = await User.findOne({ _id: user._id });
+  let upvoted = false;
+  currentUser.upvotedDiscussion.forEach(discussion => {
+    if (discussion.toString() === discussionId) {
+      upvoted = true;
+    }
+  });
+
+  if (upvoted) {
+    await User.updateOne(
+      { _id: user._id },
+      { $pull: { upvotedDiscussions: discussionId } }
+    );
+    await Comment.updateOne(
+      { _id: discussionId },
+      { $inc: { upvotes: -1 } }
+    );
+  } else {
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { upvoteDiscussions: discussionId } }
+    );
+    await Comment.updateOne(
+      { _id: discussionId },
       { $inc: { upvotes: 1 } }
     )
   }

@@ -66,6 +66,8 @@ const ReplysList = ({ data, leftMargin, parentID }) => {
     fetchComments();
   }, [data]);
 
+  //             <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
+
   if (user != null) {
     return (
       <List
