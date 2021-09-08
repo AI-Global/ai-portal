@@ -14,9 +14,51 @@ const SUPPORTED_CLIENTS = [
     allowedScopes: ['*'],
   },
   {
+    id: 'designassistant',
+    redirect_uri: 'https://designassistant.responsible.ai',
+    name: 'AI Global Design Assistant',
+    allowedScopes: ['*'],
+  },
+  {
     id: 'localhost',
     redirect_uri: 'http://localhost:3000',
     name: 'Localhost',
+    allowedScopes: ['*'],
+  },
+  {
+    id: 'certificate-beta1',
+    redirect_uri: 'https://rai-certification-beta-1.herokuapp.com/',
+    name: 'AI Global Certification Beta 1',
+    allowedScopes: ['*'],
+  },
+  {
+    id: 'certificate-beta2',
+    redirect_uri: 'https://rai-certification-beta-2.herokuapp.com/',
+    name: 'AI Global Certification Beta 2',
+    allowedScopes: ['*'],
+  },
+  {
+    id: 'certificate-beta3',
+    redirect_uri: 'https://rai-certification-beta-3.herokuapp.com/',
+    name: 'AI Global Certification Beta 3',
+    allowedScopes: ['*'],
+  },
+  {
+    id: 'certificate-beta4',
+    redirect_uri: 'https://rai-certification-beta-4.herokuapp.com/',
+    name: 'AI Global Certification Beta 4',
+    allowedScopes: ['*'],
+  },
+  {
+    id: 'certificate-beta5',
+    redirect_uri: 'https://rai-certification-beta-5.herokuapp.com/',
+    name: 'AI Global Certification Beta 5',
+    allowedScopes: ['*'],
+  },
+  {
+    id: 'certificate-beta-dev',
+    redirect_uri: 'https://rai-certification-beta-testing.herokuapp.com',
+    name: 'AI Global Certification Beta (Dev Version)',
     allowedScopes: ['*'],
   },
 ];
