@@ -33,15 +33,16 @@ exports.search = async (query, fields) => {
   return await result;
 };
 
-exports.create = async (user, text, timestamp, types = [], paths = []) => {
+exports.create = async (user, text, header, lastUpdated, types = [], paths = []) => {
   let discussionPost = new DiscussionPost({
     user: user,
     text: text,
-    timestamp: timestamp,
-    types: types,
-    paths: paths,
+    header: header,
+    timestamp: lastUpdated,
+    lastUpdated: lastUpdated,
+    type: types,
+    path: paths,
   });
-
   await discussionPost.save(); 
 };
 

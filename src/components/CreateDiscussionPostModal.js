@@ -24,10 +24,10 @@ export default function CreateDiscussionPostModal({
     });
 
     await api.post('/api/discussionposts', {
-      title: header,
+      header: header,
       text: text,
-      type: types,
-      path: path,
+      types: types,
+      paths: path
     });
 
     refresh();
