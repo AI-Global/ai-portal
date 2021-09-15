@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useAppEnv } from './../env';
 import {
   List,
@@ -66,7 +66,10 @@ export default function CommentWithUpvote({ item, name, fetchResource }) {
           ></Comment>
         </Col>
         <Col style={{ padding: '16px 0 0 0' }}>
-          {user && (user.role === 'admin' || item.user._id === user._id) ? (
+          {user &&
+          (user.role === 'admin' ||
+            item.user._id === user._id ||
+            item.user === user._id) ? (
             <Button onClick={() => onDeleteComment(item._id)}>Delete</Button>
           ) : null}
         </Col>
