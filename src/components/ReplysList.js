@@ -5,7 +5,7 @@ import { useAppEnv } from './../env';
 import CommentWithUpvote from './CommentWithUpvote';
 import AddReply from './AddReply';
 
-const ReplysList = ({ data, leftMargin, fetchResource }) => {
+const ReplysList = ({ data, leftMargin, parentID }) => {
   const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -32,20 +32,22 @@ const ReplysList = ({ data, leftMargin, fetchResource }) => {
       let responseComments = await api.get('/api/comments/' + data[i]);
       let resultJSON = JSON.parse(JSON.stringify(responseComments));
       if (resultJSON != null) {
-        if (resultJSON.status === 200) {
+        if(resultJSON.status === 200){
           let responseUser = await api.get('/api/users/' + resultJSON.user);
           if (responseUser != null) {
-            if (responseUser.status === 200) {
+            if(responseUser.status === 200){
               resultJSON.username = responseUser.username;
               resultJSON.name = responseUser.name;
-              array.push(resultJSON);
-            } else {
+              array.push(resultJSON);  
+            }
+            else{
               notification.open({
                 message: 'Failed to fetch full list of replies',
               });
             }
           }
-        } else {
+        }
+        else{
           notification.open({
             message: 'Failed to fetch full list of replies',
           });
@@ -53,7 +55,7 @@ const ReplysList = ({ data, leftMargin, fetchResource }) => {
       }
     }
     return array;
-  };
+  }
 
   let fetchComments = async () => {
     let userObjectResult = await objectArray();
@@ -64,38 +66,33 @@ const ReplysList = ({ data, leftMargin, fetchResource }) => {
     fetchComments();
   }, [data]);
 
-  if (user !== null) {
+  //             <AddReply type="reply" commentID={parentID} repliedCommentName={item.name} currentUser={user.name}></AddReply>
+
+  if (user != null) {
     return (
       <List
         className="reply-list"
         itemLayout="horizontal"
-        locale={{ emptyText: ' ' }}
+        locale={{ emptyText: " ", }}
         dataSource={comments}
         renderItem={item => (
           <li style={styles}>
-            <CommentWithUpvote
-              item={item}
-              name={item.name}
-              fetchResource={fetchResource}
-            />
+            <CommentWithUpvote item={item} name={item.name} />
           </li>
         )}
       />
     );
-  } else {
+  }
+  else {
     return (
       <List
         className="reply-list"
         itemLayout="horizontal"
-        locale={{ emptyText: ' ' }}
+        locale={{ emptyText: " ", }}
         dataSource={comments}
         renderItem={item => (
           <li style={styles}>
-            <CommentWithUpvote
-              item={item}
-              name={item.name}
-              fetchResource={fetchResource}
-            />
+            <CommentWithUpvote item={item} name={item.name} />
           </li>
         )}
       />

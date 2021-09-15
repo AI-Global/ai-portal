@@ -67,32 +67,24 @@ exports.delete = async (commentId, userId) => {
       { _id: comment.parent },
       { $pull: { replies: commentId } }
     );
-
-    if (comment.resource) {
-      await Resource.updateOne(
-        { _id: comment.resource },
-        { $pull: { comments: commentId } }
-      );
-    }
-    await User.updateOne(
-      { _id: userId },
-      { $pull: { createdComments: commentId } }
-    );
-  } else {
-    for (const replyId of comment.replies) {
-      await Comment.deleteOne({ _id: replyId });
-      await Resource.updateOne(
-        { _id: comment.resource },
-        { $pull: { comments: replyId } }
-      );
-      await User.updateOne(
-        { _id: userId },
-        { $pull: { createdComments: replyId } }
-      );
-    }
   }
+  if (comment.resource) {
+    await Resource.updateOne(
+      { _id: comment.resource },
+      { $pull: { comments: commentId } }
+    );
+  }
+  await User.updateOne(
+    { _id: userId },
+    { $pull: { createdComments: commentId } }
+  );
 
-  await Comment.deleteOne({ _id: commentId });
+  if (comment.replies.length > 0) {
+    // don't want to necessarily delete child comments if parent is deleted
+    await Comment.updateOne({ _id: commentId }, { $set: { deleted: true } });
+  } else {
+    await Comment.deleteOne({ _id: commentId });
+  }
 };
 
 exports.upvote = async commentID => {

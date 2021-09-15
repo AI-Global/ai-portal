@@ -6,14 +6,27 @@ import ReplysList from './ReplysList';
 import { useAppEnv } from './../env';
 
 const CommentsList = ({ data, isOnCommentTab, fetchResource }) => {
-  let { user } = useAppEnv();
+  const getFormattedDate = date => {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date
+      .getDate()
+      .toString()
+      .padStart(2, '0');
 
-  let filteredArray = data.filter(x => x.parent == null);
+    return month + '/' + day + '/' + year;
+  };
 
-  filteredArray = filteredArray.reverse();
+  let { api, user } = useAppEnv();
+
+  let filteredArray = data.filter(x =>
+    x.parent == null
+  );
+
+  filteredArray = filteredArray.reverse()
 
   if (isOnCommentTab == 1) {
-    filteredArray = filteredArray.slice(0, 2);
+    filteredArray = filteredArray.slice(0, 2)
   }
 
   if (user != null) {
@@ -22,52 +35,30 @@ const CommentsList = ({ data, isOnCommentTab, fetchResource }) => {
         className="comment-list"
         itemLayout="horizontal"
         dataSource={filteredArray}
-        renderItem={item => (
+        renderItem={(item) => (
           <li>
-            <CommentWithUpvote
-              item={item}
-              name={item.user.name}
-              fetchResource={fetchResource}
-            />
-            <ReplysList
-              data={item.replies}
-              leftMargin={20}
-              parentID={item._id}
-              fetchResource={fetchResource}
-            />
-            <AddReply
-              type="reply"
-              commentID={item._id}
-              repliedCommentName={item.user.name}
-              currentUser={user.name}
-              fetchResource={fetchResource}
-            />
+            <CommentWithUpvote item={item} name={item.user.name} />
+            <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name} fetchResource={fetchResource}></AddReply>
+            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
           </li>
         )}
       />
     );
-  } else {
+  }
+  else {
     return (
       <List
         className="comment-list"
         itemLayout="horizontal"
         dataSource={filteredArray}
-        renderItem={item => (
+        renderItem={(item) => (
           <li>
-            <CommentWithUpvote
-              item={item}
-              name={item.user.name}
-              fetchResource={fetchResource}
-            />
-            <ReplysList
-              data={item.replies}
-              leftMargin={20}
-              parentID={item._id}
-              fetchResource={fetchResource}
-            />
+            <CommentWithUpvote item={item} name={item.user.name} />
+            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
           </li>
         )}
       />
+
     );
   }
 };
