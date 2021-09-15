@@ -6,7 +6,7 @@ const { TextArea } = Input;
 
 const AddComment = ({ type, fetchResource }) => {
   let { api } = useAppEnv();
-  let { resId } = useParams();
+  let { disId, resId } = useParams();
   const [commentField, setCommentField] = useState('');
   const handleOnChange = e => {
     setCommentField(e.target.value);
@@ -18,6 +18,7 @@ const AddComment = ({ type, fetchResource }) => {
       });
       setCommentField('');
       await api.post('/api/comments', {
+        discussionPost: disId,
         resourceId: resId,
         text: commentField,
         timestamp: Date.now(),

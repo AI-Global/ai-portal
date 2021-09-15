@@ -4,6 +4,12 @@ const queries = require('../lib/queries');
 
 exports.DiscussionPost = DiscussionPost;
 
+let populate = resourceQuery => {
+  return resourceQuery
+    .populate('comments', '-__v -comments')
+    .populate({ path: 'comments', populate: { path: 'user', model: 'User' } });
+};
+
 exports.search = async (query, fields) => {
   let result = queries.searchQuery(
     DiscussionPost,
@@ -40,7 +46,7 @@ exports.create = async (user, text, timestamp, types = [], paths = []) => {
 };
 
 exports.get = async postId => {
-  return DiscussionPost.findById(postId);
+  return await populate(DiscussionPost.findById(postId));
 };
 
 exports.addReply = async (user, text, timestamp, postId) => {

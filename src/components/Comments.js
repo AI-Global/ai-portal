@@ -11,7 +11,7 @@ const Comments = ({ data, fetchResource, isUserSignedIn }) => {
       <div>
         <br></br>
         <h1 style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}>
-          Comments ({data.length} replies)
+          Comments ({data.length} comments)
         </h1>
         <AddComment type="comment" fetchResource={fetchResource} />
 
