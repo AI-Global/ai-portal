@@ -16,18 +16,11 @@ export default function CreateDiscussionPostModal({
   const submitPost = async (values, topics) => {
     const { header, path, text, type } = values;
 
-    const types = [];
-
-    type.forEach((type) => {
-      const newTopic = topics.find((topic) => topic.name == type);
-      types.push(newTopic._id);
-    });
-
     await api.post('/api/discussionposts', {
       header: header,
       text: text,
-      types: types,
-      paths: path
+      types: type,
+      paths: path,
     });
 
     refresh();
@@ -65,8 +58,8 @@ export default function CreateDiscussionPostModal({
         </Form.Item>
         <Form.Item name="type" label="Topics">
           <Select showSearch style={{ width: '100%' }} mode="multiple">
-            {topics.map((topic) => (
-              <Select.Option value={topic.name}>{topic.name}</Select.Option>
+            {enums?.RESOURCE_TYPES.map((type) => (
+              <Select.Option value={type}>{type}</Select.Option>
             ))}
           </Select>
         </Form.Item>

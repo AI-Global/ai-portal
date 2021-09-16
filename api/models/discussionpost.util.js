@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const DiscussionPost = mongoose.model('DiscussionPost');
 const queries = require('../lib/queries');
+const topic = require('./topic.util');
 
 exports.DiscussionPost = DiscussionPost;
 
-let populate = resourceQuery => {
+let populate = (resourceQuery) => {
   return resourceQuery
     .populate('comments', '-__v -comments')
     .populate({ path: 'comments', populate: { path: 'user', model: 'User' } });
@@ -33,7 +34,14 @@ exports.search = async (query, fields) => {
   return await result;
 };
 
-exports.create = async (user, text, header, lastUpdated, types = [], paths = []) => {
+exports.create = async (
+  user,
+  text,
+  header,
+  lastUpdated,
+  types = [],
+  paths = []
+) => {
   let discussionPost = new DiscussionPost({
     user: user,
     text: text,
@@ -43,10 +51,11 @@ exports.create = async (user, text, header, lastUpdated, types = [], paths = [])
     type: types,
     path: paths,
   });
-  await discussionPost.save(); 
+
+  await discussionPost.save();
 };
 
-exports.get = async postId => {
+exports.get = async (postId) => {
   return await populate(DiscussionPost.findById(postId));
 };
 
@@ -60,19 +69,19 @@ exports.addReply = async (user, text, timestamp, postId) => {
   await comment.save();
 
   await DiscussionPost.updateOne(
-      { _id: postId },
-      { $push: { comments: comment._id } }
-    );
+    { _id: postId },
+    { $push: { comments: comment._id } }
+  );
 };
 
-exports.delete = async postId => {
+exports.delete = async (postId) => {
   await DiscussionPost.deleteOne({ _id: postId });
-}
+};
 
-exports.upvote = async postId => {
+exports.upvote = async (postId) => {
   await DiscussionPost.updateOne({ _id: postId }, { $inc: { upvotes: 1 } });
 };
 
-exports.toJSON = post => {
+exports.toJSON = (post) => {
   return JSON.parse(JSON.stringify(post));
 };
