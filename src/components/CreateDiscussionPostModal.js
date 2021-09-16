@@ -23,6 +23,7 @@ export default function CreateDiscussionPostModal({
       paths: path,
     });
 
+    setModalVisible((prev) => !prev);
     refresh();
   };
 
