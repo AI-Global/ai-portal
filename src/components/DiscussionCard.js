@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { Card, Row, Col, Statistic, Tag, notification } from '../ant';
+import { Button, Card, Row, Col, Statistic, Tag, notification } from '../ant';
 import { CommentOutlined } from '@ant-design/icons';
 import Upvote from './Upvote';
 import { useAppEnv } from './../env';
@@ -72,33 +72,21 @@ export default function DiscussionCard({ discussion }) {
 
         return month + '/' + day + '/' + year;
     };
+
     return (
         <div className="discussion-box">
             <Card
                 hoverable
                 style={{ width: 900 }}
                 title={
-                    <>
-                        <Row gutter={[24, 4]}>
-                            <Col align="center" style={{ padding: '14px 0 0 14px' }}>
-                                <b>{discussion.header}</b>
-                            </Col>
-                            <Col align="center" style={{ padding: '14px 0 0 14px' }}>
-                                {discussion.type.map(t => (
-                                    <Tag
-                                        style={{
-                                            color: 'white',
-                                            fontWeight: 'bold',
-                                            align: "left"
-                                        }}
-                                        color={'#00CDFF'}
-                                    >
-                                        {t.toUpperCase()}
-                                    </Tag>
-                                ))}
-                            </Col>
-                        </Row>
-                    </>
+                  <button
+                    className="discussion-button"
+                    onClick={() => {
+                      window.location.href='/discussion/' + discussion._id}
+                    }
+                    >
+                  {discussion.header}
+                  </button>
                 }
             >
                 <Card.Meta

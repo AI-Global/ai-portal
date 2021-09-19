@@ -2,15 +2,17 @@ const mongoose = require('mongoose');
 const Comment = mongoose.model('Comment');
 const Resource = mongoose.model('Resource');
 const User = mongoose.model('User');
+const DiscussionPost = mongoose.model('DiscussionPost');
 
 exports.Comment = Comment;
 
-exports.create = async (user, text, timestamp, resId, parentId) => {
+exports.create = async (user, discussionPost, text, timestamp, resId, parentId) => {
   let comment = new Comment({
     user: user,
     text: text,
     timestamp: timestamp,
     resource: resId,
+    discussionPost: discussionPost,
     parent: parentId,
   });
   await comment.save();
@@ -26,6 +28,18 @@ exports.create = async (user, text, timestamp, resId, parentId) => {
       { $push: { createdComments: comment._id } }
     );
   }
+
+  if (discussionPost) {
+    // only add to discussion post object if the comment was made on discussion post
+    await DiscussionPost.updateOne(
+      { _id: discussionPost },
+      { $push: { comments: comment._id } }
+    );
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { createdComments: comment._id } }
+    );
+  }
   return comment;
 };
 
@@ -33,12 +47,13 @@ exports.get = async where => {
   return Comment.findById(where);
 };
 
-exports.addReply = async (parentID, user, text, timestamp, resId) => {
+exports.addReply = async (parentID, discussionPost, user, text, timestamp, resId) => {
   let comment = new Comment({
     user: user,
     text: text,
     timestamp: timestamp,
     resource: resId,
+    discussionPost: discussionPost,
     parent: parentID,
   });
   await comment.save();
@@ -51,6 +66,18 @@ exports.addReply = async (parentID, user, text, timestamp, resId) => {
     // add new child comment to resource, if applicable
     await Resource.updateOne(
       { _id: resId },
+      { $push: { comments: comment._id } }
+    );
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { createdComments: comment._id } }
+    );
+  }
+  console.log(discussionPost);
+  if (discussionPost) {
+    // add new child comment to discussion post, if applicable
+    await DiscussionPost.updateOne(
+      { _id: discussionPost },
       { $push: { comments: comment._id } }
     );
     await User.updateOne(

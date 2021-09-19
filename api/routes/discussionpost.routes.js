@@ -36,14 +36,18 @@ module.exports = app => {
   firewall.post(
     '/api/discussionposts',
     async (req, res) => {
-      const { text } = req.body;
+      const { text, header, types, paths } = req.body;
       await discussionUtil.create(
         await req.getUser(),
         text,
-        Date.now()
+        header,
+        Date.now(),
+        types, 
+        paths
       );
+      res.send({ status: 200 });
     },
-    { public: ['text'] }
+    { public: ['header', 'text', 'types', 'paths', 'lastUpdated'] }
   );
   firewall.delete(
     '/api/discussionposts',
