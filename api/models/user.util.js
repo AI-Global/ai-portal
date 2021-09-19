@@ -247,7 +247,7 @@ exports.upvoteComment = async (user, commentId) => {
 exports.upvoteDiscussion = async (user, discussionId) => {
   const currentUser = await User.findOne({ _id: user._id });
   let upvoted = false;
-  currentUser.upvotedDiscussion.forEach(discussion => {
+  currentUser.upvotedDiscussions.forEach(discussion => {
     if (discussion.toString() === discussionId) {
       upvoted = true;
     }
