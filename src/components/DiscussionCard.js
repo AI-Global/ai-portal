@@ -81,12 +81,12 @@ export default function DiscussionCard({ discussion }) {
                 title={
                   <button
                     className="discussion-button"
-                    onClick={() => {
-                      window.location.href='/discussion/' + discussion._id}
-                    }
                     >
                   {discussion.header}
                   </button>
+                }
+                onClick={() => {
+                  window.location.href='/discussion/' + discussion._id}
                 }
             >
                 <Card.Meta
