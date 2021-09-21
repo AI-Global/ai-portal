@@ -44,7 +44,8 @@ export default function DiscussionCard({ discussion }) {
     setUpvoted(user?.upvotedDiscussions.includes(discussion._id));
   }, [api, user, discussion]);
 
-  const toggleUpvote = async () => {
+  const toggleUpvote = async (event) => {
+    event.stopPropagation();
     let res = await api.post('/api/users/' + user?._id + '/upvote-discussion', {
       discussionId: discussion._id,
     });
