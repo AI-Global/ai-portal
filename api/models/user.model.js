@@ -31,7 +31,11 @@ const UserSchema = new Schema({
     { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] },
   ],
   upvotedDiscussions: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'DiscussionPost',
+      default: [],
+    },
   ],
 });
 
