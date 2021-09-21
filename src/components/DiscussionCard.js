@@ -80,15 +80,11 @@ export default function DiscussionCard({ discussion }) {
         hoverable
         style={{ width: 900 }}
         title={
-          <button
-            className="discussion-button"
-            onClick={() => {
-              window.location.href = '/discussion/' + discussion._id;
-            }}
-          >
-            {discussion.header}
-          </button>
+          <button className="discussion-button">{discussion.header}</button>
         }
+        onClick={() => {
+          window.location.href = '/discussion/' + discussion._id;
+        }}
       >
         <Card.Meta description={<b>Written by {userName}</b>}></Card.Meta>
         <Card.Meta description={<p>{discussion.text}</p>}></Card.Meta>

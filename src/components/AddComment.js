@@ -12,7 +12,7 @@ const AddComment = ({ type, fetchResource }) => {
     setCommentField(e.target.value);
   };
   const handleOnSubmit = async () => {
-    if (type === 'comment') {
+    if (type === 'comment' && commentField !== '') {
       notification.open({
         message: 'Comment Successfully Submitted!',
       });
