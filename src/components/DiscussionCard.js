@@ -44,7 +44,7 @@ export default function DiscussionCard({ discussion }) {
     setUpvoted(user?.upvotedDiscussions.includes(discussion._id));
   }, [api, user, discussion]);
 
-  const toggleUpvote = async (event) => {
+  const toggleUpvote = async event => {
     event.stopPropagation();
     let res = await api.post('/api/users/' + user?._id + '/upvote-discussion', {
       discussionId: discussion._id,
@@ -52,12 +52,12 @@ export default function DiscussionCard({ discussion }) {
 
     if (res.status === 200) {
       if (upvoted) {
-        setUpvotes((prevUpvotes) => prevUpvotes - 1);
+        setUpvotes(prevUpvotes => prevUpvotes - 1);
       } else {
-        setUpvotes((prevUpvotes) => prevUpvotes + 1);
+        setUpvotes(prevUpvotes => prevUpvotes + 1);
       }
 
-      setUpvoted((prevUpvoted) => !prevUpvoted);
+      setUpvoted(prevUpvoted => !prevUpvoted);
     }
   };
 
@@ -67,10 +67,13 @@ export default function DiscussionCard({ discussion }) {
     });
   };
 
-  const getFormattedDate = (date) => {
+  const getFormattedDate = date => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
+    let day = date
+      .getDate()
+      .toString()
+      .padStart(2, '0');
 
     return month + '/' + day + '/' + year;
   };

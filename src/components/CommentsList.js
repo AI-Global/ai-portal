@@ -19,14 +19,12 @@ const CommentsList = ({ data, isOnCommentTab, fetchResource }) => {
 
   let { api, user } = useAppEnv();
 
-  let filteredArray = data.filter(x =>
-    x.parent == null
-  );
+  let filteredArray = data.filter(x => x.parent == null);
 
-  filteredArray = filteredArray.reverse()
+  filteredArray = filteredArray.reverse();
 
   if (isOnCommentTab == 1) {
-    filteredArray = filteredArray.slice(0, 2)
+    filteredArray = filteredArray.slice(0, 2);
   }
 
   if (user != null) {
@@ -35,30 +33,52 @@ const CommentsList = ({ data, isOnCommentTab, fetchResource }) => {
         className="comment-list"
         itemLayout="horizontal"
         dataSource={filteredArray}
-        renderItem={(item) => (
+        renderItem={item => (
           <li>
-            <CommentWithUpvote item={item} name={item.user.name} />
-            <AddReply type="reply" commentID={item._id} repliedCommentName={item.user.name} currentUser={user.name} fetchResource={fetchResource}></AddReply>
-            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
+            <CommentWithUpvote
+              item={item}
+              name={item.user.name}
+              fetchResource={fetchResource}
+            />
+            <AddReply
+              type="reply"
+              commentID={item._id}
+              repliedCommentName={item.user.name}
+              currentUser={user.name}
+              fetchResource={fetchResource}
+            />
+            <ReplysList
+              data={item.replies}
+              leftMargin={20}
+              parentID={item._id}
+              fetchResource={fetchResource}
+            />
           </li>
         )}
       />
     );
-  }
-  else {
+  } else {
     return (
       <List
         className="comment-list"
         itemLayout="horizontal"
         dataSource={filteredArray}
-        renderItem={(item) => (
+        renderItem={item => (
           <li>
-            <CommentWithUpvote item={item} name={item.user.name} />
-            <ReplysList data={item.replies} leftMargin={20} parentID={item._id}></ReplysList>
+            <CommentWithUpvote
+              item={item}
+              name={item.user.name}
+              fetchResource={fetchResource}
+            />
+            <ReplysList
+              data={item.replies}
+              leftMargin={20}
+              parentID={item._id}
+              fetchResource={fetchResource}
+            />
           </li>
         )}
       />
-
     );
   }
 };

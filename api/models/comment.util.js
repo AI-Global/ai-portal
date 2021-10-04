@@ -6,7 +6,14 @@ const DiscussionPost = mongoose.model('DiscussionPost');
 
 exports.Comment = Comment;
 
-exports.create = async (user, discussionPost, text, timestamp, resId, parentId) => {
+exports.create = async (
+  user,
+  discussionPost,
+  text,
+  timestamp,
+  resId,
+  parentId
+) => {
   let comment = new Comment({
     user: user,
     text: text,
@@ -47,7 +54,14 @@ exports.get = async where => {
   return Comment.findById(where);
 };
 
-exports.addReply = async (parentID, discussionPost, user, text, timestamp, resId) => {
+exports.addReply = async (
+  parentID,
+  discussionPost,
+  user,
+  text,
+  timestamp,
+  resId
+) => {
   let comment = new Comment({
     user: user,
     text: text,
@@ -73,7 +87,6 @@ exports.addReply = async (parentID, discussionPost, user, text, timestamp, resId
       { $push: { createdComments: comment._id } }
     );
   }
-  console.log(discussionPost);
   if (discussionPost) {
     // add new child comment to discussion post, if applicable
     await DiscussionPost.updateOne(
@@ -98,6 +111,11 @@ exports.delete = async (commentId, userId) => {
   if (comment.resource) {
     await Resource.updateOne(
       { _id: comment.resource },
+      { $pull: { comments: commentId } }
+    );
+  } else if (comment.discussionPost) {
+    await DiscussionPost.updateOne(
+      { _id: comment.discussionPost },
       { $pull: { comments: commentId } }
     );
   }

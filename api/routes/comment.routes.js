@@ -53,6 +53,10 @@ module.exports = app => {
       );
       res.send({ status: 200 });
     },
-    { owner: ['_id'], mod: ['_id'], public: ['discussionPost', 'resId', 'replyText', 'parentID'] }
+    {
+      owner: ['_id'],
+      mod: ['_id'],
+      public: ['discussionPost', 'resId', 'replyText', 'parentID'],
+    }
   );
 };

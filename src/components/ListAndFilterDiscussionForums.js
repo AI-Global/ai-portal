@@ -33,11 +33,11 @@ export default function ListAndFilterDiscussionForums({
   let [loading, setLoading] = useState(true);
   let [topics, setTopics] = useState([]);
   let [showModal, setShowModal] = useState(false);
-  let updateFilters = (newFilters) => {
+  let updateFilters = newFilters => {
     updateSearch(query, { ...filterVals, ...newFilters });
   };
   useEffect(() => {
-    api.get('/api/topics').then((topics) => setTopics(topics));
+    api.get('/api/topics').then(topics => setTopics(topics));
   }, [api]);
   useEffect(() => {
     setLoading(true);
@@ -47,7 +47,7 @@ export default function ListAndFilterDiscussionForums({
         approved: true,
         ...filterVals,
       })
-      .then((discussionPosts) => {
+      .then(discussionPosts => {
         setDiscussionPosts(discussionPosts);
         setLoading(false);
       });
@@ -91,34 +91,34 @@ export default function ListAndFilterDiscussionForums({
               </Tooltip>
             </Menu.Item>
             <Select
-              onChange={(e) => updateFilters({ type: e })}
+              onChange={e => updateFilters({ type: e })}
               placeholder="Topics"
               style={{ width: '95%', padding: '5px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {resourceTypes.map((res) => (
+              {resourceTypes.map(res => (
                 <Select.Option value={res}>{res}</Select.Option>
               ))}
             </Select>
             <Select
               showSearch
-              onChange={(e) => updateFilters({ path: e })}
+              onChange={e => updateFilters({ path: e })}
               placeholder="Roles"
               style={{ width: '95%', padding: '5px 10px' }}
               mode="multiple"
               showArrow={true}
               allowClear={true}
             >
-              {resourcePath.map((res) => (
+              {resourcePath.map(res => (
                 <Select.Option value={res}>
                   {res.replace('Path', '')}
                 </Select.Option>
               ))}
             </Select>
             <Select
-              onChange={(e) => updateFilters({ sortBy: e })}
+              onChange={e => updateFilters({ sortBy: e })}
               placeholder="Sort By"
               style={{ width: '100%', padding: '5px 10px' }}
               showArrow={true}
@@ -159,16 +159,13 @@ export default function ListAndFilterDiscussionForums({
       <Layout style={{ padding: '24px 24px 24px' }}>
         <Content style={{ minHeight: '750px' }}>
           {isUserSignedIn && (
-            <Button
-              type="primary"
-              onClick={() => setShowModal((prev) => !prev)}
-            >
+            <Button type="primary" onClick={() => setShowModal(prev => !prev)}>
               Create New Post
             </Button>
           )}
           {!loading && (
             <Space direction="vertical" style={{ width: '100%' }}>
-              {discussionPosts.map((res) => (
+              {discussionPosts.map(res => (
                 <DiscussionCard key={res._id} discussion={res} />
               ))}
             </Space>
