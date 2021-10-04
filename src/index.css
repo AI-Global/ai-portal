@@ -22,3 +22,15 @@ code {
   color: #00cdff;
   cursor: pointer;
 }
+
+.discussion-button {
+  border: none;
+  background-color: white;
+  font-weight: bold;
+  outline: none;
+}
+
+.discussion-button:hover {
+  color: #00cdff;
+  cursor: pointer;
+}

@@ -8,12 +8,14 @@ const DiscussionPostSchema = new Schema({
   lastUpdated: { type: Date, required: true },
   header: { type: String, default: '', required: true },
   text: { type: String, default: '', required: true },
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] }],
+  comments: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: [] },
+  ],
   upvotes: { type: Number, default: 0 },
   timestamp: { type: Date, required: true },
-  type: [{ type: String, enum: RESOURCE_TYPES, default: [] }], // TODO: update this if we want to use different 'type' tags
+  type: [{ type: String, enum: RESOURCE_TYPES, default: [] }],
   path: [{ type: String, enum: RESOURCE_PATHS, default: [] }],
-})
+});
 
 mongoose.model('DiscussionPost', DiscussionPostSchema);
 module.exports = DiscussionPostSchema;

@@ -14,7 +14,7 @@ const AddReply = ({
   fetchResource,
 }) => {
   let { api } = useAppEnv();
-  let { resId } = useParams();
+  let { disId, resId } = useParams();
   const [replyField, setReplyField] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -25,6 +25,7 @@ const AddReply = ({
     setReplyField('');
     setOpen(false);
     let response = await api.post('/api/comments/add-reply', {
+      discussionPost: disId,
       parentID: commentID,
       replyText: replyField,
       resId: resId,
