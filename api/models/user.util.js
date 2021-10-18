@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Organization = mongoose.model('Organization');
-const Resource = mongoose.model('Resource');
 const Comment = mongoose.model('Comment');
 const DiscussionPost = mongoose.model('DiscussionPost');
+const Onboarding = mongoose.model('Onboarding');
 const crypto = require('crypto');
 const _email = require('../lib/email');
 const queries = require('../lib/queries');
@@ -38,6 +38,13 @@ exports.create = async ({ name, email, username, password }) => {
     .createHmac('sha1', salt)
     .update(password)
     .digest('hex');
+  let onboarding = new Onboarding({
+    resourcesTab: false,
+    discussionForumTab: false,
+    organizationsTab: false,
+    resourcesView: false,
+    discussionForumView: false,
+  });
   let user = new User({
     name,
     email,
@@ -45,8 +52,10 @@ exports.create = async ({ name, email, username, password }) => {
     emailToken,
     salt,
     hashedPassword,
+    onboarding,
   });
   await user.save();
+  await onboarding.save();
   try {
     await _email.send.createAccount(email, {
       name: name,
@@ -58,7 +67,7 @@ exports.create = async ({ name, email, username, password }) => {
   return user;
 };
 
-exports.get = async (where) => {
+exports.get = async where => {
   return User.findOne(where);
 };
 
@@ -96,7 +105,7 @@ exports.setOrganizations = async (user, orgs) => {
   );
 };
 
-exports.getByUsernameOrEmail = async (userOrEmail) => {
+exports.getByUsernameOrEmail = async userOrEmail => {
   let user = await User.findOne({ username: userOrEmail });
   if (user) {
     return user;
@@ -108,7 +117,7 @@ exports.getAll = async () => {
   return await User.find();
 };
 
-exports.sendReset = async (user) => {
+exports.sendReset = async user => {
   let token = exports.makeToken();
   await exports.update(user, { resetToken: token });
   await _email.send.resetPassword(user.email, {
@@ -139,14 +148,14 @@ exports.verifyEmail = async (user, token) => {
   return true;
 };
 
-exports.getResources = async (user) => {
+exports.getResources = async user => {
   let { resources } = await User.findById(user._id).populate(
     'resources',
     '-__v -resources'
   );
   return resources;
 };
-exports.getPinnedResources = async (user) => {
+exports.getPinnedResources = async user => {
   let { pinnedResources } = await User.findById(user._id).populate(
     'pinnedResources',
     ' -__v -pinnedResources'
@@ -154,7 +163,7 @@ exports.getPinnedResources = async (user) => {
   return pinnedResources;
 };
 
-exports.getOrganizations = async (user) => {
+exports.getOrganizations = async user => {
   let { organizations } = await User.findById(user._id).populate(
     'organizations',
     '-_id -__v -organizations'
@@ -162,11 +171,11 @@ exports.getOrganizations = async (user) => {
   return organizations;
 };
 
-exports.getById = async (id) => {
+exports.getById = async id => {
   return await User.findById(id);
 };
 
-exports.toJSON = (user) => {
+exports.toJSON = user => {
   let { __v, hashedPassword, salt, ...userObj } = JSON.parse(
     JSON.stringify(user)
   );
@@ -178,14 +187,14 @@ exports.toTokenJSON = (user, accessClient) => {
   return { _id, email, name, username, role, accessClient };
 };
 
-exports.toPrivateJSON = (user) => {
+exports.toPrivateJSON = user => {
   let { __v, hashedPassword, salt, ...userObj } = JSON.parse(
     JSON.stringify(user)
   );
   return userObj;
 };
 
-exports.delete = async (user) => {
+exports.delete = async user => {
   await User.deleteOne({ _id: user._id });
 };
 
@@ -198,7 +207,7 @@ exports.deletePinnedResource = async (user, resourceId) => {
 exports.addToPinnedResources = async (user, resourceId) => {
   const currentUser = await User.findOne({ _id: user._id });
   var exists = false;
-  currentUser.pinnedResources.forEach((pin) => {
+  currentUser.pinnedResources.forEach(pin => {
     if (pin.toString() === resourceId) {
       exists = true;
     }
@@ -217,7 +226,7 @@ exports.addToPinnedResources = async (user, resourceId) => {
 exports.upvoteComment = async (user, commentId) => {
   const currentUser = await User.findOne({ _id: user._id });
   let upvoted = false;
-  currentUser.upvotedComments.forEach((comment) => {
+  currentUser.upvotedComments.forEach(comment => {
     if (comment.toString() === commentId) {
       upvoted = true;
     }
@@ -241,7 +250,7 @@ exports.upvoteComment = async (user, commentId) => {
 exports.upvoteDiscussion = async (user, discussionId) => {
   const currentUser = await User.findOne({ _id: user._id });
   let upvoted = false;
-  currentUser.upvotedDiscussions.forEach((discussion) => {
+  currentUser.upvotedDiscussions.forEach(discussion => {
     if (discussion.toString() === discussionId) {
       upvoted = true;
     }

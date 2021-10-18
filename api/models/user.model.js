@@ -37,6 +37,10 @@ const UserSchema = new Schema({
       default: [],
     },
   ],
+  onboarding: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Onboarding',
+  },
 });
 
 mongoose.model('User', UserSchema);
