@@ -27,3 +27,13 @@ exports.edit = async (userId, tooltipName) => {
     { $set: setQuery }
   );
 };
+
+exports.get = async (userId, tooltipName) => {
+  let user = await User.findOne({
+    _id: userId,
+  });
+  const onboarding = await Onboarding.findOne({
+    _id: user.onboarding,
+  });
+  return onboarding[tooltipName];
+};

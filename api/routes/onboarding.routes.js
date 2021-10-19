@@ -10,4 +10,13 @@ module.exports = app => {
     },
     { public: ['userId', 'tooltipName'] }
   );
+  firewall.get(
+    '/api/onboarding',
+    async (req, res) => {
+      const { userId, tooltipName } = req.body;
+      const visited = await onboardingUtil.get(userId, tooltipName);
+      res.send({ data: visited });
+    },
+    { public: ['userId', 'tooltipName'] }
+  );
 };
