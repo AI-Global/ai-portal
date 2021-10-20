@@ -28,6 +28,27 @@ exports.edit = async (userId, tooltipName) => {
   );
 };
 
+exports.editAll = async (userId) => {
+  let user = await User.findOne({
+    _id: userId,
+  });
+
+  const setQuery = {
+    resourcesTab: true,
+    discussionForumTab: true,
+    organizationsTab: true,
+    resourcesView: true,
+    discussionForumView: true,
+  };
+
+  await Onboarding.updateOne(
+    {
+      _id: user.onboarding,
+    },
+    { $set: setQuery }
+  );
+};
+
 exports.get = async (userId, tooltipName) => {
   let user = await User.findOne({
     _id: userId,

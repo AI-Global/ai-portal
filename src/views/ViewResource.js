@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useCallback,
+} from 'react';
 import {
   Layout,
   Content,
@@ -25,6 +31,7 @@ import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
 import ManageResourceModal from './../components/ManageResourceModal';
 import Comments from '../components/Comments';
+import OnboardingWrapper from '../components/OnboardingWrapper';
 
 const { Panel } = Collapse;
 
@@ -39,7 +46,7 @@ function FileTable(props) {
       title: 'Link',
       dataIndex: 'url',
       key: 'link',
-      render: text => <a href={text}>{text}</a>,
+      render: (text) => <a href={text}>{text}</a>,
     },
   ];
   return (
@@ -73,14 +80,13 @@ export default function ViewResource() {
   }, [api, resId, user, fetchResource]);
   useLayoutEffect(() => {
     setPinned(user?.pinnedResources.includes(resId));
-  }, [api, user, resId])
+  }, [api, user, resId]);
   let topRef = useRef(null);
   let fileRef = useRef(null);
   let detailRef = useRef(null);
   let commentRef = useRef(null);
   let canEdit =
     resource?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
-
 
   const pinResource = async () => {
     let res = await api.post('/api/users/' + user?._id + '/pin-resource', {
@@ -94,7 +100,7 @@ export default function ViewResource() {
       setPinned(!pinned);
     }
   };
-  let isUserSignedIn = user == null ? 0 : 1
+  let isUserSignedIn = user == null ? 0 : 1;
 
   if (loading) {
     return (
@@ -111,14 +117,14 @@ export default function ViewResource() {
     );
   } else {
     if (user == null && canEdit) {
-      canEdit = false
+      canEdit = false;
     }
     return (
       <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
         <ManageResourceModal
           resource={resource}
           modalVisible={showModal}
-          setModalVisible={v => setShowModal(v)}
+          setModalVisible={(v) => setShowModal(v)}
         />
         <FormHeader />
         <Layout>
@@ -142,8 +148,8 @@ export default function ViewResource() {
                 title={resource.name}
                 onBack={() => window.history.back()}
                 className="site-page-header"
-                subTitle={resource.organizations.map(o => o.name).join(', ')}
-                tags={resource.topics.map(t => {
+                subTitle={resource.organizations.map((o) => o.name).join(', ')}
+                tags={resource.topics.map((t) => {
                   return (
                     <Tag
                       color={'#00CDFF'}
@@ -161,23 +167,34 @@ export default function ViewResource() {
                 extra={
                   canEdit
                     ? [
-                      <Button
-                        icon={<EditOutlined />}
-                        key="3"
-                        shape="round"
-                        onClick={() => setShowModal(true)}
-                      >
-                        Edit Resource
+                        <Button
+                          icon={<EditOutlined />}
+                          key="3"
+                          shape="round"
+                          onClick={() => setShowModal(true)}
+                        >
+                          Edit Resource
                         </Button>,
-                    ]
+                      ]
                     : [
-                      <Pin
-                        defaultState={false}
-                        size={'32px'}
-                        isPinned={pinned}
-                        onClick={pinResource}
-                      />,
-                    ]
+                        <>
+                          <OnboardingWrapper
+                            baseContent={
+                              <Pin
+                                defaultState={false}
+                                size={'32px'}
+                                isPinned={pinned}
+                                onClick={pinResource}
+                              />
+                            }
+                            name={'resourcesView'}
+                            content={`Click me to pin the
+                          resource to your page. Also, feel free to scroll down
+                          and check out the comments on this resource.`}
+                            placement="left"
+                          />
+                        </>,
+                      ]
                 }
               >
                 {resource.desc}
@@ -306,8 +323,8 @@ export default function ViewResource() {
               />
             </div>
           </Content>
-        </Layout >
-      </Layout >
+        </Layout>
+      </Layout>
     );
   }
 }

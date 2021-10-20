@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useCallback,
+} from 'react';
 import {
   Layout,
   Content,
@@ -25,16 +31,14 @@ import { useParams } from 'react-router-dom';
 import { useAppEnv } from './../env';
 import ManageResourceModal from './../components/ManageResourceModal';
 import Comments from '../components/Comments';
+import OnboardingWrapper from '../components/OnboardingWrapper';
 
 const { Panel } = Collapse;
 
-const getFormattedDate = date => {
+const getFormattedDate = (date) => {
   let year = date.getFullYear();
   let month = (1 + date.getMonth()).toString().padStart(2, '0');
-  let day = date
-      .getDate()
-      .toString()
-      .padStart(2, '0');
+  let day = date.getDate().toString().padStart(2, '0');
 
   return month + '/' + day + '/' + year;
 };
@@ -56,14 +60,15 @@ export default function ViewDiscussion() {
   }, [api, disId, user, fetchDiscussion]);
   useLayoutEffect(() => {
     setPinned(user?.pinnedResources.includes(disId));
-  }, [api, user, disId])
+  }, [api, user, disId]);
   let topRef = useRef(null);
   let detailRef = useRef(null);
   let commentRef = useRef(null);
   let canEdit =
-    discussion?.user?._id === user?._id || ['mod', 'admin'].includes(user?.role);
+    discussion?.user?._id === user?._id ||
+    ['mod', 'admin'].includes(user?.role);
 
-  let isUserSignedIn = user == null ? 0 : 1
+  let isUserSignedIn = user == null ? 0 : 1;
   if (loading) {
     return (
       <div
@@ -77,14 +82,12 @@ export default function ViewDiscussion() {
         <Spin size="large"></Spin>
       </div>
     );
-  }
-  else{
-    
-  return(
-    <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
+  } else {
+    return (
+      <Layout style={{ height: `${window.innerHeight}px`, overflow: 'hidden' }}>
         <FormHeader />
         <Layout>
-        <Sidebar
+          <Sidebar
             headings={['Overview', 'Details', 'Comments']}
             icons={[
               <FileDoneOutlined />,
@@ -93,16 +96,17 @@ export default function ViewDiscussion() {
             ]}
             refs={[topRef, detailRef, commentRef]}
           />
-        <Content
-          style={{
-            padding: '24px 24px 24px',
-          }}>
+          <Content
+            style={{
+              padding: '24px 24px 24px',
+            }}
+          >
             <div ref={topRef}>
               <PageHeader
                 title={discussion.header}
                 onBack={() => window.history.back()}
                 className="site-page-header"
-                tags={discussion.type.map(t => {
+                tags={discussion.type.map((t) => {
                   return (
                     <Tag
                       color={'#00CDFF'}
@@ -122,11 +126,23 @@ export default function ViewDiscussion() {
               </PageHeader>
             </div>
             <div ref={detailRef}>
-              <h1
-                style={{ padding: '10px', fontSize: '2em', fontWeight: 'bold' }}
-              >
-                Details
-              </h1>
+              <OnboardingWrapper
+                baseContent={
+                  <h1
+                    style={{
+                      padding: '10px',
+                      fontSize: '2em',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Details
+                  </h1>
+                }
+                name="discussionForumView"
+                content={`This is a discussion post - feel free to comment on it below. 
+                If you want to see more hit the back button above and filter through other posts.`}
+                placement="left"
+              />
               <Collapse defaultActiveKey={['1']}>
                 <Panel
                   header="Primary Details"
@@ -159,9 +175,9 @@ export default function ViewDiscussion() {
                 isUserSignedIn={isUserSignedIn}
               />
             </div>
-        </Content>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
-  );
+    );
   }
 }

@@ -36,6 +36,7 @@ import {
   Comment,
   Avatar,
   List,
+  Popover,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -86,4 +87,5 @@ export {
   Comment,
   Avatar,
   List,
+  Popover,
 };

@@ -8,9 +8,10 @@ import { useHistory } from 'react-router';
 import ListAndFilterResources from './../components/ListAndFilterResources';
 import ListAndFilterOrganizations from './../components/ListAndFilterOrganizations';
 import ListAndFilterDiscussionForums from '../components/ListAndFilterDiscussionForums';
+import OnboardingWrapper from '../components/OnboardingWrapper';
 
 export default function SearchResults(props) {
-  let { enums } = useAppEnv();
+  let { enums, user } = useAppEnv();
   let history = useHistory();
   let fileTypes = enums ? enums.FILE_TYPES : [];
   let orgTypes = enums ? enums.ORG_TYPES : [];
@@ -21,7 +22,7 @@ export default function SearchResults(props) {
   let isDiscussionView = history.location.pathname.includes('/discussion');
   let View = isResourceView
     ? ListAndFilterResources
-    : (isDiscussionView) 
+    : isDiscussionView
     ? ListAndFilterDiscussionForums
     : ListAndFilterOrganizations;
   let updateSearch = (query, filters) => {
@@ -33,7 +34,11 @@ export default function SearchResults(props) {
       }
     }
     let url =
-      (isResourceView ? '/resources?' : (isDiscussionView) ? '/discussion?' : '/organizations?') + segments.join('&');
+      (isResourceView
+        ? '/resources?'
+        : isDiscussionView
+        ? '/discussion?'
+        : '/organizations?') + segments.join('&');
     window.gtag('event', 'search_bar_query', {
       event_label: query,
       event_category: 'search',
@@ -67,7 +72,11 @@ export default function SearchResults(props) {
             theme="light"
             mode="horizontal"
             defaultSelectedKeys={
-              isResourceView ? ['resources'] : (isDiscussionView) ? ['discussion'] : ['organizations']
+              isResourceView
+                ? ['resources']
+                : isDiscussionView
+                ? ['discussion']
+                : ['organizations']
             }
             style={{
               position: 'absolute',
@@ -80,7 +89,11 @@ export default function SearchResults(props) {
                 className="menu-search"
                 style={{ marginTop: '20px' }}
                 placeholder={`Search for ${
-                  isResourceView ? 'resources' : (isDiscussionView) ? 'discussion' : 'organizations'
+                  isResourceView
+                    ? 'resources'
+                    : isDiscussionView
+                    ? 'discussion'
+                    : 'organizations'
                 }`}
                 enterButton
                 onSearch={(q) => updateSearch(q, filterParams)}
@@ -90,19 +103,41 @@ export default function SearchResults(props) {
               key="resources"
               onClick={() => history.push('/resources')}
             >
-              Resources
+              <OnboardingWrapper
+                userId={user._id}
+                name="resourcesTab"
+                content={`This tab shows you all the resources available on the RAI portal.
+                Click on any resource to find out more about it. You can also search & filter through resources using
+                the left sidebar.`}
+                placement="bottom"
+                baseContent="Resources"
+              />
             </Menu.Item>
-            <Menu.Item 
-              key="discussion" 
+            <Menu.Item
+              key="discussion"
               onClick={() => history.push('/discussion')}
             >
-              Discussion Forum
+              <OnboardingWrapper
+                userId={user._id}
+                name="discussionForumTab"
+                content={`This tab will allow you to access the Portal's Discussion Forum. 
+                Come here to participate in discussions not related to a specific resource.`}
+                placement="bottom"
+                baseContent="Discussion Forum"
+              />
             </Menu.Item>
             <Menu.Item
               key="organizations"
               onClick={() => history.push('/organizations')}
             >
-              Organizations
+              <OnboardingWrapper
+                userId={user._id}
+                name="organizationsTab"
+                content={`This tab will allow you to view the list of organizations contributing to content on 
+                the RAI portal.`}
+                placement="bottom"
+                baseContent="Organizations"
+              />
             </Menu.Item>
 
             <Menu.Item key="feedback" onClick={() => history.push('/feedback')}>
